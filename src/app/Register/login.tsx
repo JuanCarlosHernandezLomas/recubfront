@@ -16,6 +16,7 @@ import {
   EnvelopeFill,
   BoxArrowInRight,
   ShieldLock,
+  ExclamationTriangleFill,
 } from "react-bootstrap-icons";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -27,6 +28,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
 
@@ -37,19 +39,21 @@ const LoginPage = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage("");
+
     setTimeout(() => {
       setLoading(false);
-        // Aquí validas email y contraseña (puedes personalizar esto)
-        if (email === "admin@example.com" && password === "123456") {
-          setSuccess(true);
-          setTimeout(() => {
-            router.push("/Register"); // redirige a la página de registro
-          }, 1000);
-        } else {
-          alert("Correo o contraseña incorrectos");
-        }
-      }, 2000);
-    };
+
+      if (email === "admin@example.com" && password === "123456") {
+        setSuccess(true);
+        setTimeout(() => {
+          router.push("/register");
+        }, 1000);
+      } else {
+        setErrorMessage("Credenciales incorrectas. Verifica tu correo y contraseña.");
+      }
+    }, 2000);
+  };
 
   return (
     <Container fluid className="vh-100 d-flex align-items-center justify-content-center bg-primary-subtle">
@@ -65,8 +69,15 @@ const LoginPage = () => {
         </div>
 
         {success && (
-          <Alert variant="success" className="text-center">
+          <Alert variant="success" className="text-center animate__animated animate__fadeIn">
             <BoxArrowInRight className="me-2" />¡Inicio de sesión exitoso!
+          </Alert>
+        )}
+
+        {errorMessage && (
+          <Alert variant="danger" className="text-center animate__animated animate__shakeX">
+            <ExclamationTriangleFill className="me-2" />
+            {errorMessage}
           </Alert>
         )}
 
