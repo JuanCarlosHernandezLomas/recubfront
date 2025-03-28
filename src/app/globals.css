@@ -1,42 +1,35 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* src/app/globals.css */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+@import 'aos/dist/aos.css';
 
-html,
+/* Estilo base para todo el sitio */
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* AOS animaciones suaves */
+[data-aos] {
+  transition-duration: 1s !important;
+  transition-timing-function: ease-out !important;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+/* Estilo para el contenedor principal */
+.main-card {
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* Botones redondeados con sombra */
+.btn-pill {
+  border-radius: 50px;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  font-weight: 600;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+label svg {
+  margin-right: 6px;
+  margin-bottom: 3px;
 }
