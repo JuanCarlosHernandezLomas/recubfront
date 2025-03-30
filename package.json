@@ -13,10 +13,13 @@
     "bootstrap": "^5.3.3",
     "next": "15.2.4",
     "react": "^19.0.0",
+    "react-awesome-reveal": "^4.3.1",
     "react-bootstrap": "^2.10.9",
     "react-bootstrap-icons": "^1.11.5",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-tsparticles": "^2.12.2",
+    "react-use": "^17.6.0",
     "tsparticles": "^3.8.1",
     "tsparticles-engine": "^2.12.0"
   },

@@ -1,216 +1,345 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import {
   Container,
-  Card,
   Form,
   Button,
   Row,
   Col,
-  FloatingLabel,
-  Alert,
   Spinner,
-} from 'react-bootstrap';
-import {
-  Briefcase,
-  FileEarmarkText,
-  GeoAlt,
-  People,
-  PersonBadge,
-  PersonVcard,
-  Stars,
-  Clipboard2Check,
-  CheckCircleFill,
-} from 'react-bootstrap-icons';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+  Alert,
+} from "react-bootstrap";
+import { Upload } from "react-bootstrap-icons";
+import{useAuth} from "../context/useAuth"
 
-const Page = () => {
-  const [formData, setFormData] = useState({
-    employeeId: '',
-    firstName: '',
-    lastName: '',
-    jobTitle: '',
-    resume: null as File | null,
-    availabilityStatusId: '',
-    experienceLevelId: '',
-    locationId: '',
-    userId: '',
-    skillIds: [] as number[],
+interface Option {
+  id: number;
+  name: string;
+}
+
+interface ProfileForm {
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  jobTitle: string;
+  resume: File | null;
+  availabilityStatusId: string;
+  experienceLevelId: string;
+  locationId: string;
+  userId: string;
+  skillIds: string[];
+}
+
+export default function RegisterPage() {
+  const [formData, setFormData] = useState<ProfileForm>({
+    employeeId: "",
+    firstName: "",
+    lastName: "",
+    jobTitle: "",
+    resume: null,
+    availabilityStatusId: "",
+    experienceLevelId: "",
+    locationId: "",
+    userId: "",
+    skillIds: [],
   });
 
-  const [skills, setSkills] = useState<{ id: number; name: string }[]>([]);
-  const [locations, setLocations] = useState<{ id: number; name: string }[]>([]);
-  const [availabilityStatuses, setAvailabilityStatuses] = useState<{ id: number; name: string }[]>([]);
-  const [experienceLevels, setExperienceLevels] = useState<{ id: number; name: string }[]>([]);
-  const [submitted, setSubmitted] = useState(false);
+  const [availabilityStatuses, setAvailabilityStatuses] = useState<Option[]>([]);
+  const [experienceLevels, setExperienceLevels] = useState<Option[]>([]);
+  const [locations, setLocations] = useState<Option[]>([]);
+  const [skills, setSkills] = useState<Option[]>([]);
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const {token}= useAuth();
 
   useEffect(() => {
-    AOS.init();
-    setSkills([{ id: 1, name: 'Java' }, { id: 2, name: 'Spring Boot' }]);
-    setLocations([{ id: 1, name: 'Madrid' }, { id: 2, name: 'Barcelona' }]);
-    setAvailabilityStatuses([{ id: 1, name: 'BENCH' }, { id: 2, name: 'ASSIGNED' }]);
-    setExperienceLevels([{ id: 1, name: 'Junior' }, { id: 2, name: 'Senior' }]);
+    fetchOptions("/api/availability-status", setAvailabilityStatuses);
+    fetchOptions("/api/experience-level", setExperienceLevels);
+    fetchOptions("/api/locations", setLocations);
+    fetchOptions("/api/skills", setSkills);
   }, []);
+
+  const fetchOptions = async (endpoint: string, setter: (data: Option[]) => void) => {
+    try {
+      const response = await fetch(`http://localhost:8090${endpoint}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, //  Aquí va el token
+        },
+      });
+      const data = await response.json();
+      setter(data);
+    } catch (error) {
+      if(error instanceof Error){
+        setErrorMessage(error.message);
+        console.error("Error fetching:", endpoint);
+      }
+      else{
+        setErrorMessage("An unknown error occurred");
+      }
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value, type, files } = e.target as HTMLInputElement;
-
-    if (type === 'file') {
-      setFormData((prev) => ({ ...prev, [name]: files?.[0] || null }));
-    } else if (name === 'skillIds') {
-      const selectedOptions = Array.from((e.target as HTMLSelectElement).selectedOptions).map((opt) =>
-        Number(opt.value)
-      );
-      setFormData((prev) => ({ ...prev, skillIds: selectedOptions }));
+    const { name, value } = e.target;
+  
+    if (name === "skillIds" && e.target instanceof HTMLSelectElement) {
+      const selected = Array.from(e.target.selectedOptions).map((opt) => opt.value);
+      setFormData((prev) => ({ ...prev, skillIds: selected }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFormData((prev) => ({ ...prev, resume: e.target.files![0] }));
+    }
+  };
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const data = new FormData();
-    type ProfileFormFields = typeof formData;
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    Object.keys(formData).forEach((key) => {
-      const typedKey = key as keyof ProfileFormFields;
-      if (typedKey === 'skillIds') {
-        formData.skillIds.forEach((id) => data.append('skillIds', id.toString()));
-      } else if (typedKey === 'resume' && formData.resume instanceof File) {
-        data.append('resume', formData.resume);
-      } else {
-        data.append(typedKey, formData[typedKey]?.toString() || '');
+    const payload = new FormData();
+    const {
+      employeeId,
+      firstName,
+      lastName,
+      jobTitle,
+      availabilityStatusId,
+      experienceLevelId,
+      locationId,
+      userId,
+      skillIds,
+      resume,
+    } = formData;
+
+    const profile = {
+      employeeId,
+      firstName,
+      lastName,
+      jobTitle,
+      availabilityStatusId,
+      experienceLevelId,
+      locationId,
+      userId,
+      skillIds,
+      active: true,
+    };
+
+    payload.append(
+      "profile",
+      new Blob([JSON.stringify(profile)], { type: "application/json" })
+    );
+    if (resume) {
+      payload.append("file", resume);
+    }
+
+    try {
+      const response = await fetch("http://localhost:8090/api/profile", {
+        method: "POST",
+        body: payload,
+        headers: {
+          
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) throw new Error("Error al registrar el perfil.");
+
+      setSuccessMessage("¡Perfil creado exitosamente!");
+      setFormData({
+        employeeId: "",
+        firstName: "",
+        lastName: "",
+        jobTitle: "",
+        resume: null,
+        availabilityStatusId: "",
+        experienceLevelId: "",
+        locationId: "",
+        userId: "",
+        skillIds: [],
+      
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage("Ocurrió un error al crear el perfil.");
+        console.log(formData)
       }
-    });
-
-    console.log('Datos enviados:', formData);
-    setTimeout(() => {
+    } finally {
       setLoading(false);
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 5000);
-    }, 2000);
+    }
   };
 
   return (
     <Container className="py-5">
-      <Card className="shadow-lg border-0 rounded-4 bg-light" data-aos="fade-up">
-        <Card.Body className="p-5">
-          <h2 className="text-center text-primary mb-4 fw-bold">
-            <PersonBadge className="me-2" /> Registro de Perfil Profesional
-          </h2>
+      <h2 className="mb-4 text-center text-primary">Registro de Perfil</h2>
 
-          {submitted && (
-            <Alert variant="success" className="text-center">
-              <CheckCircleFill className="me-2 text-success" /> Registro completado con éxito
-            </Alert>
-          )}
+      {successMessage && <Alert variant="success">{successMessage}</Alert>}
+      {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
-          {loading && (
-            <div className="text-center my-4">
-              <Spinner animation="border" variant="primary" role="status">
-                <span className="visually-hidden">Cargando...</span>
-              </Spinner>
-              <div className="mt-2 text-muted">Registrando información...</div>
-            </div>
-          )}
+      <Form onSubmit={handleSubmit} encType="multipart/form-data">
+        <Form.Group className="mb-3">
+          <Form.Label>ID de Empleado</Form.Label>
+          <Form.Control
+            type="text"
+            name="employeeId"
+            value={formData.employeeId}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-          {!loading && (
-            <Form onSubmit={handleSubmit} encType="multipart/form-data">
-              <Row className="mb-3">
-                <Col md={6} data-aos="fade-right">
-                  <FloatingLabel label={<><PersonVcard className="me-2" />ID de Empleado</>}>
-                    <Form.Control type="text" name="employeeId" required onChange={handleChange} />
-                  </FloatingLabel>
-                </Col>
-                <Col md={6} data-aos="fade-left">
-                  <FloatingLabel label={<><Briefcase className="me-2" />Puesto</>}>
-                    <Form.Control type="text" name="jobTitle" required onChange={handleChange} />
-                  </FloatingLabel>
-                </Col>
-              </Row>
+        <Row>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col md={6}>
+            <Form.Group className="mb-3">
+              <Form.Label>Apellido</Form.Label>
+              <Form.Control
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-              <Row className="mb-3">
-                <Col md={6} data-aos="fade-right">
-                  <FloatingLabel label={<><PersonVcard className="me-2" />Nombre</>}>
-                    <Form.Control type="text" name="firstName" required onChange={handleChange} />
-                  </FloatingLabel>
-                </Col>
-                <Col md={6} data-aos="fade-left">
-                  <FloatingLabel label={<><PersonVcard className="me-2" />Apellido</>}>
-                    <Form.Control type="text" name="lastName" required onChange={handleChange} />
-                  </FloatingLabel>
-                </Col>
-              </Row>
+        <Form.Group className="mb-3">
+          <Form.Label>Puesto</Form.Label>
+          <Form.Control
+            type="text"
+            name="jobTitle"
+            value={formData.jobTitle}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-              <Form.Group controlId="formFile" className="mb-3" data-aos="fade-up">
-                <Form.Label className="fw-semibold"><FileEarmarkText className="me-2" />CV (PDF, DOC, DOCX)</Form.Label>
-                <Form.Control type="file" name="resume" accept=".pdf,.doc,.docx" onChange={handleChange} />
-              </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>
+            CV <Upload />
+          </Form.Label>
+          <Form.Control
+            type="file"
+            name="resume"
+            accept=".pdf,.doc,.docx"
+            onChange={handleFileChange}
+          />
+        </Form.Group>
 
-              <Row className="mb-3">
-                <Col md={4} data-aos="fade-right">
-                  <FloatingLabel label={<><Clipboard2Check className="me-2" />Disponibilidad</>}>
-                    <Form.Select name="availabilityStatusId" onChange={handleChange} required>
-                      <option value="">--Selecciona--</option>
-                      {availabilityStatuses.map((a) => (
-                        <option key={a.id} value={a.id}>{a.name}</option>
-                      ))}
-                    </Form.Select>
-                  </FloatingLabel>
-                </Col>
-                <Col md={4} data-aos="fade-up">
-                  <FloatingLabel label={<><Stars className="me-2" />Nivel de Experiencia</>}>
-                    <Form.Select name="experienceLevelId" onChange={handleChange} required>
-                      <option value="">--Selecciona--</option>
-                      {experienceLevels.map((e) => (
-                        <option key={e.id} value={e.id}>{e.name}</option>
-                      ))}
-                    </Form.Select>
-                  </FloatingLabel>
-                </Col>
-                <Col md={4} data-aos="fade-left">
-                  <FloatingLabel label={<><GeoAlt className="me-2" />Ubicación</>}>
-                    <Form.Select name="locationId" onChange={handleChange} required>
-                      <option value="">--Selecciona--</option>
-                      {locations.map((l) => (
-                        <option key={l.id} value={l.id}>{l.name}</option>
-                      ))}
-                    </Form.Select>
-                  </FloatingLabel>
-                </Col>
-              </Row>
+        <Row>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Disponibilidad</Form.Label>
+              <Form.Select
+                name="availabilityStatusId"
+                value={formData.availabilityStatusId}
+                onChange={handleChange}
+                required
+              >
+                <option value="">--Selecciona--</option>
+                {availabilityStatuses.map((a) => (
+                  <option key={a.id} value={a.id}>
+                    {a.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-              <FloatingLabel label={<><People className="me-2" />ID de Usuario</>} className="mb-3" data-aos="fade-up">
-                <Form.Control type="number" name="userId" required onChange={handleChange} />
-              </FloatingLabel>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Nivel de Experiencia</Form.Label>
+              <Form.Select
+                name="experienceLevelId"
+                value={formData.experienceLevelId}
+                onChange={handleChange}
+                required
+              >
+                <option value="">--Selecciona--</option>
+                {experienceLevels.map((e) => (
+                  <option key={e.id} value={e.id}>
+                    {e.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
 
-              <Form.Group className="mb-4" data-aos="fade-up">
-                <Form.Label className="fw-semibold"><Stars className="me-2" />Habilidades</Form.Label>
-                <Form.Select name="skillIds" multiple required onChange={handleChange}>
-                  {skills.map((skill) => (
-                    <option key={skill.id} value={skill.id}>{skill.name}</option>
-                  ))}
-                </Form.Select>
-                <Form.Text muted>Mantén presionado Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</Form.Text>
-              </Form.Group>
+          <Col md={4}>
+            <Form.Group className="mb-3">
+              <Form.Label>Ubicación</Form.Label>
+              <Form.Select
+                name="locationId"
+                value={formData.locationId}
+                onChange={handleChange}
+                required
+              >
+                <option value="">--Selecciona--</option>
+                {locations.map((l) => (
+                  <option key={l.id} value={l.id}>
+                    {l.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Col>
+        </Row>
 
-              <div className="text-center" data-aos="zoom-in">
-                <Button type="submit" variant="success" size="lg" className="px-5 rounded-pill shadow">
-                  <PersonBadge className="me-2" />Registrar
-                </Button>
-              </div>
-            </Form>
-          )}
-        </Card.Body>
-      </Card>
+        <Form.Group className="mb-3">
+          <Form.Label>Usuario ID</Form.Label>
+          <Form.Control
+            type="number"
+            name="userId"
+            value={formData.userId}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-4">
+          <Form.Label>Habilidades</Form.Label>
+          <Form.Select
+            multiple
+            name="skillIds"
+            value={formData.skillIds}
+            onChange={handleChange}
+            required
+          >
+            {skills.map((s) => (
+              <option key={s.id} value={s.id}>
+                {s.name}
+              </option>
+            ))}
+          </Form.Select>
+        </Form.Group>
+
+        <div className="d-grid">
+          <Button variant="primary" type="submit" disabled={loading}>
+            {loading ? <Spinner size="sm" animation="border" /> : "Registrar"}
+          </Button>
+        </div>
+      </Form>
     </Container>
   );
-};
-
-export default Page;
+}

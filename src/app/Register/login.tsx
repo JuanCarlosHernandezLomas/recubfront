@@ -14,7 +14,6 @@ import {
   PersonBadge,
   LockFill,
   EnvelopeFill,
-  BoxArrowInRight,
   ShieldLock,
   ExclamationTriangleFill,
 } from "react-bootstrap-icons";
@@ -22,37 +21,52 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/useAuth";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
+  const [error, setError] = useState("");
   const router = useRouter();
+  const { login } = useAuth();
+  
 
   useEffect(() => {
     AOS.init({ duration: 800 });
   }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage("");
+    setError("");
 
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await fetch("http://localhost:8090/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
 
-      if (email === "admin@example.com" && password === "123456") {
-        setSuccess(true);
-        setTimeout(() => {
-          router.push("/register");
-        }, 1000);
-      } else {
-        setErrorMessage("Credenciales incorrectas. Verifica tu correo y contraseña.");
+      if (!response.ok) {
+        setLoading(false); // 👈 detener el spinner antes de mostrar el error
+        setError("Credenciales inválidas. Por favor verifica e intenta nuevamente.");
+        return;
       }
-    }, 2000);
+
+      const data = await response.json();
+      login(data.token, data.roles);
+      router.push("/manage-data");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Ocurrió un error al iniciar sesión.");
+        setLoading(false);
+      }
+    }
   };
 
   return (
@@ -68,16 +82,9 @@ const LoginPage = () => {
           <p className="text-muted">Accede a tu cuenta para continuar</p>
         </div>
 
-        {success && (
-          <Alert variant="success" className="text-center animate__animated animate__fadeIn">
-            <BoxArrowInRight className="me-2" />¡Inicio de sesión exitoso!
-          </Alert>
-        )}
-
-        {errorMessage && (
-          <Alert variant="danger" className="text-center animate__animated animate__shakeX">
-            <ExclamationTriangleFill className="me-2" />
-            {errorMessage}
+        {error && (
+          <Alert variant="danger" className="text-center">
+            <ExclamationTriangleFill className="me-2" /> {error}
           </Alert>
         )}
 
@@ -123,3 +130,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
