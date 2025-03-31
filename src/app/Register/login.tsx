@@ -58,7 +58,7 @@ const LoginPage = () => {
 
       const data = await response.json();
       login(data.token, data.roles);
-      router.push("/manage-data");
+      router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
