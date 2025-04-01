@@ -7,6 +7,8 @@ import {
   GearFill,
   PeopleFill,
   ClipboardData,
+  GeoAltFill,
+  PersonSquare,
 } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import 'animate.css';
@@ -39,6 +41,20 @@ const Dashboard = () => {
       icon: <ClipboardData size={32} className="text-info" />,
       description: 'Genera reportes de asignaciones y disponibilidad.',
       path: '/reports',
+      animation: 'animate__fadeInRight',
+    },
+    {
+      title: 'ver locaciones',
+      icon: <GeoAltFill size={32} className="text-info" />,
+      description: 'Agrega nuevas locaciones.',
+      path: '/location',
+      animation: 'animate__fadeInLeft',
+    },
+    {
+      title: 'clientes',
+      icon: <PersonSquare size={32} className="text-info" />,
+      description: 'Agrega nuevas cliente.',
+      path: '/cliente',
       animation: 'animate__fadeInRight',
     },
   ];

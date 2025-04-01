@@ -14,7 +14,7 @@ import {
     Modal,
 } from "react-bootstrap";
 import { useAuth } from "../context/useAuth";
-import { useMediaQuery } from "react-responsive";
+
 
 interface Profile {
     id: number;
@@ -34,6 +34,7 @@ interface Profile {
 interface Option {
     id: number;
     name: string;
+    city: string;
 }
 
 export default function ViewProfilesPage() {
@@ -200,7 +201,7 @@ export default function ViewProfilesPage() {
             alert("Error al eliminar el perfil");
         }
     };
-
+console.log(locationOptions)
     return (
         <Container className="py-4">
             <h2 className="text-primary mb-4">Listado de Perfiles</h2>
@@ -233,7 +234,7 @@ export default function ViewProfilesPage() {
                     <Form.Select name="location" onChange={handleFilterChange}>
                         <option value="">Ubicación</option>
                         {locationOptions.map(opt => (
-                            <option key={opt.id} value={opt.name}>{opt.name}</option>
+                            <option key={opt.id} value={opt.city}>{opt.city}</option>
                         ))}
                     </Form.Select>
                 </Col>
