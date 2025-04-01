@@ -31,7 +31,7 @@ const Dashboard = () => {
       title: 'Ver Perfiles',
       icon: <PeopleFill size={32} className="text-success" />,
       description: 'Consulta y gestiona los perfiles existentes.',
-      path: '/profiles',
+      path: '/view-profiles',
       animation: 'animate__fadeInLeft',
     },
     {
