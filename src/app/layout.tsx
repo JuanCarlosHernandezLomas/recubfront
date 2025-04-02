@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { SidebarProvider } from "./context/SidebarContext";
 import { AppShell } from "./components/AppShell";
 
+
 export const metadata: Metadata = {
   title: 'Registro de Perfil',
   description: 'Formulario para registrar perfiles profesionales',

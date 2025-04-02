@@ -91,6 +91,8 @@ export default function ManageDataPage() {
 
       setMessage('¡Agregado correctamente!');
       setShowConfetti(true);
+      const sound = new Audio('/sound/sonido.mp3');
+      sound.play().catch((err) => console.error("Error al reproducir sonido", err));
       setTimeout(() => setShowConfetti(false), 8000);
       if (type === 'skill') {
         setSkill({ name: '' });
