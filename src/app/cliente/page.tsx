@@ -25,6 +25,7 @@ interface Client {
 interface Location {
   id: number;
   name: string;
+  city: string
 }
 
 export default function ClientesPage() {
@@ -169,7 +170,7 @@ export default function ClientesPage() {
               <option value="">Seleccione ubicación</option>
               {locations.map((loc) => (
                 <option key={loc.id} value={loc.id}>
-                  {loc.name}
+                  {loc.city}
                 </option>
               ))}
             </Form.Select>
@@ -191,7 +192,7 @@ export default function ClientesPage() {
                 <Card.Title>{client.name}</Card.Title>
                 <Card.Text>
                   <strong>Ubicación:</strong>{" "}
-                  {locations.find((l) => l.id === client.locationId)?.name || "-"}
+                  {client.locationName}
                 </Card.Text>
                 <Button
                   size="sm"
