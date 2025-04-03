@@ -1,0 +1,67 @@
+{
+  "dashboard": {
+    "welcome": "Welcome to ResourceHub",
+    "registerProfile": "Register Profile",
+    "registerProfileDesc": "Create a new resource profile and upload CVs.",
+    "manageData": "Manage Data",
+    "manageDataDesc": "Add new skills, experience levels, or availability.",
+    "viewProfiles": "View Profiles",
+    "viewProfilesDesc": "Browse and manage existing profiles.",
+    "reports": "Reports",
+    "reportsDesc": "Generate assignment and availability reports.",
+    "locations": "View Locations",
+    "locationsDesc": "Add new locations.",
+    "clients": "Clients",
+    "clientsDesc": "Add new clients."
+  },
+
+  "profile": {
+    "title": "Profile Registration",
+    "Id": "Employee ID",
+    "Name": "First Name",
+    "LastName": "Last Name",
+    "Position": "Position",
+    "CV": "CV",
+    "availability": "Availability",
+    "ExperienceLevel": "Experience Level",
+    "location": "Location",
+    "UserId": "User ID",
+    "Skills": "Skills"
+  },
+  "manager": {
+    "title": "Manage System Data",
+    "skills": "Add Skill",
+    "experience": "Add Experience",
+    "availability": "Add Availability",
+    "Button": "Add"
+  },
+  "list": {
+    "title": "Profile List",
+    "Id": "ID",
+    "Name": "Name",
+    "Position": "Position",
+    "location": "Location",
+    "ExperienceLevel": "Experience",
+    "availability": "Availability",
+    "UserId": "User",
+    "Skills": "Skills",
+    "CV": "CV",
+    "status": "Status",
+    "edit": "Edit",
+    "delete": "Delete",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "download": "Download"
+  },
+  "client": {
+    "title": "Customer Management",
+    "Id":"ID",
+    "name": "Name",
+    "location": "Location",
+    "status": "Status",
+    "action": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "ADD"
+  }
+}

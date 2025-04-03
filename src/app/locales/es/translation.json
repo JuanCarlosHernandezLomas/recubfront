@@ -1,0 +1,71 @@
+{
+    "dashboard": {
+      "welcome": "Bienvenido a ResourceHub",
+      "registerProfile": "Registrar Perfil",
+      "registerProfileDesc": "Crea un nuevo perfil de recurso y carga CVs.",
+      "manageData": "Administrar Datos",
+      "manageDataDesc": "Agrega nuevas habilidades, niveles de experiencia o disponibilidad.",
+      "viewProfiles": "Ver Perfiles",
+      "viewProfilesDesc": "Consulta y gestiona los perfiles existentes.",
+      "reports": "Reportes",
+      "reportsDesc": "Genera reportes de asignaciones y disponibilidad.",
+      "locations": "Ver Locaciones",
+      "locationsDesc": "Agrega nuevas locaciones.",
+      "clients": "Clientes",
+      "clientsDesc": "Agrega nuevos clientes."
+    },
+
+    "profile":{
+      "title": "Registro de Perfil",
+      "Id":"ID del empleado",
+      "Name":"Nombre",
+      "LastName":"Apellido",
+      "Position":"Puesto",
+      "CV":"CV",
+      "availability":"Disponibilidad",
+      "ExperienceLevel":"Nivel de Experiencia",
+      "location":"Ubicacion",
+      "UserId":"Usuario ID",
+      "Skills":"Habilidades"
+    },
+
+    "manager": {
+      "title": "Administrar Datos del Sistema",
+      "skills": "Agregar Skill",
+      "experience": "Agregar Experiencia",
+      "availability": "Agregar Disponibilidad",
+      "Button": "Agregar"
+    },
+    "list": {
+      "title": "Listado de Perfiles",
+      "Id": "ID ",
+      "Name": "Nombre",
+      "Position": "Puesto",
+      "location": "Ubicacion",
+      "ExperienceLevel": "Experiencia",
+      "availability": "Disponibilidad",
+      "UserId": "Usuario",
+      "Skills": "Skills",
+      "CV": "CV",
+      "status": "Estado",
+      "edit":"Editar",
+      "delete":"Elimminar",
+      "Active": "Activo",
+      "Inactive":"Inactivo",
+      "download": "Descargar"
+      
+    },
+
+    "client": {
+      "title": "Gestion de Clientes",
+      "Id":"ID",
+      "name": "Nombre",
+      "location": "Ubicacion",
+      "status":"Estado",
+      "action": "Acciones",
+      "edit":"Editar",
+      "delete":"Elimminar",
+      "add": "Agregar"
+    }
+  }
+  
