@@ -13,6 +13,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useAuth } from "../context/useAuth";
+import { useTranslation } from 'react-i18next';
 
 interface Client {
   id: number;
@@ -29,6 +30,7 @@ interface Location {
 }
 
 export default function ClientesPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [client, setClient] = useState({ name: "", locationId: 0 });
   const [clients, setClients] = useState<Client[]>([]);
@@ -144,7 +146,7 @@ export default function ClientesPage() {
 
   return (
     <Container className="py-4">
-      <h2 className="mb-4 text-primary">Gestión de Clientes</h2>
+      <h2 className="mb-4 text-primary">{t("client.title")}</h2>
 
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
@@ -177,7 +179,7 @@ export default function ClientesPage() {
           </Col>
           <Col md={2}>
             <Button type="submit" variant="primary" className="w-100">
-              Agregar
+              {t("client.add")}
             </Button>
           </Col>
         </Row>
@@ -216,11 +218,11 @@ export default function ClientesPage() {
         <Table bordered hover responsive>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Ubicación</th>
-              <th>Estado</th>
-              <th>Acciones</th>
+              <th>{t("client.Id")}</th>
+              <th>{t("client.name")}</th>
+              <th>{t("client.location")}</th>
+              <th>{t("client.status")}</th>
+              <th>{t("client.action")}</th>
             </tr>
           </thead>
           <tbody>
@@ -237,10 +239,10 @@ export default function ClientesPage() {
                     className="me-2"
                     onClick={() => handleEdit(cli)}
                   >
-                    Editar
+                    {t("client.edit")}
                   </Button>
                   <Button size="sm" variant="danger" onClick={() => handleDelete(cli.id)}>
-                    Eliminar
+                  {t("client.delete")}
                   </Button>
                 </td>
               </tr>

@@ -1,18 +1,27 @@
 "use client";
 
 import React from "react";
-import { Navbar,  Dropdown, Button } from "react-bootstrap";
+import { Navbar, Dropdown, Button, ButtonGroup } from "react-bootstrap";
 import { PersonCircle, List } from "react-bootstrap-icons";
 import { useAuth } from "../context/useAuth";
 import { useSidebarContext } from "../context/SidebarContext";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export const Header = () => {
   const { token, logout } = useAuth();
   const { toggleSidebar } = useSidebarContext();
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem("lng", lng); // Guardar preferencia
+  };
 
   return (
-    <Navbar bg="light" className="shadow-sm px-3 justify-content-between"
+    <Navbar
+      bg="light"
+      className="shadow-sm px-3 justify-content-between"
     >
       <div className="d-flex align-items-center">
         <Button
@@ -28,19 +37,38 @@ export const Header = () => {
         </Navbar.Brand>
       </div>
 
-      {token && (
-        <Dropdown align="end">
-          <Dropdown.Toggle variant="outline-secondary" id="dropdown-user">
-            <PersonCircle className="me-2" />
-          </Dropdown.Toggle>
-
+      <div className="d-flex align-items-center gap-3">
+        {/* Selector de idioma */}
+        <Dropdown as={ButtonGroup}>
+          <Button variant="outline-dark">
+            🌐 {i18n.language.toUpperCase()}
+          </Button>
+          <Dropdown.Toggle split variant="outline-dark" id="dropdown-split" />
           <Dropdown.Menu>
-            <Dropdown.Item onClick={logout} className="text-danger">
-              Cerrar Sesión
+            <Dropdown.Item onClick={() => changeLanguage("es")}>
+              🇪🇸 Español
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => changeLanguage("en")}>
+              🇺🇸 English
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-      )}
+
+        {/* Menú de usuario */}
+        {token && (
+          <Dropdown align="end">
+            <Dropdown.Toggle variant="outline-secondary" id="dropdown-user">
+              <PersonCircle className="me-2" />
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={logout} className="text-danger">
+                Cerrar Sesión
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
+      </div>
     </Navbar>
   );
 };

@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { Upload } from "react-bootstrap-icons";
 import{useAuth} from "../context/useAuth"
+import { useTranslation } from 'react-i18next';
 
 interface Option {
   id: number;
@@ -32,6 +33,7 @@ interface ProfileForm {
 }
 
 export default function RegisterPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ProfileForm>({
     employeeId: "",
     firstName: "",
@@ -180,14 +182,14 @@ export default function RegisterPage() {
 
   return (
     <Container className="py-5">
-      <h2 className="mb-4 text-center text-primary">Registro de Perfil</h2>
+      <h2 className="mb-4 text-center text-primary">{t('profile.title')}</h2>
 
       {successMessage && <Alert variant="success">{successMessage}</Alert>}
       {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
 
       <Form onSubmit={handleSubmit} encType="multipart/form-data">
         <Form.Group className="mb-3">
-          <Form.Label>ID de Empleado</Form.Label>
+          <Form.Label>{t('profile.Id')}</Form.Label>
           <Form.Control
             type="text"
             name="employeeId"
@@ -200,7 +202,7 @@ export default function RegisterPage() {
         <Row>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Nombre</Form.Label>
+              <Form.Label>{t('profile.Name')}</Form.Label>
               <Form.Control
                 type="text"
                 name="firstName"
@@ -212,7 +214,7 @@ export default function RegisterPage() {
           </Col>
           <Col md={6}>
             <Form.Group className="mb-3">
-              <Form.Label>Apellido</Form.Label>
+              <Form.Label>{t('profile.LastName')}</Form.Label>
               <Form.Control
                 type="text"
                 name="lastName"
@@ -225,7 +227,7 @@ export default function RegisterPage() {
         </Row>
 
         <Form.Group className="mb-3">
-          <Form.Label>Puesto</Form.Label>
+          <Form.Label>{t('profile.Position')}</Form.Label>
           <Form.Control
             type="text"
             name="jobTitle"
@@ -237,7 +239,7 @@ export default function RegisterPage() {
 
         <Form.Group className="mb-3">
           <Form.Label>
-            CV <Upload />
+          {t('profile.CV')} <Upload />
           </Form.Label>
           <Form.Control
             type="file"
@@ -250,7 +252,7 @@ export default function RegisterPage() {
         <Row>
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Disponibilidad</Form.Label>
+              <Form.Label>{t('profile.availability')}</Form.Label>
               <Form.Select
                 name="availabilityStatusId"
                 value={formData.availabilityStatusId}
@@ -269,7 +271,7 @@ export default function RegisterPage() {
 
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Nivel de Experiencia</Form.Label>
+              <Form.Label>{t('profile.ExperienceLevel')}</Form.Label>
               <Form.Select
                 name="experienceLevelId"
                 value={formData.experienceLevelId}
@@ -288,7 +290,7 @@ export default function RegisterPage() {
 
           <Col md={4}>
             <Form.Group className="mb-3">
-              <Form.Label>Ubicación</Form.Label>
+              <Form.Label>{t('profile.location')}</Form.Label>
               <Form.Select
                 name="locationId"
                 value={formData.locationId}
@@ -307,7 +309,7 @@ export default function RegisterPage() {
         </Row>
 
         <Form.Group className="mb-3">
-          <Form.Label>Usuario ID</Form.Label>
+          <Form.Label>{t('profile.UserId')}</Form.Label>
           <Form.Control
             type="number"
             name="userId"
@@ -318,7 +320,7 @@ export default function RegisterPage() {
         </Form.Group>
 
         <Form.Group className="mb-4">
-          <Form.Label>Habilidades</Form.Label>
+          <Form.Label>{t('profile.Skills')}</Form.Label>
           <Form.Select
             multiple
             name="skillIds"

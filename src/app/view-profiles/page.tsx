@@ -14,6 +14,7 @@ import {
     Modal,
 } from "react-bootstrap";
 import { useAuth } from "../context/useAuth";
+import { useTranslation } from 'react-i18next';
 
 
 interface Profile {
@@ -38,6 +39,7 @@ interface Option {
 }
 
 export default function ViewProfilesPage() {
+    const { t } = useTranslation();
     const { token } = useAuth();
     const [profiles, setProfiles] = useState<Profile[]>([]);
     const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
@@ -204,7 +206,7 @@ export default function ViewProfilesPage() {
 console.log(locationOptions)
     return (
         <Container className="py-4">
-            <h2 className="text-primary mb-4">Listado de Perfiles</h2>
+            <h2 className="text-primary mb-4">{t('list.title')}</h2>
 
             {/* Filtros */}
             <Row className="mb-4">
@@ -302,7 +304,7 @@ console.log(locationOptions)
                                             Descargar CV
                                         </Button>
                                         <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>Editar</Button>
-                                        <Button size="sm" variant="danger" onClick={() => handleDelete(profile.id)}>Eliminar</Button>
+                                        <Button size="sm" variant="danger" onClick={() => handleDelete(profile.id)}>{t("list.delete")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -314,18 +316,18 @@ console.log(locationOptions)
                         <Table striped bordered hover responsive className="shadow-sm">
                             <thead>
                                 <tr className="text-center">
-                                    <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Puesto</th>
-                                    <th>Ubicación</th>
-                                    <th>Experiencia</th>
-                                    <th>Disponibilidad</th>
-                                    <th>Usuario</th>
-                                    <th>Skills</th>
-                                    <th>CV</th>
-                                    <th>Estado</th>
-                                    <th>Editar</th>
-                                    <th>Eliminar</th>
+                                    <th>{t("list.Id")}</th>
+                                    <th>{t("list.Name")}</th>
+                                    <th>{t("list.Position")}</th>
+                                    <th>{t("list.location")}</th>
+                                    <th>{t("list.ExperienceLevel")}</th>
+                                    <th>{t("list.availability")}</th>
+                                    <th>{t("list.UserId")}</th>
+                                    <th>{t("list.Skills")}</th>
+                                    <th>{t("list.CV")}</th>
+                                    <th>{t("list.status")}</th>
+                                    <th>{t("list.edit")}</th>
+                                    <th>{t("list.delete")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -361,24 +363,24 @@ console.log(locationOptions)
                                                     document.body.removeChild(link);
                                                 }}
                                             >
-                                                Descargar
+                                               {t("list.download")}
                                             </Button>
                                         </td>
                                         <td>
                                             {profile.active ? (
-                                                <Badge bg="success">Activo</Badge>
+                                                <Badge bg="success">{t("list.Active")}</Badge>
                                             ) : (
-                                                <Badge bg="danger">Inactivo</Badge>
+                                                <Badge bg="danger">{t("list.Inactive")}</Badge>
                                             )}
                                         </td>
                                         <td>
                                             <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
-                                                Editar
+                                            {t("list.edit")}
                                             </Button>
                                         </td>
                                         <td>
                                             <Button size="sm" variant="danger" onClick={() => handleDelete(profile.id)}>
-                                                Eliminar
+                                            {t("list.delete")}
                                             </Button>
                                         </td>
                                     </tr>

@@ -20,6 +20,7 @@ import {
 import Confetti from 'react-confetti';
 import { Fade } from 'react-awesome-reveal';
 import { useWindowSize } from 'react-use';
+import { useTranslation } from 'react-i18next';
 
 
 interface ApiForm {
@@ -27,6 +28,7 @@ interface ApiForm {
 }
 
 export default function ManageDataPage() {
+  const { t } = useTranslation();
   const [skill, setSkill] = useState<ApiForm>({ name: '' });
   const [experience, setExperience] = useState<ApiForm>({ name: '' });
   const [availability, setAvailability] = useState<ApiForm>({ name: '' });
@@ -110,7 +112,7 @@ export default function ManageDataPage() {
 
   return (
     <Container className="py-5">
-      <h2 className="text-center text-primary mb-4">Administrar Datos del Sistema</h2>
+      <h2 className="text-center text-primary mb-4">{t("manager.title")}</h2>
 
       {message && (
         <Alert variant="success" className="text-center">
@@ -135,7 +137,7 @@ export default function ManageDataPage() {
         <Col md={4}>
           <Card className="shadow p-4 border-0">
             <Card.Title className="text-center text-success mb-3">
-              <Stars className="me-2" /> Agregar Skill
+              <Stars className="me-2" /> {t("manager.skills")}
             </Card.Title>
             <Form onSubmit={(e) => handleSubmit(e, 'skill')}>
               <Form.Control
@@ -146,7 +148,7 @@ export default function ManageDataPage() {
                 required
               />
               <Button type="submit" className="mt-3 w-100" variant="success">
-                Agregar
+                {t("manager.Button")}
               </Button>
             </Form>
             <Fade triggerOnce cascade damping={0.1}>
@@ -163,7 +165,7 @@ export default function ManageDataPage() {
         <Col md={4}>
           <Card className="shadow p-4 border-0">
             <Card.Title className="text-center text-warning mb-3">
-              <RocketTakeoff className="me-2" /> Agregar Experiencia
+              <RocketTakeoff className="me-2" /> {t("manager.experience")}
             </Card.Title>
             <Form onSubmit={(e) => handleSubmit(e, 'experience')}>
               <Form.Control
@@ -174,7 +176,7 @@ export default function ManageDataPage() {
                 required
               />
               <Button type="submit" className="mt-3 w-100" variant="warning">
-                Agregar
+              {t("manager.Button")}
               </Button>
             </Form>
             <Fade triggerOnce cascade damping={0.1}>
@@ -191,7 +193,7 @@ export default function ManageDataPage() {
         <Col md={4}>
           <Card className="shadow p-4 border-0">
             <Card.Title className="text-center text-info mb-3">
-              <PeopleFill className="me-2" /> Agregar Disponibilidad
+              <PeopleFill className="me-2" /> {t("manager.availability")}
             </Card.Title>
             <Form onSubmit={(e) => handleSubmit(e, 'availability')}>
               <Form.Control
@@ -202,7 +204,7 @@ export default function ManageDataPage() {
                 required
               />
               <Button type="submit" className="mt-3 w-100" variant="info">
-                Agregar
+              {t("manager.Button")}
               </Button>
             </Form>
             <Fade triggerOnce cascade damping={0.1}>
