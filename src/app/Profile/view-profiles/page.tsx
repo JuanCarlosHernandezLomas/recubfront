@@ -13,8 +13,10 @@ import {
     Button,
     Modal,
 } from "react-bootstrap";
-import { useAuth } from "../context/useAuth";
+
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import { useAuth } from "@/app/context/useAuth";
 
 
 interface Profile {
@@ -49,6 +51,8 @@ export default function ViewProfilesPage() {
     //modal
     const [showModal, setShowModal] = useState(false);
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [profileToDelete, setProfileToDelete] = useState<Profile | null>(null);
 
     const [locations, setLocations] = useState<Option[]>([]);
     const [experiences, setExperiences] = useState<Option[]>([]);
@@ -186,12 +190,20 @@ export default function ViewProfilesPage() {
         setShowModal(false);
     };
 
+    const confirmDelete = (profile: Profile) => {
+        setProfileToDelete(profile);
+        setShowDeleteModal(true);
+    };
+
+
+
+
     const handleDelete = async (id: number) => {
-        const confirm = window.confirm("¿Estás seguro que deseas eliminar este perfil?");
-        if (!confirm) return;
+
+        if (!profileToDelete) return;
 
         try {
-            const res = await fetch(`http://localhost:8090/api/profile/${id}`, {
+            const res = await fetch(`http://localhost:8090/api/profile/${profileToDelete.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -199,11 +211,12 @@ export default function ViewProfilesPage() {
             if (!res.ok) throw new Error("Error al eliminar");
 
             await fetchProfiles(); // Recargar estado tras eliminar
+            setShowDeleteModal(false);
         } catch (err) {
             alert("Error al eliminar el perfil");
         }
     };
-console.log(locationOptions)
+    console.log(locationOptions)
     return (
         <Container className="py-4">
             <h2 className="text-primary mb-4">{t('list.title')}</h2>
@@ -363,7 +376,7 @@ console.log(locationOptions)
                                                     document.body.removeChild(link);
                                                 }}
                                             >
-                                               {t("list.download")}
+                                                {t("list.download")}
                                             </Button>
                                         </td>
                                         <td>
@@ -375,12 +388,12 @@ console.log(locationOptions)
                                         </td>
                                         <td>
                                             <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
-                                            {t("list.edit")}
+                                                {t("list.edit")}
                                             </Button>
                                         </td>
                                         <td>
-                                            <Button size="sm" variant="danger" onClick={() => handleDelete(profile.id)}>
-                                            {t("list.delete")}
+                                            <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>
+                                                {t("list.delete")}
                                             </Button>
                                         </td>
                                     </tr>
@@ -390,9 +403,9 @@ console.log(locationOptions)
                     </div>
                 </>
             )}
-            <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal show={showModal} onHide={handleCloseModal} centered  >
                 <Modal.Header closeButton><Modal.Title>Editar Perfil</Modal.Title></Modal.Header>
-                <Modal.Body>
+                <Modal.Body >
                     {selectedProfile && (
                         <Form>
                             <Form.Group className="mb-3">
@@ -446,6 +459,32 @@ console.log(locationOptions)
                     <Button variant="secondary" onClick={handleCloseModal}>Cancelar</Button>
                     <Button variant="primary" onClick={handleUpdateSubmit}>Guardar Cambios</Button>
                 </Modal.Footer>
+            </Modal>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+                <motion.div
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.7, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <Modal.Header closeButton className="bg-danger text-white">
+                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-center">
+                        <p className="mb-3">
+                            ¿Estás seguro de que deseas eliminar al usuario <strong>{profileToDelete?.employeeId}</strong>?
+                        </p>
+                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="danger" onClick={handleDelete}>
+                            Sí, Eliminar
+                        </Button>
+                    </Modal.Footer>
+                </motion.div>
             </Modal>
         </Container>
     );

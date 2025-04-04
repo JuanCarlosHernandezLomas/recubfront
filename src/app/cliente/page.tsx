@@ -12,7 +12,6 @@ import {
   Card,
   Modal,
 } from "react-bootstrap";
-import { useAuth } from "../context/useAuth";
 import { useTranslation } from 'react-i18next';
 
 interface Client {
@@ -31,7 +30,7 @@ interface Location {
 
 export default function ClientesPage() {
   const { t } = useTranslation();
-  const { token } = useAuth();
+  const token = localStorage.getItem('token');
   const [client, setClient] = useState({ name: "", locationId: 0 });
   const [clients, setClients] = useState<Client[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);

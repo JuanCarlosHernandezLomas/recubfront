@@ -21,7 +21,7 @@ const Dashboard = () => {
       title:  t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
-      path: '/Register',
+      path: '/Profile',
       animation: 'animate__fadeInLeft',
     },
     {
@@ -31,13 +31,7 @@ const Dashboard = () => {
       path: '/manage-data',
       animation: 'animate__fadeInRight',
     },
-    {
-      title: t('dashboard.viewProfiles'),
-      icon: <PeopleFill size={32} className="text-success" />,
-      description: t('dashboard.viewProfilesDesc'),
-      path: '/view-profiles',
-      animation: 'animate__fadeInLeft',
-    },
+
     {
       title: t('dashboard.reports'),
       icon: <ClipboardData size={32} className="text-info" />,
@@ -64,6 +58,13 @@ const Dashboard = () => {
       icon: <PersonSquare size={32} className="text-info" />,
       description: "creacion de projecto",
       path: '/project',
+      animation: 'animate__fadeInRight',
+    },
+    {
+      title: "proyect assignado",
+      icon: <PersonSquare size={32} className="text-info" />,
+      description: "creacion de projecto",
+      path: '/AssignmentsResource/ListAssignments',
       animation: 'animate__fadeInRight',
     },
   ];

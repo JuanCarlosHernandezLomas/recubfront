@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/app/context/useAuth";
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import {
   Container,
@@ -11,7 +12,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { Upload } from "react-bootstrap-icons";
-import{useAuth} from "../context/useAuth"
+
 import { useTranslation } from 'react-i18next';
 
 interface Option {

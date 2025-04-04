@@ -21,7 +21,7 @@ const Profile = () => {
       title:  t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
-      path: '/project/CreateProject',
+      path: '/Profile/Register',
       animation: 'animate__fadeInLeft',
     },
 
@@ -29,7 +29,7 @@ const Profile = () => {
       title: t('dashboard.viewProfiles'),
       icon: <PeopleFill size={32} className="text-success" />,
       description: t('dashboard.viewProfilesDesc'),
-      path: '/project/list-projects',
+      path: '/Profile/view-profiles',
       animation: 'animate__fadeInRight',
     },
 
