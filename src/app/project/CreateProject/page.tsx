@@ -15,6 +15,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 interface Option {
   id: number;
   name: string;
+  firstName: string;
 }
 
 interface ProjectForm {
@@ -50,7 +51,7 @@ export default function CreateProjectPage() {
   useEffect(() => {
     fetchOptions('/api/clients', setClients);
     fetchOptions('/api/skills', setSkills);
-    fetchOptions('/api/users', setUsers);
+    fetchOptions('/api/profile', setUsers);
   }, []);
 
   const fetchOptions = async (url: string, setter: (data: Option[]) => void) => {
@@ -191,7 +192,7 @@ export default function CreateProjectPage() {
               <Form.Select name="ownerId" value={formData.ownerId} onChange={handleChange} required>
                 <option value="">Selecciona usuario</option>
                 {users.map(u => (
-                  <option key={u.id} value={u.id}>{u.name}</option>
+                  <option key={u.id} value={u.id}>{u.firstName}</option>
                 ))}
               </Form.Select>
             </Form.Group>

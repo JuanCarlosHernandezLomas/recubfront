@@ -14,59 +14,25 @@ import Link from 'next/link';
 import 'animate.css';
 import { useTranslation } from 'react-i18next';
 
-const Dashboard = () => {
+const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
       title:  t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
-      path: '/Profile',
+      path: '/AssignmentsResource',
       animation: 'animate__fadeInLeft',
-    },
-    {
-      title: t('dashboard.manageData'),
-      icon: <GearFill size={32} className="text-warning" />,
-      description: t('dashboard.manageDataDesc'),
-      path: '/manage-data',
-      animation: 'animate__fadeInRight',
     },
 
     {
-      title: t('dashboard.reports'),
-      icon: <ClipboardData size={32} className="text-info" />,
-      description: t('dashboard.reportsDesc'),
-      path: '/reports',
+      title: t('dashboard.viewProfiles'),
+      icon: <PeopleFill size={32} className="text-success" />,
+      description: t('dashboard.viewProfilesDesc'),
+      path: '/AssignmentsResource/ListAssignments',
       animation: 'animate__fadeInRight',
     },
-    {
-      title: t('dashboard.locations'),
-      icon: <GeoAltFill size={32} className="text-info" />,
-      description: t('dashboard.locationsDesc'),
-      path: '/location',
-      animation: 'animate__fadeInLeft',
-    },
-    {
-      title: t('dashboard.clients'),
-      icon: <PersonSquare size={32} className="text-info" />,
-      description: t('dashboard.clientsDesc'),
-      path: '/cliente',
-      animation: 'animate__fadeInRight',
-    },
-    {
-      title: "proyect",
-      icon: <PersonSquare size={32} className="text-info" />,
-      description: "creacion de projecto",
-      path: '/project',
-      animation: 'animate__fadeInRight',
-    },
-    {
-      title: "proyect assignado",
-      icon: <PersonSquare size={32} className="text-info" />,
-      description: "creacion de projecto",
-      path: '/Assignments',
-      animation: 'animate__fadeInRight',
-    },
+
   ];
 
   return (
@@ -96,4 +62,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Profile;

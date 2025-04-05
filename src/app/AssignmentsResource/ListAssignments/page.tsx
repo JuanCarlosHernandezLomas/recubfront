@@ -102,7 +102,7 @@ export default function ListAssignmentsPage() {
         const confirm = window.confirm(`¿Eliminar asignación de ${assignment.profileName}?`);
         if (!confirm) return;
 
-        await fetch(`http://localhost:8090/api/assignments/${assignment.id}`, {
+        await fetch(`http://localhost:8090/api/resource-assignments/${assignment.id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         });
