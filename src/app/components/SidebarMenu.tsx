@@ -15,7 +15,7 @@ export const SidebarMenu = () => {
 
   return (
     <aside
-    className={`sidebar bg-white shadow-sm p-3 ${collapsed ? "collapsed" : "expanded"}`}
+    className={`sidebar bg-body text-body shadow-sm p-3 ${collapsed ? "collapsed" : "expanded"}`}
   >
     <nav className="nav flex-column">
       <Link

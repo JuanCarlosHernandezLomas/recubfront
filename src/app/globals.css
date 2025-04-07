@@ -143,3 +143,91 @@ td {
   white-space: normal;
   max-width: 200px;
 }
+/* ================================
+   MODO OSCURO Bootstrap 5.3+
+   ================================ */
+
+   body[data-bs-theme='dark'] {
+    background-color: #121212;
+    color: #f1f1f1;
+  }
+  
+  body[data-bs-theme='dark'] .main-card {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar {
+    background-color: #1a1a1a;
+    border-right: 1px solid #333;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a {
+    color: #ddd;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a:hover {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a.active {
+    background-color: #004080;
+    color: #ffffff !important;
+    border-left: 4px solid #0d6efd;
+  }
+  
+  body[data-bs-theme='dark'] .navbar {
+    background-color: #1f1f1f !important;
+    color: #f1f1f1;
+    border-bottom: 1px solid #333;
+  }
+  
+  body[data-bs-theme='dark'] .btn-outline-dark {
+    border-color: #ccc;
+    color: #ccc;
+  }
+  
+  body[data-bs-theme='dark'] .btn-outline-dark:hover {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  /* Bootstrap body helpers (recomendado usar estas clases) */
+  .bg-body {
+    background-color: var(--bs-body-bg) !important;
+  }
+  
+  .text-body {
+    color: var(--bs-body-color) !important;
+  }
+
+  body[data-bs-theme='dark'] .sidebar {
+    background-color: #1a1a1a;
+    border-right: 1px solid #333;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a {
+    color: #ccc;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a:hover {
+    background-color: #333;
+    color: #fff;
+  }
+  
+  body[data-bs-theme='dark'] .sidebar a.active {
+    background-color: #004080;
+    color: #ffffff !important;
+    border-left: 4px solid #0d6efd;
+  }
+  /* =====================================
+   Transición suave entre temas (BONUS)
+   ===================================== */
+body,
+.sidebar,
+.navbar,
+.main-card,
+.nav-link {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

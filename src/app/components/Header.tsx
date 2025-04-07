@@ -7,6 +7,7 @@ import { useAuth } from "../context/useAuth";
 import { useSidebarContext } from "../context/SidebarContext";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import ThemeToggleButton from "./ThemeToggleButton";
 
 export const Header = () => {
   const { token, logout } = useAuth();
@@ -19,10 +20,7 @@ export const Header = () => {
   };
 
   return (
-    <Navbar
-      bg="light"
-      className="shadow-sm px-3 justify-content-between"
-    >
+    <Navbar bg="light" className="shadow-sm px-3 justify-content-between">
       <div className="d-flex align-items-center">
         <Button
           variant="outline-primary"
@@ -38,6 +36,8 @@ export const Header = () => {
       </div>
 
       <div className="d-flex align-items-center gap-3">
+        {/* 🌓 Tema oscuro/claro */}
+        <ThemeToggleButton />
         {/* Selector de idioma */}
         <Dropdown as={ButtonGroup}>
           <Button variant="outline-dark">
