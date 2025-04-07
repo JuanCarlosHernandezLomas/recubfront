@@ -18,7 +18,7 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title:  t('dashboard.registerProfile'),
+      title:  "Crea un assignacion",
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
       path: '/AssignmentsResource',
@@ -26,7 +26,7 @@ const Profile = () => {
     },
 
     {
-      title: t('dashboard.viewProfiles'),
+      title: "ve todas las asignaciones",
       icon: <PeopleFill size={32} className="text-success" />,
       description: t('dashboard.viewProfilesDesc'),
       path: '/AssignmentsResource/ListAssignments',

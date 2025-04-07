@@ -13,6 +13,8 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
+import { Fade } from 'react-awesome-reveal';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Client {
   id: number;
@@ -36,7 +38,8 @@ export default function ClientesPage() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
   const [editClient, setEditClient] = useState<Client | null>(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -76,6 +79,7 @@ export default function ClientesPage() {
     e.preventDefault();
     setMessage("");
     setError("");
+  
     try {
       const res = await fetch("http://localhost:8090/api/clients", {
         method: "POST",
@@ -85,9 +89,19 @@ export default function ClientesPage() {
         },
         body: JSON.stringify({ ...client, active: true }),
       });
+  
       if (!res.ok) throw new Error("Error al agregar cliente");
+  
       const data = await res.json();
-      setClients((prev) => [...prev, data]);
+  
+      // Enriquecer con locationName para mostrar correctamente en tabla
+      const locationObj = locations.find(loc => loc.id === client.locationId);
+      const enrichedClient = {
+        ...data,
+        locationName: locationObj?.city|| "", // o loc.city
+      };
+  
+      setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
       setMessage("Cliente agregado correctamente");
     } catch {
@@ -95,17 +109,20 @@ export default function ClientesPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("¿Deseas eliminar este cliente?")) return;
-    try {
-      await fetch(`http://localhost:8090/api/clients/${id}`, {
+  const confirmDelete = (client: Client) => {
+    setClientToDelete(client);
+    setShowDeleteModal(true);
+};
+
+  const handleDelete = async () => {
+    if(!clientToDelete) return;
+      await fetch(`http://localhost:8090/api/clients/${clientToDelete.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      setClients((prev) => prev.filter((cli) => cli.id !== id));
-    } catch {
-      alert("Error al eliminar cliente.");
-    }
+
+      setShowDeleteModal(false);
+  
   };
 
   const handleEdit = (client: Client) => {
@@ -203,7 +220,7 @@ export default function ClientesPage() {
                 >
                   Editar
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => handleDelete(client.id)}>
+                <Button size="sm" variant="danger" onClick={() => confirmDelete(client)}>
                   Eliminar
                 </Button>
               </Card.Body>
@@ -240,7 +257,7 @@ export default function ClientesPage() {
                   >
                     {t("client.edit")}
                   </Button>
-                  <Button size="sm" variant="danger" onClick={() => handleDelete(cli.id)}>
+                  <Button size="sm" variant="danger" onClick={() => confirmDelete(cli)}>
                   {t("client.delete")}
                   </Button>
                 </td>
@@ -293,6 +310,33 @@ export default function ClientesPage() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+                <motion.div
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.7, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <Modal.Header closeButton className="bg-danger text-white">
+                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-center">
+                        <p className="mb-3">
+                            ¿Estás seguro de que deseas eliminar el cliente <strong>{clientToDelete?.name}</strong>?
+                        </p>
+                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="danger" onClick={handleDelete}>
+                            Sí, Eliminar
+                        </Button>
+                    </Modal.Footer>
+                </motion.div>
+            </Modal>
+
     </Container>
   );
 }

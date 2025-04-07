@@ -13,14 +13,21 @@ import {
 import Link from 'next/link';
 import 'animate.css';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/useAuth';
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const { roles } = useAuth();
+
+  const hasRole = (allowedRoles: string[], userRoles: string[]) => {
+    return allowedRoles.some(role => userRoles.includes(role));
+  };
   const modules = [
     {
       title:  t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
+      allowedRoles: ['ROLE_ADMINS', "ROLE_USERS"],
       path: '/Profile',
       animation: 'animate__fadeInLeft',
     },
@@ -28,6 +35,7 @@ const Dashboard = () => {
       title: t('dashboard.manageData'),
       icon: <GearFill size={32} className="text-warning" />,
       description: t('dashboard.manageDataDesc'),
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/manage-data',
       animation: 'animate__fadeInRight',
     },
@@ -36,6 +44,7 @@ const Dashboard = () => {
       title: t('dashboard.reports'),
       icon: <ClipboardData size={32} className="text-info" />,
       description: t('dashboard.reportsDesc'),
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/reports',
       animation: 'animate__fadeInRight',
     },
@@ -43,6 +52,7 @@ const Dashboard = () => {
       title: t('dashboard.locations'),
       icon: <GeoAltFill size={32} className="text-info" />,
       description: t('dashboard.locationsDesc'),
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/location',
       animation: 'animate__fadeInLeft',
     },
@@ -50,6 +60,7 @@ const Dashboard = () => {
       title: t('dashboard.clients'),
       icon: <PersonSquare size={32} className="text-info" />,
       description: t('dashboard.clientsDesc'),
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/cliente',
       animation: 'animate__fadeInRight',
     },
@@ -57,6 +68,7 @@ const Dashboard = () => {
       title: "proyect",
       icon: <PersonSquare size={32} className="text-info" />,
       description: "creacion de projecto",
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/project',
       animation: 'animate__fadeInRight',
     },
@@ -64,7 +76,16 @@ const Dashboard = () => {
       title: "proyect assignado",
       icon: <PersonSquare size={32} className="text-info" />,
       description: "creacion de projecto",
+      allowedRoles: ['ROLE_ADMINS','ROLE_USERS'],
       path: '/Assignments',
+      animation: 'animate__fadeInRight',
+    },
+    {
+      title: "equipos",
+      icon: <PersonSquare size={32} className="text-info" />,
+      description: "creacion de projecto",
+      allowedRoles: ['ROLE_ADMINS'],
+      path: '/Team',
       animation: 'animate__fadeInRight',
     },
   ];
@@ -73,8 +94,11 @@ const Dashboard = () => {
     <Container className="py-5">
       <h2 className="text-center mb-5 text-primary">{t('dashboard.welcome')}</h2>
       <Row className="g-4">
-        {modules.map((mod, idx) => (
+      {modules
+          .filter((mod) => hasRole(mod.allowedRoles, roles))
+          .map((mod, idx) => (
           <Col key={idx} md={6}>
+
             <Link href={mod.path} className="text-decoration-none">
               <Card
                 className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}

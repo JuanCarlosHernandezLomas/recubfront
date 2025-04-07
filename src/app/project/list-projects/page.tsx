@@ -22,6 +22,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface Option {
     id: number;
     name: string;
+    employeeId: string;
 }
 
 interface Project {
@@ -34,6 +35,7 @@ interface Project {
     wonerName: string;
     active: boolean;
     skillName: string[];
+    
 }
 
 interface FormValues {
@@ -80,7 +82,7 @@ export default function ListProjectsPage() {
         const [skillsRes, clientsRes, ownersRes, projectsRes] = await Promise.all([
             get('http://localhost:8090/api/skills'),
             get('http://localhost:8090/api/clients'),
-            get('http://localhost:8090/api/users'),
+            get('http://localhost:8090/api/profile'),
             get('http://localhost:8090/api/projects'),
         ]);
 
@@ -113,7 +115,9 @@ export default function ListProjectsPage() {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(payload),
+            
         });
+    
 
         if (response.ok) {
             fetchData();
@@ -133,7 +137,7 @@ export default function ListProjectsPage() {
             startDate: new Date(project.startDate),
             endDate: new Date(project.endDate),
             clientId: clients.find(c => c.name === project.clienteName)?.id.toString() || '',
-            ownerId: owners.find(o => o.name === project.wonerName)?.id.toString() || '',
+            ownerId: owners.find(o => o.employeeId === project.wonerName)?.id.toString() || '',
             skillIds: skills.filter(s => project.skillName.includes(s.name)).map(s => s.id.toString()),
             active: project.active,
         });
@@ -197,7 +201,7 @@ export default function ListProjectsPage() {
                     <Form.Select value={filterOwner} onChange={(e) => setFilterOwner(e.target.value)}>
                         <option value="">Todos</option>
                         {owners.map(o => (
-                            <option key={o.id} value={o.name}>{o.name}</option>
+                            <option key={o.id} value={o.name}>{o.employeeId}</option>
                         ))}
                     </Form.Select>
                 </Col>
@@ -397,7 +401,7 @@ export default function ListProjectsPage() {
                                     <Form.Label>Dueño</Form.Label>
                                     <Form.Select {...register('ownerId', { required: true })} isInvalid={!!errors.ownerId}>
                                         <option value="">Seleccione</option>
-                                        {owners.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
+                                        {owners.map(o => <option key={o.id} value={o.id}>{o.employeeId}</option>)}
                                     </Form.Select>
                                     <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
                                 </Form.Group>

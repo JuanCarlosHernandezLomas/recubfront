@@ -4,11 +4,7 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
-  GearFill,
   PeopleFill,
-  ClipboardData,
-  GeoAltFill,
-  PersonSquare,
 } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import 'animate.css';
@@ -18,20 +14,36 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title:  "Agrega un proyecto",
+      title:  "crea un equipo",
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
-      path: '/project/CreateProject',
+      path: '/Team/CreateTeam',
       animation: 'animate__fadeInLeft',
     },
 
     {
-      title: "ve todos los proyectos",
+      title: "ve todos los equipos",
       icon: <PeopleFill size={32} className="text-success" />,
       description: t('dashboard.viewProfilesDesc'),
-      path: '/project/list-projects',
+      path: '/Team/ListTeam',
       animation: 'animate__fadeInRight',
     },
+
+    {
+        title:  "asigna a un equipo",
+        icon: <PersonPlusFill size={32} className="text-primary" />,
+        description: t('dashboard.registerProfileDesc'),
+        path: '/Team/AssignMember',
+        animation: 'animate__fadeInLeft',
+      },
+
+      {
+        title: "ve todos los equipos asignados",
+        icon: <PeopleFill size={32} className="text-success" />,
+        description: t('dashboard.viewProfilesDesc'),
+        path: '/Team/ListTeamMembers',
+        animation: 'animate__fadeInRight',
+      },
 
   ];
 

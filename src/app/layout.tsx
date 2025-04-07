@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Providers } from './Providers';
 
+
 export const metadata: Metadata = {
   title: 'Registro de Perfil',
   description: 'Formulario para registrar perfiles profesionales',

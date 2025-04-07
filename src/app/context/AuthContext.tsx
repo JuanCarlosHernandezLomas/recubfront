@@ -21,8 +21,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedRoles = localStorage.getItem("roles");
+
     if (storedToken) setToken(storedToken);
-    if (storedRoles) setRoles(JSON.parse(storedRoles));
+
+    if (storedRoles) {
+      try {
+        const parsed = JSON.parse(storedRoles);
+        if (Array.isArray(parsed)) {
+          setRoles(parsed);
+        } else {
+          console.warn("Roles no es un array válido en localStorage. Se resetea.");
+          setRoles([]);
+        }
+      } catch (error) {
+        console.error("Error al parsear roles desde localStorage:", error);
+        setRoles([]);
+      }
+    }
   }, []);
 
   const login = (newToken: string, newRoles: string[]) => {

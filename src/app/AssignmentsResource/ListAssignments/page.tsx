@@ -8,6 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '@/app/context/useAuth';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface Assignment {
     id: number;
@@ -33,7 +34,8 @@ export default function ListAssignmentsPage() {
     const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
     const [showModal, setShowModal] = useState(false);
     const { register, handleSubmit, control, reset } = useForm<FormValues>();
-
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [assigmentToDelete, setAssigmentToDelete] = useState<Assignment | null>(null);
     const [filterProfile, setFilterProfile] = useState('');
     const [filterProject, setFilterProject] = useState('');
     const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
@@ -97,17 +99,22 @@ export default function ListAssignmentsPage() {
             setShowModal(false);
         }
     };
+    const confirmDelete = (assigment: Assignment) => {
+        setAssigmentToDelete(assigment);
+        setShowDeleteModal(true);
+    };
 
-    const handleDelete = async (assignment: Assignment) => {
-        const confirm = window.confirm(`¿Eliminar asignación de ${assignment.profileName}?`);
-        if (!confirm) return;
 
-        await fetch(`http://localhost:8090/api/resource-assignments/${assignment.id}`, {
+    const handleDelete = async () => {
+        if (!assigmentToDelete) return;
+
+        await fetch(`http://localhost:8090/api/resource-assignments/${assigmentToDelete.id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
         });
 
         fetchAssignments();
+        setShowDeleteModal(false);
     };
 
     return (
@@ -152,30 +159,30 @@ export default function ListAssignmentsPage() {
             </Row>
 
             <div className="d-block d-md-none">
-  <Row xs={1} className="g-3">
-    {filtered.map(a => (
-      <Col key={a.id}>
-        <div className="border rounded shadow-sm p-3 bg-light">
-          <h5 className="text-primary mb-2">{a.profileName}</h5>
-          <p className="mb-1"><strong>Proyecto:</strong> {a.projectName}</p>
-          <p className="mb-1"><strong>Estado:</strong> {a.status}</p>
-          <p className="mb-1"><strong>Inicio:</strong> {a.startDate}</p>
-          <p className="mb-1"><strong>Fin:</strong> {a.endDate}</p>
-          <p className="mb-1">
-            <strong>Activo:</strong>{" "}
-            <Badge bg={a.active ? "success" : "danger"}>
-              {a.active ? "Sí" : "No"}
-            </Badge>
-          </p>
-          <div className="d-flex justify-content-end gap-2 mt-2">
-            <Button size="sm" variant="warning" onClick={() => handleEdit(a)}>Editar</Button>
-            <Button size="sm" variant="danger" onClick={() => handleDelete(a)}>Eliminar</Button>
-          </div>
-        </div>
-      </Col>
-    ))}
-  </Row>
-</div>
+                <Row xs={1} className="g-3">
+                    {filtered.map(a => (
+                        <Col key={a.id}>
+                            <div className="border rounded shadow-sm p-3 bg-light">
+                                <h5 className="text-primary mb-2">{a.profileName}</h5>
+                                <p className="mb-1"><strong>Proyecto:</strong> {a.projectName}</p>
+                                <p className="mb-1"><strong>Estado:</strong> {a.status}</p>
+                                <p className="mb-1"><strong>Inicio:</strong> {a.startDate}</p>
+                                <p className="mb-1"><strong>Fin:</strong> {a.endDate}</p>
+                                <p className="mb-1">
+                                    <strong>Activo:</strong>{" "}
+                                    <Badge bg={a.active ? "success" : "danger"}>
+                                        {a.active ? "Sí" : "No"}
+                                    </Badge>
+                                </p>
+                                <div className="d-flex justify-content-end gap-2 mt-2">
+                                    <Button size="sm" variant="warning" onClick={() => handleEdit(a)}>Editar</Button>
+                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>Eliminar</Button>
+                                </div>
+                            </div>
+                        </Col>
+                    ))}
+                </Row>
+            </div>
 
 
             <div className="d-none d-md-block">
@@ -206,7 +213,7 @@ export default function ListAssignmentsPage() {
                                 </td>
                                 <td>
                                     <Button size="sm" variant="warning" onClick={() => handleEdit(a)} className="me-2">Editar</Button>
-                                    <Button size="sm" variant="danger" onClick={() => handleDelete(a)}>Eliminar</Button>
+                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>Eliminar</Button>
                                 </td>
                             </tr>
                         ))}
@@ -255,6 +262,33 @@ export default function ListAssignmentsPage() {
                     </Form>
                 </Modal.Body>
             </Modal>
+                        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+                            <motion.div
+                                initial={{ scale: 0.7, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.7, opacity: 0 }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                <Modal.Header closeButton className="bg-danger text-white">
+                                    <Modal.Title>⚠️ Confirmación</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body className="text-center">
+                                    <p className="mb-3">
+                                        ¿Estás seguro de que deseas eliminar la asignacion de  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
+                                        al proyecto  <strong>{assigmentToDelete?.projectName}</strong>?
+                                    </p>
+                                    <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                                        Cancelar
+                                    </Button>
+                                    <Button variant="danger" onClick={handleDelete}>
+                                        Sí, Eliminar
+                                    </Button>
+                                </Modal.Footer>
+                            </motion.div>
+                        </Modal>
         </Container>
     );
 }
