@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
+import { useTranslation } from 'react-i18next';
+
 
 interface LocationForm {
   country: string;
@@ -11,6 +13,7 @@ interface LocationForm {
 }
 
 export default function AddLocationPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<LocationForm>({
     country: "",
     state: "",
@@ -54,14 +57,14 @@ export default function AddLocationPage() {
   return (
     <Container className="py-5">
       <Card className="p-4 shadow-sm">
-        <h4 className="text-primary mb-4 text-center">Agregar Nueva Ubicación</h4>
+        <h4 className="text-primary mb-4 text-center">{t('location.title')}</h4>
 
         {message && <Alert variant="success">{message}</Alert>}
         {error && <Alert variant="danger">{error}</Alert>}
 
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>País</Form.Label>
+            <Form.Label>{t('location.country')}</Form.Label>
             <Form.Control
               type="text"
               name="country"
@@ -72,7 +75,7 @@ export default function AddLocationPage() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Estado</Form.Label>
+            <Form.Label>{t('location.state')}</Form.Label>
             <Form.Control
               type="text"
               name="state"
@@ -83,7 +86,7 @@ export default function AddLocationPage() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Ciudad</Form.Label>
+            <Form.Label>{t('location.city')}</Form.Label>
             <Form.Control
               type="text"
               name="city"
@@ -94,7 +97,7 @@ export default function AddLocationPage() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Nombre de Ubicación</Form.Label>
+            <Form.Label>{t('location.locationName')}</Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -106,7 +109,7 @@ export default function AddLocationPage() {
 
           <div className="d-grid">
             <Button type="submit" variant="primary">
-              Agregar Ubicación
+              {t('location.button')}
             </Button>
           </div>
         </Form>

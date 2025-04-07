@@ -27,7 +27,7 @@ export const SidebarMenu = () => {
       </Link>
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/Register') ? 'active' : ''}`}
-        href="/Register"
+        href="/Profile"
       >
         <People className="me-2" />
         {!collapsed && "Registro"}

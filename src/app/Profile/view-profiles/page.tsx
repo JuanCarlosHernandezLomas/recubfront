@@ -225,21 +225,21 @@ export default function ViewProfilesPage() {
             <Row className="mb-4">
                 <Col md={2}>
                     <Form.Control
-                        placeholder="ID Empleado"
+                        placeholder={t('list.FilterId')}
                         name="employeeId"
                         onChange={handleFilterChange}
                     />
                 </Col>
                 <Col md={2}>
                     <Form.Control
-                        placeholder="Nombre"
+                        placeholder={t('list.FilterName')}
                         name="name"
                         onChange={handleFilterChange}
                     />
                 </Col>
                 <Col md={2}>
                     <Form.Select name="availability" onChange={handleFilterChange}>
-                        <option value="">Disponibilidad</option>
+                        <option value="">{t('list.FilterAvailability')}</option>
                         {availabilityOptions.map(opt => (
                             <option key={opt.id} value={opt.name}>{opt.name}</option>
                         ))}
@@ -247,7 +247,7 @@ export default function ViewProfilesPage() {
                 </Col>
                 <Col md={2}>
                     <Form.Select name="location" onChange={handleFilterChange}>
-                        <option value="">Ubicación</option>
+                        <option value="">{t('list.FilterLocation')}</option>
                         {locationOptions.map(opt => (
                             <option key={opt.id} value={opt.city}>{opt.city}</option>
                         ))}
@@ -255,7 +255,7 @@ export default function ViewProfilesPage() {
                 </Col>
                 <Col md={2}>
                     <Form.Select name="skill" onChange={handleFilterChange}>
-                        <option value="">Habilidad</option>
+                        <option value="">{t('list.FilterSkill')}</option>
                         {skillOptions.map(opt => (
                             <option key={opt.id} value={opt.name}>{opt.name}</option>
                         ))}
@@ -404,24 +404,24 @@ export default function ViewProfilesPage() {
                 </>
             )}
             <Modal show={showModal} onHide={handleCloseModal} centered  >
-                <Modal.Header closeButton><Modal.Title>Editar Perfil</Modal.Title></Modal.Header>
+                <Modal.Header closeButton><Modal.Title>{t("list.EditProfile")}</Modal.Title></Modal.Header>
                 <Modal.Body >
                     {selectedProfile && (
                         <Form>
                             <Form.Group className="mb-3">
-                                <Form.Label>Nombre</Form.Label>
+                                <Form.Label>{t("profile.Name")}</Form.Label>
                                 <Form.Control name="firstName" value={selectedProfile.firstName} onChange={handleFormChange} />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Apellido</Form.Label>
+                                <Form.Label>{t("profile.LastName")}</Form.Label>
                                 <Form.Control name="lastName" value={selectedProfile.lastName} onChange={handleFormChange} />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Puesto</Form.Label>
+                                <Form.Label>{t("profile.Position")}</Form.Label>
                                 <Form.Control name="jobTitle" value={selectedProfile.jobTitle} onChange={handleFormChange} />
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Ubicación</Form.Label>
+                                <Form.Label>{t("profile.location")}</Form.Label>
                                 <Form.Select name="locationName" value={selectedProfile.locationName} onChange={handleFormChange}>
                                     {locations.map(loc => (
                                         <option key={loc.id} value={loc.name}>{loc.name}</option>
@@ -429,7 +429,7 @@ export default function ViewProfilesPage() {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Experiencia</Form.Label>
+                                <Form.Label>{t("profile.ExperienceLevel")}</Form.Label>
                                 <Form.Select name="experience" value={selectedProfile.experience} onChange={handleFormChange}>
                                     {experiences.map(exp => (
                                         <option key={exp.id} value={exp.name}>{exp.name}</option>
@@ -437,7 +437,7 @@ export default function ViewProfilesPage() {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Disponibilidad</Form.Label>
+                                <Form.Label>{t("profile.availability")}</Form.Label>
                                 <Form.Select name="statusName" value={selectedProfile.statusName} onChange={handleFormChange}>
                                     {statuses.map(stat => (
                                         <option key={stat.id} value={stat.name}>{stat.name}</option>
@@ -445,7 +445,7 @@ export default function ViewProfilesPage() {
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
-                                <Form.Label>Skills</Form.Label>
+                                <Form.Label>{t("profile.Skills")}</Form.Label>
                                 <Form.Select multiple name="skillName" value={selectedProfile.skillName} onChange={handleFormChange}>
                                     {skills.map(skill => (
                                         <option key={skill.id} value={skill.name}>{skill.name}</option>
@@ -468,20 +468,20 @@ export default function ViewProfilesPage() {
                     transition={{ duration: 0.4 }}
                 >
                     <Modal.Header closeButton className="bg-danger text-white">
-                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                        <Modal.Title>{t("warningmessage.title")}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                            ¿Estás seguro de que deseas eliminar al usuario <strong>{profileToDelete?.employeeId}</strong>?
+                        {t("warningmessage.user")} <strong>{profileToDelete?.employeeId}</strong>?
                         </p>
-                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                        <p className="text-muted small">{t("warningmessage.caution")}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                            Cancelar
+                        {t("warningmessage.cancel")}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                            Sí, Eliminar
+                        {t("warningmessage.accept")}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

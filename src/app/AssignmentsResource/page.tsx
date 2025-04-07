@@ -8,6 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface Option {
   id: number;
@@ -25,6 +26,7 @@ interface AssignmentForm {
 }
 
 export default function AssignProjectPage() {
+  const { t } = useTranslation();
   const token = localStorage.getItem('token');
   const [profiles, setProfiles] = useState<Option[]>([]);
   const [projects, setProjects] = useState<Option[]>([]);
@@ -92,7 +94,7 @@ export default function AssignProjectPage() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
-        Asignar Perfil a Proyecto
+       {t('AssignProfiletoProject.title')}
       </motion.h2>
 
       <AnimatePresence>
@@ -120,9 +122,9 @@ export default function AssignProjectPage() {
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Perfil</Form.Label>
+                  <Form.Label>{t('AssignProfiletoProject.profile')}</Form.Label>
                   <Form.Select {...register('profileId', { required: true })} isInvalid={!!errors.profileId}>
-                    <option value="">Seleccione</option>
+                    <option value="">{t('AssignProfiletoProject.selectProfile')}</option>
                     {profiles.map(p => (
                       <option key={p.id} value={p.id}>{p.firstName}</option>
                     ))}
@@ -132,9 +134,9 @@ export default function AssignProjectPage() {
               </Col>
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Proyecto</Form.Label>
+                  <Form.Label>{t('AssignProfiletoProject.project')}</Form.Label>
                   <Form.Select {...register('projectId', { required: true })} isInvalid={!!errors.projectId}>
-                    <option value="">Seleccione</option>
+                    <option value="">{t('AssignProfiletoProject.selectProject')}</option>
                     {projects.map(p => (
                       <option key={p.id} value={p.id}>{p.name}</option>
                     ))}
@@ -147,13 +149,13 @@ export default function AssignProjectPage() {
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Fecha Inicio</Form.Label>
+                  <Form.Label>{t('AssignProfiletoProject.starDate')}</Form.Label>
                   <Controller
                     name="startDate"
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                      <DatePicker className="form-control" selected={field.value} onChange={field.onChange} placeholderText="Seleccione fecha" />
+                      <DatePicker className="form-control" selected={field.value} onChange={field.onChange} placeholderText={t('AssignProfiletoProject.selecDate')} />
                     )}
                   />
                   {errors.startDate && <div className="text-danger">Campo requerido</div>}
@@ -161,7 +163,7 @@ export default function AssignProjectPage() {
               </Col>
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Fecha Fin</Form.Label>
+                  <Form.Label>{t('AssignProfiletoProject.EndDate')}</Form.Label>
                   <Controller
                     name="endDate"
                     control={control}
@@ -177,7 +179,7 @@ export default function AssignProjectPage() {
                         className="form-control"
                         selected={field.value}
                         onChange={field.onChange}
-                        placeholderText="Seleccione fecha"
+                        placeholderText={t('AssignProfiletoProject.selecDateEnd')}
                         minDate={startDate || undefined}
                       />
                     )}
@@ -192,9 +194,9 @@ export default function AssignProjectPage() {
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label>Estado</Form.Label>
+                  <Form.Label>{t('AssignProfiletoProject.status')}</Form.Label>
                   <Form.Select {...register('status', { required: true })} isInvalid={!!errors.status}>
-                    <option value="">Seleccione</option>
+                    <option value="">{t('AssignProfiletoProject.selecStatus')}</option>
                     <option value="APPROVED">Aprobado</option>
                     <option value="FINISHED">Finalizado</option>
                     <option value="PENDING">En espera</option>
@@ -209,7 +211,7 @@ export default function AssignProjectPage() {
 
             <div className="text-end">
               <Button type="submit" variant="primary" className="px-4">
-                Asignar Proyecto
+              {t('AssignProfiletoProject.button')}
               </Button>
             </div>
           </Form>

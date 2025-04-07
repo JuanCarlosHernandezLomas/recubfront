@@ -171,7 +171,7 @@ export default function ClientesPage() {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Control
-              placeholder="Nombre del Cliente"
+              placeholder={t("client.filterCustomer")}
               name="name"
               value={client.name}
               onChange={handleChange}
@@ -185,7 +185,7 @@ export default function ClientesPage() {
               onChange={handleChange}
               required
             >
-              <option value="">Seleccione ubicación</option>
+              <option value="">{t("client.filterLocation")}</option>
               {locations.map((loc) => (
                 <option key={loc.id} value={loc.id}>
                   {loc.city}

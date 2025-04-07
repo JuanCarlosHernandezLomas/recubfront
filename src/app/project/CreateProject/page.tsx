@@ -11,6 +11,8 @@ import {
 } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTranslation } from 'react-i18next';
+
 
 interface Option {
   id: number;
@@ -30,6 +32,7 @@ interface ProjectForm {
 }
 
 export default function CreateProjectPage() {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<ProjectForm>({
     name: '',
     description: '',
@@ -120,7 +123,7 @@ export default function CreateProjectPage() {
 
   return (
     <Container className="py-5">
-      <h2 className="text-primary mb-4 text-center">Crear Proyecto</h2>
+      <h2 className="text-primary mb-4 text-center">{t('Project.title')}</h2>
 
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
@@ -129,15 +132,15 @@ export default function CreateProjectPage() {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Nombre</Form.Label>
+              <Form.Label>{t('Project.name')}</Form.Label>
               <Form.Control name="name" value={formData.name} onChange={handleChange} required />
             </Form.Group>
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Cliente</Form.Label>
+              <Form.Label>{t('Project.client')}</Form.Label>
               <Form.Select name="clientId" value={formData.clientId} onChange={handleChange} required>
-                <option value="">Selecciona cliente</option>
+                <option value="">{t('Project.clientSelect')}</option>
                 {clients.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
                 ))}
@@ -147,7 +150,7 @@ export default function CreateProjectPage() {
         </Row>
 
         <Form.Group className="mb-3">
-          <Form.Label>Descripción</Form.Label>
+          <Form.Label>{t('Project.description')}</Form.Label>
           <Form.Control
             name="description"
             as="textarea"
@@ -160,7 +163,7 @@ export default function CreateProjectPage() {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Fecha de Inicio</Form.Label>
+              <Form.Label>{t('Project.startDate')}</Form.Label>
               <DatePicker
                 selected={formData.startDate}
                 onChange={(date) => setFormData(prev => ({ ...prev, startDate: date }))}
@@ -172,7 +175,7 @@ export default function CreateProjectPage() {
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Fecha de Fin</Form.Label>
+              <Form.Label>{t('Project.EndDate')}</Form.Label>
               <DatePicker
                 selected={formData.endDate}
                 onChange={(date) => setFormData(prev => ({ ...prev, endDate: date }))}
@@ -188,9 +191,9 @@ export default function CreateProjectPage() {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Propietario</Form.Label>
+              <Form.Label>{t('Project.owner')}</Form.Label>
               <Form.Select name="ownerId" value={formData.ownerId} onChange={handleChange} required>
-                <option value="">Selecciona usuario</option>
+                <option value="">{t('Project.ownerSelect')}</option>
                 {users.map(u => (
                   <option key={u.id} value={u.id}>{u.firstName}</option>
                 ))}
@@ -199,7 +202,7 @@ export default function CreateProjectPage() {
           </Col>
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Habilidades requeridas</Form.Label>
+              <Form.Label>{t('Project.skill')}</Form.Label>
               <Form.Select
                 name="skillIds"
                 multiple
@@ -223,7 +226,7 @@ export default function CreateProjectPage() {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">Crear Proyecto</Button>
+        <Button variant="primary" type="submit">{t('Project.button')}</Button>
       </Form>
     </Container>
   );

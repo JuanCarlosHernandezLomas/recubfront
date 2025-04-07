@@ -11,12 +11,12 @@ import {
     Modal,
 } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-
 import { useForm, Controller } from 'react-hook-form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Fade } from 'react-awesome-reveal';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 
 interface Option {
@@ -50,6 +50,7 @@ interface FormValues {
 }
 
 export default function ListProjectsPage() {
+     const { t } = useTranslation();
     const token = localStorage.getItem('token');
     const [projects, setProjects] = useState<Project[]>([]);
     const [skills, setSkills] = useState<Option[]>([]);
@@ -163,7 +164,7 @@ export default function ListProjectsPage() {
 
     return (
         <Container className="py-4">
-            <h2 className="text-primary text-center mb-4">Listado de Proyectos</h2>
+            <h2 className="text-primary text-center mb-4">{t('ListProject.title')}</h2>
             <AnimatePresence>
                 {showSuccessAnimation && (
                     <motion.div
@@ -180,35 +181,35 @@ export default function ListProjectsPage() {
 
             <Row className="mb-4">
                 <Col md={2}>
-                    <Form.Label>Nombre</Form.Label>
+                    <Form.Label>{t('ListProject.name')}</Form.Label>
                     <Form.Control
                         value={filterName}
                         onChange={(e) => setFilterName(e.target.value)}
-                        placeholder="Buscar por nombre"
+                        placeholder={t('ListProject.filterName')}
                     />
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Cliente</Form.Label>
+                    <Form.Label>{t('ListProject.client')}</Form.Label>
                     <Form.Select value={filterClient} onChange={(e) => setFilterClient(e.target.value)}>
-                        <option value="">Todos</option>
+                        <option value="">{t('ListProject.filter')}</option>
                         {clients.map(c => (
                             <option key={c.id} value={c.name}>{c.name}</option>
                         ))}
                     </Form.Select>
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Dueño</Form.Label>
+                    <Form.Label>{t('ListProject.owner')}</Form.Label>
                     <Form.Select value={filterOwner} onChange={(e) => setFilterOwner(e.target.value)}>
-                        <option value="">Todos</option>
+                        <option value="">{t('ListProject.filter')}</option>
                         {owners.map(o => (
                             <option key={o.id} value={o.name}>{o.employeeId}</option>
                         ))}
                     </Form.Select>
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Skill</Form.Label>
+                    <Form.Label>{t('ListProject.skill')}</Form.Label>
                     <Form.Select value={filterSkill} onChange={(e) => setFilterSkill(e.target.value)}>
-                        <option value="">Todos</option>
+                        <option value="">{t('ListProject.filter')}</option>
                         {skills.map(s => (
                             <option key={s.id} value={s.name}>{s.name}</option>
                         ))}
@@ -217,21 +218,21 @@ export default function ListProjectsPage() {
 
 
                 <Col md={2}>
-                    <Form.Label>Desde</Form.Label>
+                    <Form.Label>{t('ListProject.starDate')}</Form.Label>
                     <DatePicker
                         selected={filterStartDate}
                         onChange={(date) => setFilterStartDate(date)}
                         className="form-control"
-                        placeholderText="Fecha inicio"
+                        placeholderText={t('ListProject.starDate')}
                     />
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Hasta</Form.Label>
+                    <Form.Label>{t('ListProject.EndDate')}</Form.Label>
                     <DatePicker
                         selected={filterEndDate}
                         onChange={(date) => setFilterEndDate(date)}
                         className="form-control"
-                        placeholderText="Fecha fin"
+                        placeholderText={t('ListProject.EndDate')}
                     />
                 </Col>
             </Row>
@@ -265,7 +266,7 @@ export default function ListProjectsPage() {
                                         {proj.active ? 'Sí' : 'No'}
                                     </Badge>
                                 </p>
-                                <p className="mb-2"><strong>Skills:</strong> {proj.skillName.join(', ')}</p>
+                                <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
                                 <div className="d-flex justify-content-end">
                                     <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
                                         Editar
@@ -284,14 +285,14 @@ export default function ListProjectsPage() {
                 <Table striped bordered hover responsive className="shadow-sm">
                     <thead className="text-center">
                         <tr>
-                            <th>Nombre</th>
-                            <th>Cliente</th>
-                            <th>Dueño</th>
-                            <th>Inicio</th>
-                            <th>Fin</th>
-                            <th>Activo</th>
-                            <th>Skills</th>
-                            <th>Acciones</th>
+                            <th>{t('ListProject.name')}</th>
+                            <th>{t('ListProject.client')}</th>
+                            <th>{t('ListProject.owner')}</th>
+                            <th>{t('ListProject.starDate')}</th>
+                            <th>{t('ListProject.EndDate')}</th>
+                            <th>{t('ListProject.status')}</th>
+                            <th>{t('ListProject.skill')}</th>
+                            <th>{t('ListProject.Action')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -342,7 +343,7 @@ export default function ListProjectsPage() {
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Nombre</Form.Label>
+                                    <Form.Label>{t('ListProject.name')}</Form.Label>
                                     <Form.Control {...register('name', { required: true })} isInvalid={!!errors.name} />
                                     <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
                                 </Form.Group>
@@ -358,7 +359,7 @@ export default function ListProjectsPage() {
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Fecha Inicio</Form.Label>
+                                    <Form.Label>{t('ListProject.starDate')}</Form.Label>
                                     <Controller
                                         control={control}
                                         name="startDate"
@@ -372,7 +373,7 @@ export default function ListProjectsPage() {
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Fecha Fin</Form.Label>
+                                    <Form.Label>{t('ListProject.EndDate')}</Form.Label>
                                     <Controller
                                         control={control}
                                         name="endDate"
@@ -388,7 +389,7 @@ export default function ListProjectsPage() {
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Cliente</Form.Label>
+                                    <Form.Label>{t('ListProject.client')}</Form.Label>
                                     <Form.Select {...register('clientId', { required: true })} isInvalid={!!errors.clientId}>
                                         <option value="">Seleccione</option>
                                         {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -398,7 +399,7 @@ export default function ListProjectsPage() {
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Dueño</Form.Label>
+                                    <Form.Label>{t('ListProject.owner')}</Form.Label>
                                     <Form.Select {...register('ownerId', { required: true })} isInvalid={!!errors.ownerId}>
                                         <option value="">Seleccione</option>
                                         {owners.map(o => <option key={o.id} value={o.id}>{o.employeeId}</option>)}
@@ -410,7 +411,7 @@ export default function ListProjectsPage() {
                         <Row>
                             <Col md={12}>
                                 <Form.Group className="mb-3">
-                                    <Form.Label>Skills</Form.Label>
+                                    <Form.Label>{t('ListProject.skill')}</Form.Label>
                                     <Form.Select multiple {...register('skillIds', { required: true })} isInvalid={!!errors.skillIds}>
                                         {skills.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                                     </Form.Select>

@@ -12,7 +12,13 @@
     "locations": "View Locations",
     "locationsDesc": "Add new locations.",
     "clients": "Clients",
-    "clientsDesc": "Add new clients."
+    "clientsDesc": "Add new clients.",
+    "Project": "Project",
+    "ProjectDesc": "Create a project",
+    "ProjectAssigned": "Projects with Assignment",
+    "ProjectAssignedDesc": "Assign users to projects",
+    "Team": "Teams",
+    "TeamDesc": "Create Teams"
   },
 
   "profile": {
@@ -26,7 +32,13 @@
     "ExperienceLevel": "Experience Level",
     "location": "Location",
     "UserId": "User ID",
-    "Skills": "Skills"
+    "Skills": "Skills",
+    "SelectAvailability": "Select availability",
+    "SelectExperienceLevel": "Select an experience level",
+    "SelectLocation": "Select a location",
+    "Register": "Register",
+    "ProfilSucces": "Profile created successfully!",
+    "ProfilError": "Error while registering profile."
   },
   "manager": {
     "title": "Manage System Data",
@@ -51,17 +63,90 @@
     "delete": "Delete",
     "Active": "Active",
     "Inactive": "Inactive",
-    "download": "Download"
+    "download": "Download",
+    "FilterId": "ID employee",
+    "FilterName": "Name",
+    "FilterAvailability": "Availability",
+    "FilterLocation": "Location",
+    "FilterSkill": "Skill",
+    "EditProfile": "Edit Profile"
   },
   "client": {
     "title": "Customer Management",
-    "Id":"ID",
+    "Id": "ID",
     "name": "Name",
     "location": "Location",
     "status": "Status",
     "action": "Actions",
     "edit": "Edit",
     "delete": "Delete",
-    "add": "ADD"
+    "add": "ADD",
+    "filterCustomer": "Customer Name",
+    "filterLocation": "Select a location"
+  },
+
+  "report": {
+    "title": "Generate employee report",
+    "employee": "Employee ID",
+    "name": "Name",
+    "action": "Action",
+    "button": "Generate PDF"
+  },
+
+  "warningmessage": {
+    "title": "⚠️ Confirmation",
+    "caution": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "accept": "Yes, Delete",
+    "user": "Are you sure you want to delete the user"
+  },
+
+  "location": {
+    "title": "Add new location",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "locationName": "Location name",
+    "button": "Add location"
+  },
+  "Project": {
+    "title": "Create Project",
+    "name": "Name",
+    "client": "Client",
+    "clientSelect": "Select Client",
+    "description": "description",
+    "starDate": "Start Date",
+    "EndDate": "End Date",
+    "owner": "Owner",
+    "ownerSelect": "Select User",
+    "skill": "Required Skills",
+    "button": "Create Project"
+  },
+  "ListProject": {
+    "title": "List of Project",
+    "name": "Name",
+    "client": "Client",
+    "owner": "Owner",
+    "skill": "Skill",
+    "starDate": "Start Date",
+    "EndDate": "End Date",
+    "status": "Status",
+    "Action": "Action",
+    "filterName": "Search for Name",
+    "filter": "All"
+  },
+  "AssignProfiletoProject": {
+    "title": "Assign Profile to Project",
+    "profile": "Profile",
+    "selectProfile": "Select a Profile",
+    "project": "Project",
+    "selectProject": "Select a Project",
+    "starDate": "Start Date",
+    "selecDate": "Select the Start Date",
+    "EndDate": "End Date",
+    "selecDateEnd": "Select the End Date",
+    "status": "Status",
+    "selecStatus": "Select the project status",
+    "button": "Assign Project"
   }
 }

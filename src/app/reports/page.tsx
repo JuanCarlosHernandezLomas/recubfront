@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Container, Table, Button, Spinner, Alert } from "react-bootstrap";
 import jsPDF from "jspdf";
 import { useAuth } from "../context/useAuth";
+import { useTranslation } from 'react-i18next';
+
 import QRCode from "qrcode";
 
 interface ProfileSummary {
@@ -15,6 +17,7 @@ interface ProfileSummary {
 }
 
 export default function GenerateReportPage() {
+    const { t } = useTranslation();
     const { token } = useAuth();
     const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
     const [loading, setLoading] = useState(true);
@@ -151,16 +154,16 @@ export default function GenerateReportPage() {
     };
     return (
         <Container className="py-4">
-            <h3 className="mb-4 text-primary">Generar Reporte Individual</h3>
+            <h3 className="mb-4 text-primary">{t('report.title')}</h3>
             {loading && <Spinner animation="border" />}
             {error && <Alert variant="danger">{error}</Alert>}
             {!loading && !error && (
                 <Table bordered responsive hover>
                     <thead>
                         <tr>
-                            <th>Empleado ID</th>
-                            <th>Nombre</th>
-                            <th>Acción</th>
+                            <th>{t('report.employee')}</th>
+                            <th>{t('report.name')}</th>
+                            <th>{t('report.action')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -170,7 +173,7 @@ export default function GenerateReportPage() {
                                 <td>{p.firstName} {p.lastName}</td>
                                 <td>
                                     <Button variant="info" size="sm" onClick={() => generatePdf(p.id)}>
-                                        Generar PDF
+                                    {t('report.button')}
                                     </Button>
                                 </td>
                             </tr>

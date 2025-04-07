@@ -260,7 +260,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
               >
-                <option value="">--Selecciona--</option>
+                <option value="">--{t('profile.SelectAvailability')}--</option>
                 {availabilityStatuses.map((a) => (
                   <option key={a.id} value={a.id}>
                     {a.name}
@@ -279,7 +279,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
               >
-                <option value="">--Selecciona--</option>
+                <option value="">--{t('profile.SelectExperienceLevel')}--</option>
                 {experienceLevels.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.name}
@@ -298,7 +298,7 @@ export default function RegisterPage() {
                 onChange={handleChange}
                 required
               >
-                <option value="">--Selecciona--</option>
+                <option value="">--{t('profile.SelectLocation')}--</option>
                 {locations.map((l) => (
                   <option key={l.id} value={l.id}>
                     {l.name}
@@ -339,7 +339,7 @@ export default function RegisterPage() {
 
         <div className="d-grid">
           <Button variant="primary" type="submit" disabled={loading}>
-            {loading ? <Spinner size="sm" animation="border" /> : "Registrar"}
+            {loading ? <Spinner size="sm" animation="border" /> : "Register"}
           </Button>
         </div>
       </Form>

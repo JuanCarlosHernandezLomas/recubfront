@@ -1,71 +1,154 @@
 {
-    "dashboard": {
-      "welcome": "Bienvenido a ResourceHub",
-      "registerProfile": "Registrar Perfil",
-      "registerProfileDesc": "Crea un nuevo perfil de recurso y carga CVs.",
-      "manageData": "Administrar Datos",
-      "manageDataDesc": "Agrega nuevas habilidades, niveles de experiencia o disponibilidad.",
-      "viewProfiles": "Ver Perfiles",
-      "viewProfilesDesc": "Consulta y gestiona los perfiles existentes.",
-      "reports": "Reportes",
-      "reportsDesc": "Genera reportes de asignaciones y disponibilidad.",
-      "locations": "Ver Locaciones",
-      "locationsDesc": "Agrega nuevas locaciones.",
-      "clients": "Clientes",
-      "clientsDesc": "Agrega nuevos clientes."
-    },
+  "dashboard": {
+    "welcome": "Bienvenido a ResourceHub",
+    "registerProfile": "Registrar Perfil",
+    "registerProfileDesc": "Crea un nuevo perfil de recurso y carga CVs.",
+    "manageData": "Administrar Datos",
+    "manageDataDesc": "Agrega nuevas habilidades, niveles de experiencia o disponibilidad.",
+    "viewProfiles": "Ver Perfiles",
+    "viewProfilesDesc": "Consulta y gestiona los perfiles existentes.",
+    "reports": "Reportes",
+    "reportsDesc": "Genera reportes de asignaciones y disponibilidad.",
+    "locations": "Ver Locaciones",
+    "locationsDesc": "Agrega nuevas locaciones.",
+    "clients": "Clientes",
+    "clientsDesc": "Agrega nuevos clientes.",
+    "Project": "Proyecto",
+    "ProjectDesc": "Creacion de un proyecto",
+    "ProjectAssigned": "Proyectos con Asignacion",
+    "ProjectAssignedDesc": "Asigna ususarios a proyectos",
+    "Team": "Equipos",
+    "TeamDesc": "Creacion de Equipos"
+  },
 
-    "profile":{
-      "title": "Registro de Perfil",
-      "Id":"ID del empleado",
-      "Name":"Nombre",
-      "LastName":"Apellido",
-      "Position":"Puesto",
-      "CV":"CV",
-      "availability":"Disponibilidad",
-      "ExperienceLevel":"Nivel de Experiencia",
-      "location":"Ubicacion",
-      "UserId":"Usuario ID",
-      "Skills":"Habilidades"
-    },
+  "profile": {
+    "title": "Registro de Perfil",
+    "Id": "ID del empleado",
+    "Name": "Nombre",
+    "LastName": "Apellido",
+    "Position": "Puesto",
+    "CV": "CV",
+    "availability": "Disponibilidad",
+    "ExperienceLevel": "Nivel de Experiencia",
+    "location": "Ubicacion",
+    "UserId": "Usuario ID",
+    "Skills": "Habilidades",
+    "SelectAvailability": "selecciona una disponibilidad",
+    "SelectExperienceLevel": "selecciona un nivel de experiencia",
+    "SelectLocation": "selecciona una ubicacion",
+    "Register": "Registrar",
+    "ProfilSucces": "¡Perfil creado exitosamente!",
+    "ProfilError": "Error al registrar el perfil."
+  },
 
-    "manager": {
-      "title": "Administrar Datos del Sistema",
-      "skills": "Agregar Skill",
-      "experience": "Agregar Experiencia",
-      "availability": "Agregar Disponibilidad",
-      "Button": "Agregar"
-    },
-    "list": {
-      "title": "Listado de Perfiles",
-      "Id": "ID ",
-      "Name": "Nombre",
-      "Position": "Puesto",
-      "location": "Ubicacion",
-      "ExperienceLevel": "Experiencia",
-      "availability": "Disponibilidad",
-      "UserId": "Usuario",
-      "Skills": "Skills",
-      "CV": "CV",
-      "status": "Estado",
-      "edit":"Editar",
-      "delete":"Elimminar",
-      "Active": "Activo",
-      "Inactive":"Inactivo",
-      "download": "Descargar"
-      
-    },
+  "manager": {
+    "title": "Administrar Datos del Sistema",
+    "skills": "Agregar Skill",
+    "experience": "Agregar Experiencia",
+    "availability": "Agregar Disponibilidad",
+    "Button": "Agregar"
+  },
+  "list": {
+    "title": "Listado de Perfiles",
+    "Id": "ID ",
+    "Name": "Nombre",
+    "Position": "Puesto",
+    "location": "Ubicacion",
+    "ExperienceLevel": "Experiencia",
+    "availability": "Disponibilidad",
+    "UserId": "Usuario",
+    "Skills": "Skills",
+    "CV": "CV",
+    "status": "Estado",
+    "edit": "Editar",
+    "delete": "Elimminar",
+    "Active": "Activo",
+    "Inactive": "Inactivo",
+    "download": "Descargar",
+    "FilterId": "ID empleado",
+    "FilterName": "Nombre",
+    "FilterAvailability": "Disponibilidad",
+    "FilterLocation": "Ubicacion",
+    "FilterSkill": "Habilidad",
+    "EditProfile": "Editar Perfil"
+  },
 
-    "client": {
-      "title": "Gestion de Clientes",
-      "Id":"ID",
-      "name": "Nombre",
-      "location": "Ubicacion",
-      "status":"Estado",
-      "action": "Acciones",
-      "edit":"Editar",
-      "delete":"Elimminar",
-      "add": "Agregar"
-    }
+  "client": {
+    "title": "Gestion de Clientes",
+    "Id": "ID",
+    "name": "Nombre",
+    "location": "Ubicacion",
+    "status": "Estado",
+    "action": "Acciones",
+    "edit": "Editar",
+    "delete": "Elimminar",
+    "add": "Agregar",
+    "filterCustomer": "Nombre del cliente",
+    "filterLocation": "Seleccione una ubicación",
+    "Succes": "Cliente agregado correctamente"
+  },
+  "report": {
+    "title": "Generar reporte de empleado",
+    "employee": "Empleado ID",
+    "name": "Nombre",
+    "action": "Acción",
+    "button": "Generar PDF"
+  },
+
+  "warningmessage": {
+    "title": "⚠️ Confirmación",
+    "caution": "Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "accept": "Sí, Eliminar",
+    "user": "¿Estás seguro de que deseas eliminar al usuario"
+  },
+  "location": {
+    "title": "Agregar Nueva Ubicación",
+    "country": "País",
+    "state": "Estado",
+    "city": "Ciudad",
+    "locationName": "Nombre de la Ubicación",
+    "button": "Agregar Ubicación"
+  },
+  "Project": {
+    "title": "Crear Proyecto",
+    "name": "Nombre",
+    "client": "Cliente",
+    "clientSelect":"Selecciona un cliente",
+    "description": "descripción",
+    "starDate": "Fecha de Inicio",
+    "EndDate": "Fecha de Fin",
+    "owner": "Propietario",
+    "ownerSelect":"Selecciona un usuario",
+    "skill": "Habilidades requeridas",
+    "button": "Crear proyecto"
+  },
+  "ListProject":{
+    "title": "Listado de proyectos",
+    "name":"Nombre",
+    "client":"Cliente",
+    "owner":"Dueño",
+    "skill":"Habilidades",
+    "starDate":"Fecha de Inicio",
+    "EndDate":"Fecha de Fin",
+    "status":"Estado",
+    "Action":"Action",
+    "filterName":"Buscar por nombre",
+    "filter":"Todos"
+  },
+  "AssignProfiletoProject":{
+    "title":"Asignar Perfil a Proyecto",
+    "profile":"Profile",
+    "selectProfile":"Seleccione un Perfil",
+    "project":"Proyecto",
+    "selectProject":"Seleccione un Proyecto",
+    "starDate":"Fecha de Inicio",
+    "selecDate":"Seleccione la Fecha de Inicio ",
+    "EndDate":"Fecha de Fin",
+    "selecDateEnd":"Seleccione la Fecha de Fin ",
+    "status":"Estado",
+    "selecStatus":"Seleccione el estado del proyecto",
+    "button":"Asignar Proyecto"
+
   }
-  
+}
