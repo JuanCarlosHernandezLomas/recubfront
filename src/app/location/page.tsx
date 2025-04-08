@@ -36,6 +36,7 @@ export default function AddLocationPage() {
 
     try {
       const token = localStorage.getItem("token");
+
       const response = await fetch("http://localhost:8090/api/locations", {
         method: "POST",
         headers: {
@@ -45,12 +46,18 @@ export default function AddLocationPage() {
         body: JSON.stringify({ ...formData, active: true }),
       });
 
-      if (!response.ok) throw new Error("Error al agregar la ubicación");
+      if (!response.ok) {
+        const errorData = await response.json(); 
+        throw new Error(errorData.message || 'Error al agregar la ubicación');
+      }
 
       setMessage("¡Ubicación agregada exitosamente!");
       setFormData({ country: "", state: "", city: "", name: "" });
-    } catch (err) {
-      setError("Hubo un problema al enviar los datos");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message || 'Ocurrió un error al cargar las locaciones.');
+        
+      }
     }
   };
 

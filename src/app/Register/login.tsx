@@ -57,7 +57,7 @@ const LoginPage = () => {
       }
 
       const data = await response.json();
-      login(data.token, data.roles);
+      login(data.token, data.roles, data.username);
       router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error) {

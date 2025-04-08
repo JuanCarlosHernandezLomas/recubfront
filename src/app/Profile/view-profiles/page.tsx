@@ -26,12 +26,17 @@ interface Profile {
     lastName: string;
     jobTitle: string;
     resumePath: string;
-    statusName: string;
-    experience: string;
-    locationName: string;
-    userName: string;
-    skillName: string[];
+    availabilityStatusId: string;
+    experienceLevelId: string;
+    locationId: string;
+    userId: string;
+    skillIds: string[];
     active: boolean;
+    locationName?: string;
+    experience?: string;
+    statusName?: string;
+    userName?: string;
+    skillName?: string[];
 }
 
 interface Option {
@@ -155,7 +160,9 @@ export default function ViewProfilesPage() {
             filtered = filtered.filter(p => p.skillName.includes(filters.skill));
 
         if (filters.employeeId)
-            filtered = filtered.filter(p => p.employeeId.includes(filters.employeeId));
+            filtered = filtered.filter(p =>
+                p.employeeId.toLowerCase().includes(filters.employeeId.toLowerCase())
+            );
 
         if (filters.name)
             filtered = filtered.filter(p =>
@@ -170,9 +177,25 @@ export default function ViewProfilesPage() {
         setFilters(prev => ({ ...prev, [name]: value }));
     };
     const handleEditClick = (profile: Profile) => {
-        setSelectedProfile(profile);
+        // Buscar los IDs reales según los nombres actuales
+        const location = locations.find(loc => loc.name === profile.locationName);
+        const experience = experiences.find(exp => exp.name === profile.experience);
+        const availability = statuses.find(stat => stat.name === profile.statusName);
+        const skillsIds = profile.skillName.map(name => {
+          const skill = skills.find(s => s.name === name);
+          return skill ? String(skill.id) : "";
+        }).filter(id => id !== "");
+      
+        setSelectedProfile({
+          ...profile,
+          locationId: location ? String(location.id) : "",
+          experienceLevelId: experience ? String(experience.id) : "",
+          availabilityStatusId: availability ? String(availability.id) : "",
+          skillIds: skillsIds,
+        });
+      
         setShowModal(true);
-    };
+      };
 
     const handleCloseModal = () => {
         setSelectedProfile(null);
@@ -181,14 +204,59 @@ export default function ViewProfilesPage() {
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         if (!selectedProfile) return;
-        const { name, value } = e.target;
-        setSelectedProfile((prev) => prev && { ...prev, [name]: value });
-    };
+        const { name, value, multiple, selectedOptions } = e.target;
+      
+        if (multiple) {
+          const values = Array.from(selectedOptions).map((opt) => opt.value);
+          setSelectedProfile((prev) => prev && { ...prev, [name]: values });
+        } else {
+          setSelectedProfile((prev) => prev && { ...prev, [name]: value });
+        }
+      };
 
-    const handleUpdateSubmit = () => {
-        console.log("Guardar perfil:", selectedProfile);
-        setShowModal(false);
-    };
+      const handleUpdateSubmit = async () => {
+        if (!selectedProfile) return;
+      
+        try {
+          const formData = new FormData();
+      
+          const profileData = {
+            employeeId: selectedProfile.employeeId,
+            firstName: selectedProfile.firstName,
+            lastName: selectedProfile.lastName,
+            jobTitle: selectedProfile.jobTitle,
+            locationId: Number(selectedProfile.locationId),
+            experienceLevelId: Number(selectedProfile.experienceLevelId),
+            availabilityStatusId: Number(selectedProfile.availabilityStatusId),
+            userId: 1,
+            skillIds: selectedProfile.skillIds.map(id => Number(id)),
+            active: true
+          };
+      
+          formData.append(
+            "profile",
+            new Blob([JSON.stringify(profileData)], { type: "application/json" })
+          );
+      
+          const response = await fetch(`http://localhost:8090/api/profile/${selectedProfile.id}`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+      
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Error al actualizar el perfil");
+          }
+      
+          setShowModal(false);
+          fetchProfiles(); // recargar tabla
+        } catch (error: any) {
+          alert(error.message || "Ocurrió un error al actualizar.");
+        }
+      };
 
     const confirmDelete = (profile: Profile) => {
         setProfileToDelete(profile);
@@ -422,33 +490,33 @@ export default function ViewProfilesPage() {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.location")}</Form.Label>
-                                <Form.Select name="locationName" value={selectedProfile.locationName} onChange={handleFormChange}>
+                                <Form.Select name="locationId" value={selectedProfile.locationId} onChange={handleFormChange}>
                                     {locations.map(loc => (
-                                        <option key={loc.id} value={loc.name}>{loc.name}</option>
+                                        <option key={loc.id} value={loc.id}>{loc.name}</option>
                                     ))}
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.ExperienceLevel")}</Form.Label>
-                                <Form.Select name="experience" value={selectedProfile.experience} onChange={handleFormChange}>
+                                <Form.Select name="experienceLevelId" value={selectedProfile.experienceLevelId} onChange={handleFormChange}>
                                     {experiences.map(exp => (
-                                        <option key={exp.id} value={exp.name}>{exp.name}</option>
+                                        <option key={exp.id} value={exp.id}>{exp.name}</option>
                                     ))}
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.availability")}</Form.Label>
-                                <Form.Select name="statusName" value={selectedProfile.statusName} onChange={handleFormChange}>
+                                <Form.Select name="availabilityStatusId" value={selectedProfile.availabilityStatusId} onChange={handleFormChange}>
                                     {statuses.map(stat => (
-                                        <option key={stat.id} value={stat.name}>{stat.name}</option>
+                                        <option key={stat.id} value={stat.id}>{stat.name}</option>
                                     ))}
                                 </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.Skills")}</Form.Label>
-                                <Form.Select multiple name="skillName" value={selectedProfile.skillName} onChange={handleFormChange}>
+                                <Form.Select multiple name="skillIds" value={selectedProfile.skillIds} onChange={handleFormChange}>
                                     {skills.map(skill => (
-                                        <option key={skill.id} value={skill.name}>{skill.name}</option>
+                                        <option key={skill.id} value={skill.id}>{skill.name}</option>
                                     ))}
                                 </Form.Select>
                             </Form.Group>

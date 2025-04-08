@@ -89,7 +89,10 @@ export default function ManageDataPage() {
         body: JSON.stringify({ ...payload, active: true }),
       });
 
-      if (!response.ok) throw new Error('Error al agregar los datos');
+      if (!response.ok) {
+        const errorData = await response.json(); 
+        throw new Error(errorData.message || 'Error al agregar los datos');
+      }
 
       setMessage('¡Agregado correctamente!');
       setShowConfetti(true);
@@ -104,9 +107,8 @@ export default function ManageDataPage() {
         setAvailability({ name: '' });
       }
       fetchAll(); // actualizar en tiempo real
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (err) {
-      setError('Hubo un problema al enviar los datos');
+    } catch (err: any) {
+      setError(err.message || 'Hubo un problema al enviar los datos');
     }
   };
 

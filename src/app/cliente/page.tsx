@@ -13,8 +13,7 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
-import { Fade } from 'react-awesome-reveal';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface Client {
   id: number;
@@ -89,8 +88,12 @@ export default function ClientesPage() {
         },
         body: JSON.stringify({ ...client, active: true }),
       });
-  
-      if (!res.ok) throw new Error("Error al agregar cliente");
+
+      if (!res.ok) {
+        const errorData = await res.json(); 
+        throw new Error(errorData.message || 'Error al agregar cliente');
+      }
+    
   
       const data = await res.json();
   
@@ -104,8 +107,11 @@ export default function ClientesPage() {
       setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
       setMessage("Cliente agregado correctamente");
-    } catch {
-      setError("Error al agregar cliente.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message || 'Ocurrió un error al cargar el cliente.');
+        
+      }
     }
   };
 

@@ -65,6 +65,7 @@ export default function RegisterPage() {
   }, []);
 
   const fetchOptions = async (endpoint: string, setter: (data: Option[]) => void) => {
+    
     try {
       const response = await fetch(`http://localhost:8090${endpoint}`, {
         headers: {
@@ -147,6 +148,7 @@ export default function RegisterPage() {
 
     try {
       const response = await fetch("http://localhost:8090/api/profile", {
+        
         method: "POST",
         body: payload,
         headers: {
@@ -155,7 +157,10 @@ export default function RegisterPage() {
         },
       });
 
-      if (!response.ok) throw new Error("Error al registrar el perfil.");
+      if (!response.ok) {
+        const errorData = await response.json(); 
+        throw new Error(errorData.message || 'Error al registrar el perfil.');
+      }
 
       setSuccessMessage("¡Perfil creado exitosamente!");
       setFormData({
@@ -173,7 +178,7 @@ export default function RegisterPage() {
       });
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage("Ocurrió un error al crear el perfil.");
+        setErrorMessage(error.message || 'Ocurrió un error al crear el perfil.');
         console.log(formData)
       }
     } finally {

@@ -11,14 +11,14 @@ import { ThemeProvider } from './context/ThemeContext';
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <I18nextProvider i18n={i18n}>
-       <ThemeProvider>
       <AuthProvider>
+      <ThemeProvider>
         <SidebarProvider>
           <AOSInit />
           <AppShell>{children}</AppShell>
         </SidebarProvider>
+        </ThemeProvider>
       </AuthProvider>
-      </ThemeProvider>
     </I18nextProvider>
   );
 }

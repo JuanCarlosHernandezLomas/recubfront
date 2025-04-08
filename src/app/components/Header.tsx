@@ -8,11 +8,15 @@ import { useSidebarContext } from "../context/SidebarContext";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import ThemeToggleButton from "./ThemeToggleButton";
+import { useHasMounted } from "../hooks/useHasMounted";
 
 export const Header = () => {
+  const { user } = useAuth();
   const { token, logout } = useAuth();
   const { toggleSidebar } = useSidebarContext();
   const { i18n } = useTranslation();
+  const mounted = useHasMounted();
+  
 
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
@@ -41,7 +45,7 @@ export const Header = () => {
         {/* Selector de idioma */}
         <Dropdown as={ButtonGroup}>
           <Button variant="outline-dark">
-            🌐 {i18n.language.toUpperCase()}
+            🌐  {mounted ? i18n.language.toUpperCase() : ""}
           </Button>
           <Dropdown.Toggle split variant="outline-dark" id="dropdown-split" />
           <Dropdown.Menu>
@@ -59,6 +63,8 @@ export const Header = () => {
           <Dropdown align="end">
             <Dropdown.Toggle variant="outline-secondary" id="dropdown-user">
               <PersonCircle className="me-2" />
+              {user ? user.split("@")[0].charAt(0).toUpperCase() + user.split("@")[0].slice(1) : "Usuario"}
+
             </Dropdown.Toggle>
 
             <Dropdown.Menu>

@@ -14,9 +14,11 @@ import Link from 'next/link';
 import 'animate.css';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/useAuth';
+import { useHasMounted } from '../hooks/useHasMounted';
 
 const Dashboard = () => {
   const { t } = useTranslation();
+  const mounted = useHasMounted();
   const { roles } = useAuth();
 
   const hasRole = (allowedRoles: string[], userRoles: string[]) => {
@@ -92,7 +94,7 @@ const Dashboard = () => {
 
   return (
     <Container className="py-5">
-      <h2 className="text-center mb-5 text-primary">{t('dashboard.welcome')}</h2>
+      <h2 className="text-center mb-5 text-primary">{mounted ?t('dashboard.welcome'):""}</h2>
       <Row className="g-4">
       {modules
           .filter((mod) => hasRole(mod.allowedRoles, roles))
