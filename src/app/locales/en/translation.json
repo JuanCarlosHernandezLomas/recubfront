@@ -1,4 +1,12 @@
 {
+  "login": {
+    "title": "Login",
+    "texthelp": "Please log in to your account to continue",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "procces": "Verifying credentials..."
+  },
   "dashboard": {
     "welcome": "Welcome to ResourceHub",
     "registerProfile": "Register Profile",
@@ -104,6 +112,10 @@
 
   "location": {
     "title": "Add new location",
+    "titleCard": "Add a location",
+    "titlecardDesc": "Create a new location",
+    "showlocation": "View all existing locations",
+    "showlocationDes": "View all existing locations",
     "country": "Country",
     "state": "State",
     "city": "City",
@@ -112,6 +124,10 @@
   },
   "Project": {
     "title": "Create Project",
+    "titlecard": "Add a Project",
+    "cardDesc": "Create a new project",
+    "titlecardDes": "View all existing projects",
+    "cardDesclist": "View and manage existing projects",
     "name": "Name",
     "client": "Client",
     "clientSelect": "Select Client",
@@ -149,5 +165,21 @@
     "status": "Status",
     "selecStatus": "Select the project status",
     "button": "Assign Project"
+  },
+  "AssignProyect": {
+    "title": "Create an assignment",
+    "description": "Assign a user to a project",
+    "titleDesc": "View all assignments",
+    "descriptionlist": "View and manage assignments"
+  },
+  "TeamCard": {
+    "Teamtitle": "Create a Team",
+    "TeamDesc": "Create new teams",
+    "Teamlist": "View all existing teams",
+    "TeamlistDesc": "View and manage existing teams",
+    "AssignTeam": "Assign users to teams",
+    "AssignTeamDesc": "Create user assignments to teams",
+    "AssignTeamList": "View teams with assignments",
+    "AssignTeamListDesc": "View and manage user assignments"
   }
 }

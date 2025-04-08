@@ -22,8 +22,10 @@ import "aos/dist/aos.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../context/useAuth";
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,7 @@ const LoginPage = () => {
       });
 
       if (!response.ok) {
-        setLoading(false); // 👈 detener el spinner antes de mostrar el error
+        setLoading(false); //  detener el spinner antes de mostrar el error
         setError(
           "Credenciales inválidas. Por favor verifica e intenta nuevamente."
         );
@@ -85,8 +87,8 @@ const LoginPage = () => {
             size={48}
             className="text-primary mb-2 animate__animated animate__bounce"
           />
-          <h2 className="fw-bold text-primary">Iniciar Sesión</h2>
-          <p className="text-muted">Accede a tu cuenta para continuar</p>
+          <h2 className="fw-bold text-primary">{t('login.title')}</h2>
+          <p className="fw-bold text-primary">{t('login.texthelp')}</p>
         </div>
 
         {error && (
@@ -98,7 +100,7 @@ const LoginPage = () => {
         {loading && (
           <div className="text-center my-4">
             <Spinner animation="border" variant="primary" role="status" />
-            <div className="mt-2 text-muted">Verificando credenciales...</div>
+            <div className="mt-2 text-primary">{t('login.procces')}</div>
           </div>
         )}
 
@@ -111,7 +113,7 @@ const LoginPage = () => {
               label={
                 <>
                   <EnvelopeFill className="me-2" />
-                  Correo electrónico
+                  {t('login.email')}
                 </>
               }
               className="mb-3"
@@ -129,7 +131,7 @@ const LoginPage = () => {
               label={
                 <>
                   <LockFill className="me-2" />
-                  Contraseña
+                  {t('login.password')}
                 </>
               }
               className="mb-4"
@@ -150,7 +152,7 @@ const LoginPage = () => {
                 size="lg"
                 className="rounded-pill shadow-sm"
               >
-                <PersonBadge className="me-2" /> Ingresar
+                <PersonBadge className="me-2" /> {t('login.button')}
               </Button>
             </div>
           </Form>

@@ -1,4 +1,13 @@
 {
+  "login":{
+    "title":"Iniciar Sesión",
+    "texthelp":"Accede a tu cuenta para continuar",
+    "email":"Correo electrónico",
+    "password":"Contraseña",
+    "button":"Ingresar",
+    "procces":"Verificando credenciales..."
+
+  },
   "dashboard": {
     "welcome": "Bienvenido a ResourceHub",
     "registerProfile": "Registrar Perfil",
@@ -105,6 +114,10 @@
   },
   "location": {
     "title": "Agregar Nueva Ubicación",
+    "titleCard":"Agrega una locacion",
+    "titlecarDesc":"crea una nueva locacion",
+    "showlocation":"ve todas las locaciones existentes",
+    "showlocationDes":"consulta todas las locaciones existentes",
     "country": "País",
     "state": "Estado",
     "city": "Ciudad",
@@ -113,6 +126,10 @@
   },
   "Project": {
     "title": "Crear Proyecto",
+    "titlecard":"Agrega un Projecto",
+    "cardDesc":"crea un nuevo proyecto",
+    "titlecardDes":"Ve todos los projectos existentes",
+    "cardDesclist":"consulta y gestiona los proyectos existentes",
     "name": "Nombre",
     "client": "Cliente",
     "clientSelect":"Selecciona un cliente",
@@ -151,5 +168,22 @@
     "selecStatus":"Seleccione el estado del proyecto",
     "button":"Asignar Proyecto"
 
+  },
+  "AssignProyect":{
+    "title":"Crea una asignacion",
+    "description":"Assigna un usuario a un proyecto",
+    "titleDesc":"ve todas las asignaciones",
+    "descriptionlist":"consulta y gestiona las asignaciones"
+  },
+
+  "TeamCard":{
+    "Teamtitle":"Crea un Equipo",
+    "TeamDesc":"Crea nuevos equipos",
+    "Teamlist":"ve todos los equipos existentes",
+    "TeamlistDesc":"consulta y gestiona los equipos existentes",
+    "AssignTeam":"Asigna usuarios a equipos",
+    "AssignTeamDesc":"Crea asignaciones de usuario a equipos",
+    "AssignTeamList":"ve los equipos con Asignacion",
+    "AssignTeamListDesc":"consulta y gestiona las asignaciones de usuarios"
   }
 }

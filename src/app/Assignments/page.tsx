@@ -14,21 +14,22 @@ import Link from 'next/link';
 import 'animate.css';
 import { useTranslation } from 'react-i18next';
 
+
 const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title: "Crea un assignacion",
+      title: t('AssignProyect.title'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
-      description: t('dashboard.registerProfileDesc'),
+      description: t('AssignProyect.description'),
       path: '/AssignmentsResource',
       animation: 'animate__fadeInLeft',
     },
 
     {
-      title: "ve todas las asignaciones",
+      title: t('AssignProyect.titleDesc'),
       icon: <PeopleFill size={32} className="text-success" />,
-      description: t('dashboard.viewProfilesDesc'),
+      description: t('AssignProyect.descriptionlist'),
       path: '/AssignmentsResource/ListAssignments',
       animation: 'animate__fadeInRight',
     },
@@ -49,7 +50,7 @@ const Profile = () => {
                 <Card.Body>
                   <div className="d-flex align-items-center mb-3">
                     {mod.icon}
-                    <Card.Title className="ms-3 text-dark">{mod.title}</Card.Title>
+                    <Card.Title className="ms-3 text-mted">{mod.title}</Card.Title>
                   </div>
                   <Card.Text className="text-muted">{mod.description}</Card.Text>
                 </Card.Body>

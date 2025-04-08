@@ -155,6 +155,7 @@ td {
   body[data-bs-theme='dark'] .main-card {
     background-color: #1e1e1e;
     color: #f1f1f1;
+    
   }
   
   body[data-bs-theme='dark'] .sidebar {
@@ -201,6 +202,7 @@ td {
   .text-body {
     color: var(--bs-body-color) !important;
   }
+
 
   body[data-bs-theme='dark'] .sidebar {
     background-color: #1a1a1a;

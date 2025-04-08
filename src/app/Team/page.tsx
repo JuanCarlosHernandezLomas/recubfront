@@ -14,33 +14,33 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title: "crea un equipo",
+      title: t('TeamCard.Teamtitle'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
-      description: t('dashboard.registerProfileDesc'),
+      description: t('TeamCard.TeamDesc'),
       path: '/Team/CreateTeam',
       animation: 'animate__fadeInLeft',
     },
 
     {
-      title: "ve todos los equipos",
+      title: t('TeamCard.Teamlist'),
       icon: <PeopleFill size={32} className="text-success" />,
-      description: t('dashboard.viewProfilesDesc'),
+      description: t('TeamCard.TeamlistDesc'),
       path: '/Team/ListTeam',
       animation: 'animate__fadeInRight',
     },
 
     {
-      title: "asigna a un equipo",
+      title: t('TeamCard.AssignTeamDesc'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
-      description: t('dashboard.registerProfileDesc'),
+      description: t('TeamCard.AssignTeamDesc'),
       path: '/Team/AssignMember',
       animation: 'animate__fadeInLeft',
     },
 
     {
-      title: "ve todos los equipos asignados",
+      title: t('TeamCard.AssignTeamList'),
       icon: <PeopleFill size={32} className="text-success" />,
-      description: t('dashboard.viewProfilesDesc'),
+      description: t('TeamCard.AssignTeamListDesc'),
       path: '/Team/ListTeamMembers',
       animation: 'animate__fadeInRight',
     },
@@ -61,7 +61,7 @@ const Profile = () => {
                 <Card.Body>
                   <div className="d-flex align-items-center mb-3">
                     {mod.icon}
-                    <Card.Title className="ms-3 text-dark">{mod.title}</Card.Title>
+                    <Card.Title className="ms-3 text-mted">{mod.title}</Card.Title>
                   </div>
                   <Card.Text className="text-muted">{mod.description}</Card.Text>
                 </Card.Body>

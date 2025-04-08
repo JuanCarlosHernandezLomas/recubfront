@@ -11,17 +11,17 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title: "Agrega una locacion",
+      title: t('location.titleCard'),
       icon: <JournalPlus size={32} className="text-primary" />,
-      description: "crea una nueva locacion",
+      description: t('location.titlecardDesc'),
       path: "/location/CreateLocation",
       animation: "animate__fadeInLeft",
     },
 
     {
-      title: "ve todos las locaciones existentes",
+      title: t('location.showlocation'),
       icon: <Journal size={32} className="text-success" />,
-      description: "consulta todas las locaciones existentes",
+      description: t('location.showlocationDes'),
       path: "/location/list-location",
       animation: "animate__fadeInRight",
     },
@@ -43,7 +43,7 @@ const Profile = () => {
                 <Card.Body>
                   <div className="d-flex align-items-center mb-3">
                     {mod.icon}
-                    <Card.Title className="ms-3 text-dark">
+                    <Card.Title className="ms-3 text-mted">
                       {mod.title}
                     </Card.Title>
                   </div>

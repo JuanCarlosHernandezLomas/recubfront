@@ -109,7 +109,7 @@ const Dashboard = () => {
                   <Card.Body>
                     <div className="d-flex align-items-center mb-3">
                       {mod.icon}
-                      <Card.Title className="ms-3 text-dark">{mod.title}</Card.Title>
+                      <Card.Title className="ms-3 text-mted">{mod.title}</Card.Title>
                     </div>
                     <Card.Text className="text-muted">{mod.description}</Card.Text>
                   </Card.Body>
