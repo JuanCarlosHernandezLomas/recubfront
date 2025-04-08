@@ -18,13 +18,22 @@ interface Assignment {
     profileName: string;
     projectName: string;
     active: boolean;
+    profileId: number;
+    projectId: number;
 }
 
 interface FormValues {
     status: string;
     startDate: Date | null;
     endDate: Date | null;
+    profileId: number;
+    projectId: number;
     active: boolean;
+}
+interface Option {
+    id: number;
+    name: string;
+    firstName: string;
 }
 
 export default function ListAssignmentsPage() {
@@ -40,6 +49,8 @@ export default function ListAssignmentsPage() {
     const [filterProject, setFilterProject] = useState('');
     const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
     const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
+    const [profiles, setProfiles] = useState<Option[]>([]);
+    const [projects, setProjects] = useState<Option[]>([]);
 
     const fetchAssignments = async () => {
         const res = await fetch('http://localhost:8090/api/resource-assignments', {
@@ -51,8 +62,19 @@ export default function ListAssignmentsPage() {
     };
 
     useEffect(() => {
+        const fetchOptions = async () => {
+            const resProfiles = await fetch("http://localhost:8090/api/profile", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            const resProjects = await fetch("http://localhost:8090/api/projects", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setProfiles(await resProfiles.json());
+            setProjects(await resProjects.json());
+        };
+        fetchOptions();
         fetchAssignments();
-    }, []);
+    }, [token]);
 
     // Filtros automáticos
     useEffect(() => {
@@ -71,6 +93,8 @@ export default function ListAssignmentsPage() {
             status: assignment.status,
             startDate: new Date(assignment.startDate),
             endDate: new Date(assignment.endDate),
+            profileId: assignment.profileId,
+            projectId: assignment.projectId,
             active: assignment.active,
         });
         setShowModal(true);
@@ -208,7 +232,7 @@ export default function ListAssignmentsPage() {
                                 <td>{a.endDate}</td>
                                 <td>
                                     <Badge bg={a.active ? 'success' : 'danger'}>
-                                        {a.active ? 'Sí' : 'No'}
+                                        {a.active ? 'Activo' : 'Inactivo'}
                                     </Badge>
                                 </td>
                                 <td>
@@ -228,6 +252,24 @@ export default function ListAssignmentsPage() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit(onSubmit)}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Perfil</Form.Label>
+                            <Form.Select {...register("profileId", { required: true })}>
+                                {profiles.map((p) => (
+                                    <option key={p.id} value={p.id}>{p.firstName}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Proyecto</Form.Label>
+                            <Form.Select {...register("projectId", { required: true })}>
+                                {projects.map((p) => (
+                                    <option key={p.id} value={p.id}>{p.name}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+
                         <Form.Group className="mb-3">
                             <Form.Label>Estado</Form.Label>
                             <Form.Select {...register('status', { required: true })}>
@@ -255,40 +297,39 @@ export default function ListAssignmentsPage() {
                                 )}
                             />
                         </Form.Group>
-                        <Form.Check type="checkbox" label="Activo" {...register('active')} />
                         <div className="text-end mt-3">
                             <Button variant="primary" type="submit">Guardar Cambios</Button>
                         </div>
                     </Form>
                 </Modal.Body>
             </Modal>
-                        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
-                            <motion.div
-                                initial={{ scale: 0.7, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.7, opacity: 0 }}
-                                transition={{ duration: 0.4 }}
-                            >
-                                <Modal.Header closeButton className="bg-danger text-white">
-                                    <Modal.Title>⚠️ Confirmación</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body className="text-center">
-                                    <p className="mb-3">
-                                        ¿Estás seguro de que deseas eliminar la asignacion de  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
-                                        al proyecto  <strong>{assigmentToDelete?.projectName}</strong>?
-                                    </p>
-                                    <p className="text-muted small">Esta acción no se puede deshacer.</p>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                                        Cancelar
-                                    </Button>
-                                    <Button variant="danger" onClick={handleDelete}>
-                                        Sí, Eliminar
-                                    </Button>
-                                </Modal.Footer>
-                            </motion.div>
-                        </Modal>
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+                <motion.div
+                    initial={{ scale: 0.7, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.7, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <Modal.Header closeButton className="bg-danger text-white">
+                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="text-center">
+                        <p className="mb-3">
+                            ¿Estás seguro de que deseas eliminar la asignacion de  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
+                            al proyecto  <strong>{assigmentToDelete?.projectName}</strong>?
+                        </p>
+                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                            Cancelar
+                        </Button>
+                        <Button variant="danger" onClick={handleDelete}>
+                            Sí, Eliminar
+                        </Button>
+                    </Modal.Footer>
+                </motion.div>
+            </Modal>
         </Container>
     );
 }

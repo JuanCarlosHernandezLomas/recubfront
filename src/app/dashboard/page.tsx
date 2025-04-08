@@ -26,7 +26,7 @@ const Dashboard = () => {
   };
   const modules = [
     {
-      title:  t('dashboard.registerProfile'),
+      title: t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
       allowedRoles: ['ROLE_ADMINS', "ROLE_USERS"],
@@ -37,7 +37,7 @@ const Dashboard = () => {
       title: t('dashboard.manageData'),
       icon: <GearFill size={32} className="text-warning" />,
       description: t('dashboard.manageDataDesc'),
-      allowedRoles: ['ROLE_ADMINS'],
+      allowedRoles: ['ROLE_ADMINS', "ROLE_USERS"],
       path: '/manage-data',
       animation: 'animate__fadeInRight',
     },
@@ -78,7 +78,7 @@ const Dashboard = () => {
       title: t('dashboard.ProjectAssigned'),
       icon: <PersonSquare size={32} className="text-info" />,
       description: t('dashboard.ProjectAssignedDesc'),
-      allowedRoles: ['ROLE_ADMINS','ROLE_USERS'],
+      allowedRoles: ['ROLE_ADMINS', 'ROLE_USERS'],
       path: '/Assignments',
       animation: 'animate__fadeInRight',
     },
@@ -94,29 +94,29 @@ const Dashboard = () => {
 
   return (
     <Container className="py-5">
-      <h2 className="text-center mb-5 text-primary">{mounted ?t('dashboard.welcome'):""}</h2>
+      <h2 className="text-center mb-5 text-primary">{mounted ? t('dashboard.welcome') : ""}</h2>
       <Row className="g-4">
-      {modules
+        {modules
           .filter((mod) => hasRole(mod.allowedRoles, roles))
           .map((mod, idx) => (
-          <Col key={idx} md={6}>
+            <Col key={idx} md={6}>
 
-            <Link href={mod.path} className="text-decoration-none">
-              <Card
-                className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
-                style={{ transition: 'transform 0.3s' }}
-              >
-                <Card.Body>
-                  <div className="d-flex align-items-center mb-3">
-                    {mod.icon}
-                    <Card.Title className="ms-3 text-dark">{mod.title}</Card.Title>
-                  </div>
-                  <Card.Text className="text-muted">{mod.description}</Card.Text>
-                </Card.Body>
-              </Card>
-            </Link>
-          </Col>
-        ))}
+              <Link href={mod.path} className="text-decoration-none">
+                <Card
+                  className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
+                  style={{ transition: 'transform 0.3s' }}
+                >
+                  <Card.Body>
+                    <div className="d-flex align-items-center mb-3">
+                      {mod.icon}
+                      <Card.Title className="ms-3 text-dark">{mod.title}</Card.Title>
+                    </div>
+                    <Card.Text className="text-muted">{mod.description}</Card.Text>
+                  </Card.Body>
+                </Card>
+              </Link>
+            </Col>
+          ))}
       </Row>
     </Container>
   );

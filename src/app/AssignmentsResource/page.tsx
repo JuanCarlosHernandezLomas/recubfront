@@ -66,7 +66,8 @@ export default function AssignProjectPage() {
       profileId: parseInt(data.profileId),
       projectId: parseInt(data.projectId),
       startDate: data.startDate?.toISOString().split('T')[0],
-      endDate: data.endDate?.toISOString().split('T')[0]
+      endDate: data.endDate?.toISOString().split('T')[0],
+      active: true
     };
 
     const response = await fetch('http://localhost:8090/api/resource-assignments', {
@@ -94,7 +95,7 @@ export default function AssignProjectPage() {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
       >
-       {t('AssignProfiletoProject.title')}
+        {t('AssignProfiletoProject.title')}
       </motion.h2>
 
       <AnimatePresence>
@@ -204,14 +205,11 @@ export default function AssignProjectPage() {
                   <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
                 </Form.Group>
               </Col>
-              <Col md={6} className="d-flex align-items-end">
-                <Form.Check type="checkbox" label="Activo" {...register('active')} />
-              </Col>
             </Row>
 
             <div className="text-end">
               <Button type="submit" variant="primary" className="px-4">
-              {t('AssignProfiletoProject.button')}
+                {t('AssignProfiletoProject.button')}
               </Button>
             </div>
           </Form>

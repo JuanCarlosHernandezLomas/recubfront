@@ -35,7 +35,7 @@ interface Project {
     wonerName: string;
     active: boolean;
     skillName: string[];
-    
+
 }
 
 interface FormValues {
@@ -50,7 +50,7 @@ interface FormValues {
 }
 
 export default function ListProjectsPage() {
-     const { t } = useTranslation();
+    const { t } = useTranslation();
     const token = localStorage.getItem('token');
     const [projects, setProjects] = useState<Project[]>([]);
     const [skills, setSkills] = useState<Option[]>([]);
@@ -116,9 +116,9 @@ export default function ListProjectsPage() {
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify(payload),
-            
+
         });
-    
+
 
         if (response.ok) {
             fetchData();
@@ -263,7 +263,7 @@ export default function ListProjectsPage() {
                                 <p className="mb-1"><strong>Fin:</strong> {proj.endDate}</p>
                                 <p className="mb-1"><strong>Activo:</strong>{' '}
                                     <Badge bg={proj.active ? 'success' : 'danger'}>
-                                        {proj.active ? 'Sí' : 'No'}
+                                        {proj.active ? 'Activo' : 'Inactivo'}
                                     </Badge>
                                 </p>
                                 <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
@@ -281,55 +281,55 @@ export default function ListProjectsPage() {
             </Row>
 
             <Fade cascade>
-            <div className="d-none d-md-block">
-                <Table striped bordered hover responsive className="shadow-sm">
-                    <thead className="text-center">
-                        <tr>
-                            <th>{t('ListProject.name')}</th>
-                            <th>{t('ListProject.client')}</th>
-                            <th>{t('ListProject.owner')}</th>
-                            <th>{t('ListProject.starDate')}</th>
-                            <th>{t('ListProject.EndDate')}</th>
-                            <th>{t('ListProject.status')}</th>
-                            <th>{t('ListProject.skill')}</th>
-                            <th>{t('ListProject.Action')}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {projects
-                            .filter(p =>
-                                (!filterName || p.name.toLowerCase().includes(filterName.toLowerCase())) &&
-                                (!filterClient || p.clienteName === filterClient) &&
-                                (!filterOwner || p.wonerName === filterOwner) &&
-                                (!filterSkill || p.skillName.includes(filterSkill)) &&
-                                (!filterStartDate || new Date(p.startDate) >= filterStartDate) &&
-                                (!filterEndDate || new Date(p.endDate) <= filterEndDate)
-                            )
-                            .map((proj) => (
-                                <tr key={proj.id}>
-                                    <td>{proj.name}</td>
-                                    <td>{proj.clienteName}</td>
-                                    <td>{proj.wonerName}</td>
-                                    <td>{proj.startDate}</td>
-                                    <td>{proj.endDate}</td>
-                                    <td>
-                                        <Badge bg={proj.active ? 'success' : 'danger'}>
-                                            {proj.active ? 'Sí' : 'No'}
-                                        </Badge>
-                                    </td>
-                                    <td>{proj.skillName.join(', ')}</td>
-                                    <td>
-                                        <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                            Editar
-                                        </Button>
-                                        <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                            Eliminar
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </Table>
+                <div className="d-none d-md-block">
+                    <Table striped bordered hover responsive className="shadow-sm">
+                        <thead className="text-center">
+                            <tr>
+                                <th>{t('ListProject.name')}</th>
+                                <th>{t('ListProject.client')}</th>
+                                <th>{t('ListProject.owner')}</th>
+                                <th>{t('ListProject.starDate')}</th>
+                                <th>{t('ListProject.EndDate')}</th>
+                                <th>{t('ListProject.status')}</th>
+                                <th>{t('ListProject.skill')}</th>
+                                <th>{t('ListProject.Action')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {projects
+                                .filter(p =>
+                                    (!filterName || p.name.toLowerCase().includes(filterName.toLowerCase())) &&
+                                    (!filterClient || p.clienteName === filterClient) &&
+                                    (!filterOwner || p.wonerName === filterOwner) &&
+                                    (!filterSkill || p.skillName.includes(filterSkill)) &&
+                                    (!filterStartDate || new Date(p.startDate) >= filterStartDate) &&
+                                    (!filterEndDate || new Date(p.endDate) <= filterEndDate)
+                                )
+                                .map((proj) => (
+                                    <tr key={proj.id}>
+                                        <td>{proj.name}</td>
+                                        <td>{proj.clienteName}</td>
+                                        <td>{proj.wonerName}</td>
+                                        <td>{proj.startDate}</td>
+                                        <td>{proj.endDate}</td>
+                                        <td>
+                                            <Badge bg={proj.active ? 'success' : 'danger'}>
+                                                {proj.active ? 'Activo' : 'Inactivo'}
+                                            </Badge>
+                                        </td>
+                                        <td>{proj.skillName.join(', ')}</td>
+                                        <td>
+                                            <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
+                                                Editar
+                                            </Button>
+                                            <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
+                                                Eliminar
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </Table>
                 </div>
             </Fade>
 
@@ -419,12 +419,6 @@ export default function ListProjectsPage() {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        <Form.Check
-                            type="checkbox"
-                            label="Activo"
-                            {...register('active')}
-                            className="mb-3"
-                        />
                         <div className="text-end">
                             <Button type="submit" variant="primary">Guardar Cambios</Button>
                         </div>

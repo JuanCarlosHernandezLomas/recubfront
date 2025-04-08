@@ -182,20 +182,20 @@ export default function ViewProfilesPage() {
         const experience = experiences.find(exp => exp.name === profile.experience);
         const availability = statuses.find(stat => stat.name === profile.statusName);
         const skillsIds = profile.skillName.map(name => {
-          const skill = skills.find(s => s.name === name);
-          return skill ? String(skill.id) : "";
+            const skill = skills.find(s => s.name === name);
+            return skill ? String(skill.id) : "";
         }).filter(id => id !== "");
-      
+
         setSelectedProfile({
-          ...profile,
-          locationId: location ? String(location.id) : "",
-          experienceLevelId: experience ? String(experience.id) : "",
-          availabilityStatusId: availability ? String(availability.id) : "",
-          skillIds: skillsIds,
+            ...profile,
+            locationId: location ? String(location.id) : "",
+            experienceLevelId: experience ? String(experience.id) : "",
+            availabilityStatusId: availability ? String(availability.id) : "",
+            skillIds: skillsIds,
         });
-      
+
         setShowModal(true);
-      };
+    };
 
     const handleCloseModal = () => {
         setSelectedProfile(null);
@@ -205,58 +205,58 @@ export default function ViewProfilesPage() {
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         if (!selectedProfile) return;
         const { name, value, multiple, selectedOptions } = e.target;
-      
-        if (multiple) {
-          const values = Array.from(selectedOptions).map((opt) => opt.value);
-          setSelectedProfile((prev) => prev && { ...prev, [name]: values });
-        } else {
-          setSelectedProfile((prev) => prev && { ...prev, [name]: value });
-        }
-      };
 
-      const handleUpdateSubmit = async () => {
-        if (!selectedProfile) return;
-      
-        try {
-          const formData = new FormData();
-      
-          const profileData = {
-            employeeId: selectedProfile.employeeId,
-            firstName: selectedProfile.firstName,
-            lastName: selectedProfile.lastName,
-            jobTitle: selectedProfile.jobTitle,
-            locationId: Number(selectedProfile.locationId),
-            experienceLevelId: Number(selectedProfile.experienceLevelId),
-            availabilityStatusId: Number(selectedProfile.availabilityStatusId),
-            userId: 1,
-            skillIds: selectedProfile.skillIds.map(id => Number(id)),
-            active: true
-          };
-      
-          formData.append(
-            "profile",
-            new Blob([JSON.stringify(profileData)], { type: "application/json" })
-          );
-      
-          const response = await fetch(`http://localhost:8090/api/profile/${selectedProfile.id}`, {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          });
-      
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "Error al actualizar el perfil");
-          }
-      
-          setShowModal(false);
-          fetchProfiles(); // recargar tabla
-        } catch (error: any) {
-          alert(error.message || "Ocurrió un error al actualizar.");
+        if (multiple) {
+            const values = Array.from(selectedOptions).map((opt) => opt.value);
+            setSelectedProfile((prev) => prev && { ...prev, [name]: values });
+        } else {
+            setSelectedProfile((prev) => prev && { ...prev, [name]: value });
         }
-      };
+    };
+
+    const handleUpdateSubmit = async () => {
+        if (!selectedProfile) return;
+
+        try {
+            const formData = new FormData();
+
+            const profileData = {
+                employeeId: selectedProfile.employeeId,
+                firstName: selectedProfile.firstName,
+                lastName: selectedProfile.lastName,
+                jobTitle: selectedProfile.jobTitle,
+                locationId: Number(selectedProfile.locationId),
+                experienceLevelId: Number(selectedProfile.experienceLevelId),
+                availabilityStatusId: Number(selectedProfile.availabilityStatusId),
+                userId: 1,
+                skillIds: selectedProfile.skillIds.map(id => Number(id)),
+                active: true
+            };
+
+            formData.append(
+                "profile",
+                new Blob([JSON.stringify(profileData)], { type: "application/json" })
+            );
+
+            const response = await fetch(`http://localhost:8090/api/profile/${selectedProfile.id}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                body: formData,
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Error al actualizar el perfil");
+            }
+
+            setShowModal(false);
+            fetchProfiles(); // recargar tabla
+        } catch (error: any) {
+            alert(error.message || "Ocurrió un error al actualizar.");
+        }
+    };
 
     const confirmDelete = (profile: Profile) => {
         setProfileToDelete(profile);
@@ -540,16 +540,16 @@ export default function ViewProfilesPage() {
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                        {t("warningmessage.user")} <strong>{profileToDelete?.employeeId}</strong>?
+                            {t("warningmessage.user")} <strong>{profileToDelete?.employeeId}</strong>?
                         </p>
                         <p className="text-muted small">{t("warningmessage.caution")}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        {t("warningmessage.cancel")}
+                            {t("warningmessage.cancel")}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                        {t("warningmessage.accept")}
+                            {t("warningmessage.accept")}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

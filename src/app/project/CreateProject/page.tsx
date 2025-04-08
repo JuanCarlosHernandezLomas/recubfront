@@ -216,16 +216,6 @@ export default function CreateProjectPage() {
             </Form.Group>
           </Col>
         </Row>
-
-        <Form.Group className="mb-4">
-          <Form.Check
-            type="checkbox"
-            label="Proyecto activo"
-            checked={formData.active}
-            onChange={(e) => setFormData(prev => ({ ...prev, active: e.target.checked }))}
-          />
-        </Form.Group>
-
         <Button variant="primary" type="submit">{t('Project.button')}</Button>
       </Form>
     </Container>

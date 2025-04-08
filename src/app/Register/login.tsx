@@ -30,7 +30,6 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const { login } = useAuth();
-  
 
   useEffect(() => {
     AOS.init({ duration: 800 });
@@ -52,7 +51,9 @@ const LoginPage = () => {
 
       if (!response.ok) {
         setLoading(false); // 👈 detener el spinner antes de mostrar el error
-        setError("Credenciales inválidas. Por favor verifica e intenta nuevamente.");
+        setError(
+          "Credenciales inválidas. Por favor verifica e intenta nuevamente."
+        );
         return;
       }
 
@@ -70,14 +71,20 @@ const LoginPage = () => {
   };
 
   return (
-    <Container fluid className="vh-100 d-flex align-items-center justify-content-center bg-primary-subtle">
+    <Container
+      fluid
+      className="vh-100 d-flex align-items-center justify-content-center bg-primary-subtle"
+    >
       <Card
         className="p-5 shadow-lg border-0 rounded-4 bg-white animate__animated animate__fadeInDown"
         data-aos="zoom-in"
         style={{ maxWidth: 500, width: "100%" }}
       >
         <div className="text-center mb-4">
-          <ShieldLock size={48} className="text-primary mb-2 animate__animated animate__bounce" />
+          <ShieldLock
+            size={48}
+            className="text-primary mb-2 animate__animated animate__bounce"
+          />
           <h2 className="fw-bold text-primary">Iniciar Sesión</h2>
           <p className="text-muted">Accede a tu cuenta para continuar</p>
         </div>
@@ -96,8 +103,19 @@ const LoginPage = () => {
         )}
 
         {!loading && (
-          <Form onSubmit={handleLogin} className="animate__animated animate__fadeInUp animate__faster">
-            <FloatingLabel label={<><EnvelopeFill className="me-2" />Correo electrónico</>} className="mb-3">
+          <Form
+            onSubmit={handleLogin}
+            className="animate__animated animate__fadeInUp animate__faster"
+          >
+            <FloatingLabel
+              label={
+                <>
+                  <EnvelopeFill className="me-2" />
+                  Correo electrónico
+                </>
+              }
+              className="mb-3"
+            >
               <Form.Control
                 type="email"
                 placeholder="nombre@correo.com"
@@ -107,7 +125,15 @@ const LoginPage = () => {
               />
             </FloatingLabel>
 
-            <FloatingLabel label={<><LockFill className="me-2" />Contraseña</>} className="mb-4">
+            <FloatingLabel
+              label={
+                <>
+                  <LockFill className="me-2" />
+                  Contraseña
+                </>
+              }
+              className="mb-4"
+            >
               <Form.Control
                 type="password"
                 placeholder="••••••••"
@@ -118,7 +144,12 @@ const LoginPage = () => {
             </FloatingLabel>
 
             <div className="d-grid">
-              <Button type="submit" variant="primary" size="lg" className="rounded-pill shadow-sm">
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                className="rounded-pill shadow-sm"
+              >
                 <PersonBadge className="me-2" /> Ingresar
               </Button>
             </div>
@@ -130,4 +161,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-

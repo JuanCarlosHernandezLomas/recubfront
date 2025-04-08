@@ -41,7 +41,8 @@
     "ProfilError": "Error while registering profile."
   },
   "manager": {
-    "title": "Manage System Data",
+    "titleAdmin": "Manage System Data",
+    "titleUser": "Data Visualization",
     "skills": "Add Skill",
     "experience": "Add Experience",
     "availability": "Add Availability",

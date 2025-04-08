@@ -11,6 +11,7 @@ import {
   Table,
   Card,
   Modal,
+  Badge,
 } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -58,7 +59,7 @@ export default function ClientesPage() {
         setLocations(locData);
         setClients(cliData);
         console.log("Ubicaciones:", locData); // 👈 Verifica si llega bien
-        console.log("Clientes:", cliData);  
+        console.log("Clientes:", cliData);
       } catch (err) {
         setError("Error al cargar datos.");
       }
@@ -78,7 +79,7 @@ export default function ClientesPage() {
     e.preventDefault();
     setMessage("");
     setError("");
-  
+
     try {
       const res = await fetch("http://localhost:8090/api/clients", {
         method: "POST",
@@ -90,27 +91,27 @@ export default function ClientesPage() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json(); 
+        const errorData = await res.json();
         throw new Error(errorData.message || 'Error al agregar cliente');
       }
-    
-  
+
+
       const data = await res.json();
-  
+
       // Enriquecer con locationName para mostrar correctamente en tabla
       const locationObj = locations.find(loc => loc.id === client.locationId);
       const enrichedClient = {
         ...data,
-        locationName: locationObj?.city|| "", // o loc.city
+        locationName: locationObj?.city || "", // o loc.city
       };
-  
+
       setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
       setMessage("Cliente agregado correctamente");
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message || 'Ocurrió un error al cargar el cliente.');
-        
+
       }
     }
   };
@@ -118,18 +119,40 @@ export default function ClientesPage() {
   const confirmDelete = (client: Client) => {
     setClientToDelete(client);
     setShowDeleteModal(true);
-};
+  };
 
   const handleDelete = async () => {
-    if(!clientToDelete) return;
-      await fetch(`http://localhost:8090/api/clients/${clientToDelete.id}`, {
+    if (!clientToDelete) return;
+
+    try {
+      const res = await fetch(`http://localhost:8090/api/clients/${clientToDelete.id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          ...clientToDelete,
+          active: false, //  baja lógica
+        }),
       });
 
+      if (!res.ok) throw new Error("Error al desactivar cliente");
+
+      //  Recargar la lista completa desde el backend
+      const refreshedClients = await fetch("http://localhost:8090/api/clients", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await refreshedClients.json();
+      setClients(data);
+
       setShowDeleteModal(false);
-  
+      setClientToDelete(null);
+    } catch (err) {
+      setError("Error al desactivar cliente");
+    }
   };
+
 
   const handleEdit = (client: Client) => {
     setEditClient(client);
@@ -151,21 +174,32 @@ export default function ClientesPage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(editClient),
       });
+
       if (!res.ok) throw new Error("Error al editar cliente");
+
       const updated = await res.json();
+
+      // 🛠 Enriquecer con el locationName (para que no se borre de la tabla)
+      const locationObj = locations.find(loc => loc.id === updated.locationId);
+
+      const enrichedClient = {
+        ...updated,
+        locationName: locationObj?.city || "", // o loc.name
+      };
+
       setClients((prev) =>
-        prev.map((cli) => (cli.id === updated.id ? updated : cli))
+        prev.map((cli) => (cli.id === updated.id ? enrichedClient : cli))
       );
+
       setShowModal(false);
     } catch {
       alert("Error al actualizar");
     }
   };
-
   return (
     <Container className="py-4">
       <h2 className="mb-4 text-primary">{t("client.title")}</h2>
@@ -253,7 +287,11 @@ export default function ClientesPage() {
                 <td>{cli.id}</td>
                 <td>{cli.name}</td>
                 <td>{cli.locationName}</td>
-                <td>{cli.active ? "Activo" : "Inactivo"}</td>
+                <td>
+                  <Badge bg={cli.active ? 'success' : 'danger'}>
+                    {cli.active ? 'Activo' : 'Inactivo'}
+                  </Badge>
+                </td>
                 <td>
                   <Button
                     size="sm"
@@ -264,7 +302,7 @@ export default function ClientesPage() {
                     {t("client.edit")}
                   </Button>
                   <Button size="sm" variant="danger" onClick={() => confirmDelete(cli)}>
-                  {t("client.delete")}
+                    {t("client.delete")}
                   </Button>
                 </td>
               </tr>
@@ -274,7 +312,7 @@ export default function ClientesPage() {
       </div>
 
       {/* Modal edición */}
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Editar Cliente</Modal.Title>
         </Modal.Header>
@@ -317,31 +355,31 @@ export default function ClientesPage() {
         </Modal.Footer>
       </Modal>
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
-                <motion.div
-                    initial={{ scale: 0.7, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.7, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                >
-                    <Modal.Header closeButton className="bg-danger text-white">
-                        <Modal.Title>⚠️ Confirmación</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body className="text-center">
-                        <p className="mb-3">
-                            ¿Estás seguro de que deseas eliminar el cliente <strong>{clientToDelete?.name}</strong>?
-                        </p>
-                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                            Cancelar
-                        </Button>
-                        <Button variant="danger" onClick={handleDelete}>
-                            Sí, Eliminar
-                        </Button>
-                    </Modal.Footer>
-                </motion.div>
-            </Modal>
+        <motion.div
+          initial={{ scale: 0.7, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.7, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Modal.Header closeButton className="bg-danger text-white">
+            <Modal.Title>⚠️ Confirmación</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="text-center">
+            <p className="mb-3">
+              ¿Estás seguro de que deseas eliminar el cliente <strong>{clientToDelete?.name}</strong>?
+            </p>
+            <p className="text-muted small">Esta acción no se puede deshacer.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancelar
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Sí, Eliminar
+            </Button>
+          </Modal.Footer>
+        </motion.div>
+      </Modal>
 
     </Container>
   );

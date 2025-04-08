@@ -42,7 +42,8 @@
   },
 
   "manager": {
-    "title": "Administrar Datos del Sistema",
+    "titleAdmin": "Administrar Datos del Sistema",
+    "titleUser": " Visualización de Datos",
     "skills": "Agregar Skill",
     "experience": "Agregar Experiencia",
     "availability": "Agregar Disponibilidad",

@@ -18,7 +18,7 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title:  t('dashboard.registerProfile'),
+      title: t('dashboard.registerProfile'),
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
       path: '/Profile/Register',

@@ -18,7 +18,7 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title:  "Crea un assignacion",
+      title: "Crea un assignacion",
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
       path: '/AssignmentsResource',

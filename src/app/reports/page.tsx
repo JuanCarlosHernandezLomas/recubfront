@@ -173,7 +173,7 @@ export default function GenerateReportPage() {
                                 <td>{p.firstName} {p.lastName}</td>
                                 <td>
                                     <Button variant="info" size="sm" onClick={() => generatePdf(p.id)}>
-                                    {t('report.button')}
+                                        {t('report.button')}
                                     </Button>
                                 </td>
                             </tr>

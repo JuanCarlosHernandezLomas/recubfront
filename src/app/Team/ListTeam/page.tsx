@@ -85,10 +85,13 @@ export default function ListTeamsPage() {
   const handleDelete = async () => {
     if (!teamToDelete) return;
     try {
-      const res = await fetch(`http://localhost:8090/api/teams/${teamToDelete.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        `http://localhost:8090/api/teams/${teamToDelete.id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (!res.ok) throw new Error("Error al eliminar el equipo.");
       fetchTeams(); // refresca la lista
       setShowDeleteModal(false);
@@ -132,16 +135,25 @@ export default function ListTeamsPage() {
               <div key={t.id} className="card mb-3 shadow-sm">
                 <div className="card-body">
                   <h5 className="card-title">{t.name}</h5>
-                  <p><strong>Proyecto:</strong> {t.projectName}</p>
-                  <p><strong>Descripción:</strong> {t.description}</p>
-                  <p><strong>Estado:</strong>{" "}
+                  <p>
+                    <strong>Proyecto:</strong> {t.projectName}
+                  </p>
+                  <p>
+                    <strong>Descripción:</strong> {t.description}
+                  </p>
+                  <p>
+                    <strong>Estado:</strong>{" "}
                     {t.active ? (
                       <Badge bg="success">Activo</Badge>
                     ) : (
                       <Badge bg="danger">Inactivo</Badge>
                     )}
                   </p>
-                  <Button variant="danger" size="sm" onClick={() => confirmDelete(t)}>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => confirmDelete(t)}
+                  >
                     Eliminar
                   </Button>
                 </div>
@@ -177,7 +189,11 @@ export default function ListTeamsPage() {
                       )}
                     </td>
                     <td>
-                      <Button variant="danger" size="sm" onClick={() => confirmDelete(t)}>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        onClick={() => confirmDelete(t)}
+                      >
                         Eliminar
                       </Button>
                     </td>
@@ -190,7 +206,12 @@ export default function ListTeamsPage() {
       )}
 
       {/* Modal confirmación */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        centered
+        backdrop="static"
+      >
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -204,7 +225,10 @@ export default function ListTeamsPage() {
             ¿Deseas eliminar el equipo <strong>{teamToDelete?.name}</strong>?
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
               Cancelar
             </Button>
             <Button variant="danger" onClick={handleDelete}>

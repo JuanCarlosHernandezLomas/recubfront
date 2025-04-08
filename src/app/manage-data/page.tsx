@@ -21,6 +21,7 @@ import Confetti from 'react-confetti';
 import { Fade } from 'react-awesome-reveal';
 import { useWindowSize } from 'react-use';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/useAuth';
 
 
 interface ApiForm {
@@ -41,6 +42,12 @@ export default function ManageDataPage() {
   const [error, setError] = useState('');
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
+  const { roles } = useAuth();
+
+  const hasRole = (allowedRoles: string[]) => {
+    return allowedRoles.some(role => roles.includes(role));
+  };
+
 
   const fetchAll = async () => {
     const token = localStorage.getItem('token');
@@ -76,8 +83,8 @@ export default function ManageDataPage() {
       type === 'skill'
         ? 'http://localhost:8090/api/skills'
         : type === 'experience'
-        ? 'http://localhost:8090/api/experience-level'
-        : 'http://localhost:8090/api/availability-status';
+          ? 'http://localhost:8090/api/experience-level'
+          : 'http://localhost:8090/api/availability-status';
 
     try {
       const response = await fetch(endpoint, {
@@ -90,7 +97,7 @@ export default function ManageDataPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); 
+        const errorData = await response.json();
         throw new Error(errorData.message || 'Error al agregar los datos');
       }
 
@@ -114,7 +121,10 @@ export default function ManageDataPage() {
 
   return (
     <Container className="py-5">
-      <h2 className="text-center text-primary mb-4">{t("manager.title")}</h2>
+
+      <h2 className="text-center text-primary mb-4">
+        {roles.includes("ROLE_ADMINS") ? t("manager.titleAdmin") : t("manager.titleUser")}
+      </h2>
 
       {message && (
         <Alert variant="success" className="text-center">
@@ -124,15 +134,15 @@ export default function ManageDataPage() {
       )}
       {error && <Alert variant="danger">{error}</Alert>}
       {showConfetti && (
-  <Confetti
-    width={width}
-    height={height}
-    numberOfPieces={300}       // más piezas
-    gravity={0.2}              // caída más lenta
-    recycle={false}            // no se repite
-    run={true}                 // activa el efecto
-  />
-)}
+        <Confetti
+          width={width}
+          height={height}
+          numberOfPieces={300}       // más piezas
+          gravity={0.2}              // caída más lenta
+          recycle={false}            // no se repite
+          run={true}                 // activa el efecto
+        />
+      )}
 
       <Row className="g-4">
         {/* Skill */}
@@ -141,18 +151,20 @@ export default function ManageDataPage() {
             <Card.Title className="text-center text-success mb-3">
               <Stars className="me-2" /> {t("manager.skills")}
             </Card.Title>
-            <Form onSubmit={(e) => handleSubmit(e, 'skill')}>
-              <Form.Control
-                type="text"
-                placeholder="Ej: Java, React"
-                value={skill.name}
-                onChange={(e) => setSkill({ name: e.target.value })}
-                required
-              />
-              <Button type="submit" className="mt-3 w-100" variant="success">
-                {t("manager.Button")}
-              </Button>
-            </Form>
+            {hasRole(['ROLE_ADMINS']) && (
+              <Form onSubmit={(e) => handleSubmit(e, 'skill')}>
+                <Form.Control
+                  type="text"
+                  placeholder="Ej: Java, React"
+                  value={skill.name}
+                  onChange={(e) => setSkill({ name: e.target.value })}
+                  required
+                />
+                <Button type="submit" className="mt-3 w-100" variant="success">
+                  {t("manager.Button")}
+                </Button>
+              </Form>
+            )}
             <Fade triggerOnce cascade damping={0.1}>
               <ListGroup className="mt-3">
                 {skills.map((s, i) => (
@@ -169,18 +181,20 @@ export default function ManageDataPage() {
             <Card.Title className="text-center text-warning mb-3">
               <RocketTakeoff className="me-2" /> {t("manager.experience")}
             </Card.Title>
-            <Form onSubmit={(e) => handleSubmit(e, 'experience')}>
-              <Form.Control
-                type="text"
-                placeholder="Ej: Junior, Senior"
-                value={experience.name}
-                onChange={(e) => setExperience({ name: e.target.value })}
-                required
-              />
-              <Button type="submit" className="mt-3 w-100" variant="warning">
-              {t("manager.Button")}
-              </Button>
-            </Form>
+            {hasRole(['ROLE_ADMINS']) && (
+              <Form onSubmit={(e) => handleSubmit(e, 'experience')}>
+                <Form.Control
+                  type="text"
+                  placeholder="Ej: Junior, Senior"
+                  value={experience.name}
+                  onChange={(e) => setExperience({ name: e.target.value })}
+                  required
+                />
+                <Button type="submit" className="mt-3 w-100" variant="warning">
+                  {t("manager.Button")}
+                </Button>
+              </Form>
+            )}
             <Fade triggerOnce cascade damping={0.1}>
               <ListGroup className="mt-3">
                 {experiences.map((e, i) => (
@@ -197,18 +211,20 @@ export default function ManageDataPage() {
             <Card.Title className="text-center text-info mb-3">
               <PeopleFill className="me-2" /> {t("manager.availability")}
             </Card.Title>
-            <Form onSubmit={(e) => handleSubmit(e, 'availability')}>
-              <Form.Control
-                type="text"
-                placeholder="Ej: Disponible, En Proyecto"
-                value={availability.name}
-                onChange={(e) => setAvailability({ name: e.target.value })}
-                required
-              />
-              <Button type="submit" className="mt-3 w-100" variant="info">
-              {t("manager.Button")}
-              </Button>
-            </Form>
+            {hasRole(['ROLE_ADMINS']) && (
+              <Form onSubmit={(e) => handleSubmit(e, 'availability')}>
+                <Form.Control
+                  type="text"
+                  placeholder="Ej: Disponible, En Proyecto"
+                  value={availability.name}
+                  onChange={(e) => setAvailability({ name: e.target.value })}
+                  required
+                />
+                <Button type="submit" className="mt-3 w-100" variant="info">
+                  {t("manager.Button")}
+                </Button>
+              </Form>
+            )}
             <Fade triggerOnce cascade damping={0.1}>
               <ListGroup className="mt-3">
                 {availabilities.map((a, i) => (

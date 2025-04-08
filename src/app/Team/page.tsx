@@ -14,7 +14,7 @@ const Profile = () => {
   const { t } = useTranslation();
   const modules = [
     {
-      title:  "crea un equipo",
+      title: "crea un equipo",
       icon: <PersonPlusFill size={32} className="text-primary" />,
       description: t('dashboard.registerProfileDesc'),
       path: '/Team/CreateTeam',
@@ -30,20 +30,20 @@ const Profile = () => {
     },
 
     {
-        title:  "asigna a un equipo",
-        icon: <PersonPlusFill size={32} className="text-primary" />,
-        description: t('dashboard.registerProfileDesc'),
-        path: '/Team/AssignMember',
-        animation: 'animate__fadeInLeft',
-      },
+      title: "asigna a un equipo",
+      icon: <PersonPlusFill size={32} className="text-primary" />,
+      description: t('dashboard.registerProfileDesc'),
+      path: '/Team/AssignMember',
+      animation: 'animate__fadeInLeft',
+    },
 
-      {
-        title: "ve todos los equipos asignados",
-        icon: <PeopleFill size={32} className="text-success" />,
-        description: t('dashboard.viewProfilesDesc'),
-        path: '/Team/ListTeamMembers',
-        animation: 'animate__fadeInRight',
-      },
+    {
+      title: "ve todos los equipos asignados",
+      icon: <PeopleFill size={32} className="text-success" />,
+      description: t('dashboard.viewProfilesDesc'),
+      path: '/Team/ListTeamMembers',
+      animation: 'animate__fadeInRight',
+    },
 
   ];
 

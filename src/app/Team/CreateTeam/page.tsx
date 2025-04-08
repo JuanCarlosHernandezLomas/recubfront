@@ -56,7 +56,8 @@ export default function CreateTeamPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` },
+          Authorization: `Bearer ${token}`
+        },
         body: JSON.stringify({ ...data, projectId: parseInt(data.projectId) }),
       });
 

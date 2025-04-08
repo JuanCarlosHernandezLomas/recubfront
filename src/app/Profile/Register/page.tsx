@@ -55,7 +55,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const {token}= useAuth();
+  const { token } = useAuth();
 
   useEffect(() => {
     fetchOptions("/api/availability-status", setAvailabilityStatuses);
@@ -65,7 +65,7 @@ export default function RegisterPage() {
   }, []);
 
   const fetchOptions = async (endpoint: string, setter: (data: Option[]) => void) => {
-    
+
     try {
       const response = await fetch(`http://localhost:8090${endpoint}`, {
         headers: {
@@ -75,11 +75,11 @@ export default function RegisterPage() {
       const data = await response.json();
       setter(data);
     } catch (error) {
-      if(error instanceof Error){
+      if (error instanceof Error) {
         setErrorMessage(error.message);
         console.error("Error fetching:", endpoint);
       }
-      else{
+      else {
         setErrorMessage("An unknown error occurred");
       }
     }
@@ -89,7 +89,7 @@ export default function RegisterPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-  
+
     if (name === "skillIds" && e.target instanceof HTMLSelectElement) {
       const selected = Array.from(e.target.selectedOptions).map((opt) => opt.value);
       setFormData((prev) => ({ ...prev, skillIds: selected }));
@@ -97,7 +97,7 @@ export default function RegisterPage() {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
-  
+
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -148,17 +148,17 @@ export default function RegisterPage() {
 
     try {
       const response = await fetch("http://localhost:8090/api/profile", {
-        
+
         method: "POST",
         body: payload,
         headers: {
-          
+
           Authorization: `Bearer ${token}`,
         },
       });
 
       if (!response.ok) {
-        const errorData = await response.json(); 
+        const errorData = await response.json();
         throw new Error(errorData.message || 'Error al registrar el perfil.');
       }
 
@@ -174,7 +174,7 @@ export default function RegisterPage() {
         locationId: "",
         userId: "",
         skillIds: [],
-      
+
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -245,7 +245,7 @@ export default function RegisterPage() {
 
         <Form.Group className="mb-3">
           <Form.Label>
-          {t('profile.CV')} <Upload />
+            {t('profile.CV')} <Upload />
           </Form.Label>
           <Form.Control
             type="file"
