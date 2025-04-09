@@ -5,7 +5,9 @@
     "email": "Email",
     "password": "Password",
     "button": "Login",
-    "procces": "Verifying credentials..."
+    "procces": "Verifying credentials...",
+    "error":"Invalid credentials. Please check and try again."
+
   },
   "dashboard": {
     "welcome": "Welcome to ResourceHub",

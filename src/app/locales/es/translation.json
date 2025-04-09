@@ -5,7 +5,8 @@
     "email":"Correo electrónico",
     "password":"Contraseña",
     "button":"Ingresar",
-    "procces":"Verificando credenciales..."
+    "procces":"Verificando credenciales...",
+    "error":"Credenciales inválidas. Por favor verifica e intenta nuevamente."
 
   },
   "dashboard": {

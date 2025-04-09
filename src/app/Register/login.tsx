@@ -54,7 +54,7 @@ const LoginPage = () => {
       if (!response.ok) {
         setLoading(false); //  detener el spinner antes de mostrar el error
         setError(
-          "Credenciales inválidas. Por favor verifica e intenta nuevamente."
+          t('login.error')
         );
         return;
       }

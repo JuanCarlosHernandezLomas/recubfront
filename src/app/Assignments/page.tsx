@@ -4,11 +4,7 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
-  GearFill,
   PeopleFill,
-  ClipboardData,
-  GeoAltFill,
-  PersonSquare,
 } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import 'animate.css';
