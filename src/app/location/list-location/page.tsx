@@ -14,8 +14,9 @@ import {
 } from "react-bootstrap";
 import { useAuth } from "@/app/context/useAuth";
 import { Fade } from 'react-awesome-reveal';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Building2 } from "lucide-react";
 
 interface Location {
     id: number;
@@ -35,6 +36,7 @@ export default function ViewLocationsPage() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [error, setError] = useState("");
     const [locationToDelete, setLocationToDelete] = useState<Location | null>(null);
+    const [validatedEdit, setValidatedEdit] = useState(false);
 
 
     const fetchLocations = async () => {
@@ -58,10 +60,6 @@ export default function ViewLocationsPage() {
         setShowModal(true);
     };
 
-    const handleDeleteClick = (location: Location) => {
-        setSelectedLocation(location);
-        setShowDeleteModal(true);
-    };
 
     const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!selectedLocation) return;
@@ -70,6 +68,18 @@ export default function ViewLocationsPage() {
     };
 
     const handleUpdate = async () => {
+        if (!selectedLocation) return;
+
+        setValidatedEdit(true);
+      
+        // Validar campos requeridos
+        const isInvalid =
+          !selectedLocation.name.trim() ||
+          !selectedLocation.city.trim() ||
+          !selectedLocation.state.trim() ||
+          !selectedLocation.country.trim();
+      
+        if (isInvalid) return;
         try {
             const response = await fetch(`http://localhost:8090/api/locations/${selectedLocation?.id}`, {
                 method: "PUT",
@@ -116,7 +126,7 @@ export default function ViewLocationsPage() {
 
     return (
         <Container className="py-4">
-            <h2 className="mb-4">{t('listlocation.title')}</h2>
+            <h2 className="mb-4"> <Building2 size={50} strokeWidth={1} />{t('listlocation.title')}</h2>
 
             {error && <Alert variant="danger">{error}</Alert>}
             <Fade cascade>
@@ -190,7 +200,7 @@ export default function ViewLocationsPage() {
                 </Modal.Header>
                 <Modal.Body>
                     {selectedLocation && (
-                        <Form>
+                        <Form noValidate validated={validatedEdit}>
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
@@ -199,7 +209,12 @@ export default function ViewLocationsPage() {
                                             name="name"
                                             value={selectedLocation.name}
                                             onChange={handleFormChange}
+                                            required
+                                            isInvalid={validatedEdit && !selectedLocation.name.trim()}
                                         />
+                                        <Form.Control.Feedback type="invalid">
+                                            {t("listlocation.requiredName")}
+                                        </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
@@ -209,7 +224,12 @@ export default function ViewLocationsPage() {
                                             name="city"
                                             value={selectedLocation.city}
                                             onChange={handleFormChange}
-                                        />
+                                            required
+                                            isInvalid={validatedEdit && !selectedLocation.city.trim()}
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                            {t("listlocation.requiredcity")}
+                                          </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -221,7 +241,12 @@ export default function ViewLocationsPage() {
                                             name="state"
                                             value={selectedLocation.state}
                                             onChange={handleFormChange}
-                                        />
+                                            required
+                                            isInvalid={validatedEdit && !selectedLocation.state.trim()}
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                            {t("listlocation.requiredstate")}
+                                          </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                                 <Col md={6}>
@@ -231,7 +256,12 @@ export default function ViewLocationsPage() {
                                             name="country"
                                             value={selectedLocation.country}
                                             onChange={handleFormChange}
-                                        />
+                                            required
+                                            isInvalid={validatedEdit && !selectedLocation.country.trim()}
+                                          />
+                                          <Form.Control.Feedback type="invalid">
+                                            {t("listlocation.requiredcountry")}
+                                          </Form.Control.Feedback>
                                     </Form.Group>
                                 </Col>
                             </Row>
@@ -240,10 +270,10 @@ export default function ViewLocationsPage() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
-                    {t('listlocation.cancel')}
+                        {t('listlocation.cancel')}
                     </Button>
                     <Button variant="primary" onClick={handleUpdate}>
-                    {t('listlocation.savechange')}
+                        {t('listlocation.savechange')}
                     </Button>
                 </Modal.Footer>
             </Modal>

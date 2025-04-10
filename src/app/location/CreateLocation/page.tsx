@@ -1,5 +1,6 @@
 "use client";
 
+import {  MapPinPlus } from "lucide-react";
 import { useState } from "react";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
@@ -23,6 +24,7 @@ export default function AddLocationPage() {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [validated, setValidated] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -33,6 +35,11 @@ export default function AddLocationPage() {
     e.preventDefault();
     setMessage("");
     setError("");
+    setValidated(true);
+
+    if (!formData.country.trim() || !formData.state.trim() || !formData.city.trim() || !formData.name.trim()) {
+      return;
+    }
 
     try {
       const token = localStorage.getItem("token");
@@ -53,6 +60,7 @@ export default function AddLocationPage() {
 
       setMessage("¡Ubicación agregada exitosamente!");
       setFormData({ country: "", state: "", city: "", name: "" });
+      setValidated(false);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message || 'Ocurrió un error al cargar las locaciones.');
@@ -64,12 +72,12 @@ export default function AddLocationPage() {
   return (
     <Container className="py-5">
       <Card className="p-4 shadow-sm">
-        <h4 className="text-primary mb-4 text-center">{t('location.title')}</h4>
+        <h4 className="text-primary mb-4 text-center"><MapPinPlus color="#1499ff" size={45}/>{t('location.title')}</h4>
 
         {message && <Alert variant="success">{message}</Alert>}
         {error && <Alert variant="danger">{error}</Alert>}
 
-        <Form onSubmit={handleSubmit}>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>{t('location.country')}</Form.Label>
             <Form.Control
@@ -78,8 +86,12 @@ export default function AddLocationPage() {
               value={formData.country}
               onChange={handleChange}
               required
-            />
-          </Form.Group>
+              isInvalid={validated && !formData.country.trim()}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t('location.requiredCountry')}
+              </Form.Control.Feedback>
+            </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>{t('location.state')}</Form.Label>
@@ -89,8 +101,12 @@ export default function AddLocationPage() {
               value={formData.state}
               onChange={handleChange}
               required
-            />
-          </Form.Group>
+              isInvalid={validated && !formData.state.trim()}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t('location.requiredstate')}
+              </Form.Control.Feedback>
+            </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>{t('location.city')}</Form.Label>
@@ -100,8 +116,12 @@ export default function AddLocationPage() {
               value={formData.city}
               onChange={handleChange}
               required
-            />
-          </Form.Group>
+              isInvalid={validated && !formData.city.trim()}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t('location.requiredcity')}
+              </Form.Control.Feedback>
+            </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>{t('location.locationName')}</Form.Label>
@@ -111,8 +131,12 @@ export default function AddLocationPage() {
               value={formData.name}
               onChange={handleChange}
               required
-            />
-          </Form.Group>
+              isInvalid={validated && !formData.name.trim()}
+              />
+              <Form.Control.Feedback type="invalid">
+                {t('location.requiredname')}
+              </Form.Control.Feedback>
+            </Form.Group>
 
           <div className="d-grid">
             <Button type="submit" variant="primary">

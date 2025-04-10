@@ -10,7 +10,6 @@ import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
 
-
 interface TeamForm {
   name: string;
   description: string;
@@ -63,18 +62,18 @@ export default function CreateTeamPage() {
         body: JSON.stringify({
           ...data,
           projectId: parseInt(data.projectId),
-          active: true // Se fuerza a true siempre
+          active: true
         }),
       });
 
       if (!response.ok) throw new Error('Error al crear el equipo.');
 
-      setSuccessMessage('¡Equipo creado exitosamente!');
+      setSuccessMessage(t('Team.success'));
       setErrorMessage('');
       reset();
     } catch (err) {
       setSuccessMessage('');
-      setErrorMessage('No se pudo crear el equipo.');
+      setErrorMessage(t('Team.error'));
     }
   };
 
@@ -100,18 +99,21 @@ export default function CreateTeamPage() {
 
         <Card className="shadow-sm border-0">
           <Card.Body>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Row className="mb-4">
                 <Col md={6}>
                   <Form.Group>
                     <Form.Label>{t('Team.name')}</Form.Label>
                     <Form.Control
                       placeholder="Ej. Backend Squad"
-                      {...register('name', { required: true })}
+                      {...register('name', {
+                        required: t('Team.requiredName'),
+                        minLength: { value: 3, message: t('Team.minName') }
+                      })}
                       isInvalid={!!errors.name}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.name?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -120,11 +122,14 @@ export default function CreateTeamPage() {
                     <Form.Label>{t('Team.description')}</Form.Label>
                     <Form.Control
                       placeholder="Breve descripción"
-                      {...register('description', { required: true })}
+                      {...register('description', {
+                        required: t('Team.requiredDescription'),
+                        minLength: { value: 10, message: t('Team.minDescription') }
+                      })}
                       isInvalid={!!errors.description}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.description?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -135,7 +140,7 @@ export default function CreateTeamPage() {
                   <Form.Group>
                     <Form.Label>{t('Team.proyect')}</Form.Label>
                     <Form.Select
-                      {...register('projectId', { required: true })}
+                      {...register('projectId', { required: t('Team.requiredProject') })}
                       isInvalid={!!errors.projectId}
                     >
                       <option value="">{t('Team.select')}</option>
@@ -146,7 +151,7 @@ export default function CreateTeamPage() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.projectId?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -155,7 +160,7 @@ export default function CreateTeamPage() {
               <div className="text-end">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button type="submit" variant="primary" size="lg">
-                  {t('Team.button')}
+                    {t('Team.button')}
                   </Button>
                 </motion.div>
               </div>

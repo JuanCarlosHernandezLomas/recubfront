@@ -5,7 +5,6 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
   GearFill,
-  PeopleFill,
   ClipboardData,
   GeoAltFill,
   PersonSquare,
@@ -15,6 +14,7 @@ import 'animate.css';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/useAuth';
 import { useHasMounted } from '../hooks/useHasMounted';
+import { ClipboardList, FolderClosed } from 'lucide-react';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -68,7 +68,7 @@ const Dashboard = () => {
     },
     {
       title: t('dashboard.Project'),
-      icon: <PersonSquare size={32} className="text-info" />,
+      icon:    <FolderClosed size={40} color='#ffeb0a' strokeWidth={2}/>,
       description: t('dashboard.ProjectDesc'),
       allowedRoles: ['ROLE_ADMINS'],
       path: '/project',
@@ -76,7 +76,7 @@ const Dashboard = () => {
     },
     {
       title: t('dashboard.ProjectAssigned'),
-      icon: <PersonSquare size={32} className="text-info" />,
+      icon: <ClipboardList size={45} color='#7300ff'/>,
       description: t('dashboard.ProjectAssignedDesc'),
       allowedRoles: ['ROLE_ADMINS', 'ROLE_USERS'],
       path: '/Assignments',

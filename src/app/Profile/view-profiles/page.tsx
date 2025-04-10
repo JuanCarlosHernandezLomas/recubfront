@@ -17,6 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from "@/app/context/useAuth";
+import { User } from "lucide-react";
 
 
 interface Profile {
@@ -52,6 +53,7 @@ export default function ViewProfilesPage() {
     const [filteredProfiles, setFilteredProfiles] = useState<Profile[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [validated, setValidated] = useState(false);
 
     //modal
     const [showModal, setShowModal] = useState(false);
@@ -214,8 +216,27 @@ export default function ViewProfilesPage() {
         }
     };
 
+
+
     const handleUpdateSubmit = async () => {
         if (!selectedProfile) return;
+        const fieldsToValidate = [
+            "firstName",
+            "lastName",
+            "jobTitle",
+            "locationId",
+            "experienceLevelId",
+            "availabilityStatusId"
+        ];
+
+        const hasErrors = fieldsToValidate.some(field =>
+            !selectedProfile[field as keyof Profile]?.toString().trim()
+        );
+        const hasSkillError = !selectedProfile.skillIds || selectedProfile.skillIds.length === 0;
+
+        setValidated(true);
+
+        if (hasErrors || hasSkillError) return;
 
         try {
             const formData = new FormData();
@@ -287,7 +308,7 @@ export default function ViewProfilesPage() {
     console.log(locationOptions)
     return (
         <Container className="py-4">
-            <h2 className="text-primary mb-4">{t('list.title')}</h2>
+            <h2 className="text-primary mb-4"> <User size={40} />{t('list.title')}</h2>
 
             {/* Filtros */}
             <Row className="mb-4">
@@ -475,51 +496,110 @@ export default function ViewProfilesPage() {
                 <Modal.Header closeButton><Modal.Title>{t("list.EditProfile")}</Modal.Title></Modal.Header>
                 <Modal.Body >
                     {selectedProfile && (
-                        <Form>
+                        <Form noValidate validated={validated}>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.Name")}</Form.Label>
-                                <Form.Control name="firstName" value={selectedProfile.firstName} onChange={handleFormChange} />
+                                <Form.Control name="firstName" value={selectedProfile.firstName} onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.firstName.trim()}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredName")}
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.LastName")}</Form.Label>
-                                <Form.Control name="lastName" value={selectedProfile.lastName} onChange={handleFormChange} />
+                                <Form.Control name="lastName" value={selectedProfile.lastName} onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.lastName.trim()} />
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredLastName")}
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.Position")}</Form.Label>
-                                <Form.Control name="jobTitle" value={selectedProfile.jobTitle} onChange={handleFormChange} />
+                                <Form.Control name="jobTitle" value={selectedProfile.jobTitle} onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.jobTitle.trim()} />
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredPosition")}
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.location")}</Form.Label>
-                                <Form.Select name="locationId" value={selectedProfile.locationId} onChange={handleFormChange}>
+                                <Form.Select
+                                    name="locationId"
+                                    value={selectedProfile.locationId}
+                                    onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.locationId}
+                                >
+                                    <option value="">--</option>
                                     {locations.map(loc => (
                                         <option key={loc.id} value={loc.id}>{loc.name}</option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredLocation")}
+                                </Form.Control.Feedback>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.ExperienceLevel")}</Form.Label>
-                                <Form.Select name="experienceLevelId" value={selectedProfile.experienceLevelId} onChange={handleFormChange}>
+                                <Form.Select
+                                    name="experienceLevelId"
+                                    value={selectedProfile.experienceLevelId}
+                                    onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.experienceLevelId}
+                                >
+                                    <option value="">--</option>
                                     {experiences.map(exp => (
                                         <option key={exp.id} value={exp.id}>{exp.name}</option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredExperience")}
+                                </Form.Control.Feedback>
                             </Form.Group>
+
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.availability")}</Form.Label>
-                                <Form.Select name="availabilityStatusId" value={selectedProfile.availabilityStatusId} onChange={handleFormChange}>
+                                <Form.Select
+                                    name="availabilityStatusId"
+                                    value={selectedProfile.availabilityStatusId}
+                                    onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && !selectedProfile.availabilityStatusId}
+                                >
+                                    <option value="">--</option>
                                     {statuses.map(stat => (
                                         <option key={stat.id} value={stat.id}>{stat.name}</option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredAvailability")}
+                                </Form.Control.Feedback>
                             </Form.Group>
+
                             <Form.Group className="mb-3">
                                 <Form.Label>{t("profile.Skills")}</Form.Label>
-                                <Form.Select multiple name="skillIds" value={selectedProfile.skillIds} onChange={handleFormChange}>
+                                <Form.Select
+                                    multiple
+                                    name="skillIds"
+                                    value={selectedProfile.skillIds}
+                                    onChange={handleFormChange}
+                                    required
+                                    isInvalid={validated && selectedProfile.skillIds.length === 0}
+                                >
                                     {skills.map(skill => (
                                         <option key={skill.id} value={skill.id}>{skill.name}</option>
                                     ))}
                                 </Form.Select>
+                                <Form.Control.Feedback type="invalid">
+                                    {t("profile.requiredSkills")}
+                                </Form.Control.Feedback>
                             </Form.Group>
+
                         </Form>
                     )}
                 </Modal.Body>

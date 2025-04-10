@@ -42,6 +42,8 @@ export default function ClientesPage() {
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
   const [editClient, setEditClient] = useState<Client | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [validatedEdit, setValidatedEdit] = useState(false);
+  const [validatedAdd, setValidatedAdd] = useState(false);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -81,6 +83,9 @@ export default function ClientesPage() {
     e.preventDefault();
     setMessage("");
     setError("");
+    setValidatedAdd(true);
+
+    if (!client.name.trim() || !client.locationId) return;
 
     try {
       const res = await fetch("http://localhost:8090/api/clients", {
@@ -108,6 +113,7 @@ export default function ClientesPage() {
 
       setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
+      setValidatedAdd(false);
       setMessage("Cliente agregado correctamente");
     } catch (error) {
       if (error instanceof Error) {
@@ -178,6 +184,10 @@ export default function ClientesPage() {
 
   const handleEditSubmit = async () => {
     if (!editClient) return;
+    setValidatedEdit(true);
+
+    // Validación visual + lógica
+    if (!editClient.name.trim() || !editClient.locationId) return;
     try {
       const res = await fetch(
         `http://localhost:8090/api/clients/${editClient.id}`,
@@ -210,6 +220,7 @@ export default function ClientesPage() {
       );
 
       setShowModal(false);
+      setValidatedEdit(false);
     } catch {
       alert("Error al actualizar");
     }
@@ -221,7 +232,7 @@ export default function ClientesPage() {
       {message && <Alert variant="success">{message}</Alert>}
       {error && <Alert variant="danger">{error}</Alert>}
 
-      <Form onSubmit={handleSubmit}>
+      <Form noValidate validated={validatedAdd} onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Col md={6}>
             <Form.Control
@@ -230,7 +241,11 @@ export default function ClientesPage() {
               value={client.name}
               onChange={handleChange}
               required
+              isInvalid={validatedAdd && !client.name.trim()}
             />
+            <Form.Control.Feedback type="invalid">
+              {t("client.requiredName")}
+            </Form.Control.Feedback>
           </Col>
           <Col md={4}>
             <Form.Select
@@ -238,6 +253,7 @@ export default function ClientesPage() {
               value={client.locationId}
               onChange={handleChange}
               required
+              isInvalid={validatedAdd && !client.locationId}
             >
               <option value="">{t("client.filterLocation")}</option>
               {locations.map((loc) => (
@@ -246,6 +262,9 @@ export default function ClientesPage() {
                 </option>
               ))}
             </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {t("client.requiredLocation")}
+            </Form.Control.Feedback>
           </Col>
           <Col md={2}>
             <Button type="submit" variant="primary" className="w-100">
@@ -346,14 +365,19 @@ export default function ClientesPage() {
         </Modal.Header>
         <Modal.Body>
           {editClient && (
-            <Form>
+            <Form noValidate validated={validatedEdit}>
               <Form.Group className="mb-3">
                 <Form.Label>{t("client.name")}</Form.Label>
                 <Form.Control
                   name="name"
                   value={editClient.name}
                   onChange={handleEditChange}
+                  required
+                  isInvalid={validatedEdit && !editClient.name.trim()}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {t("client.requiredName")}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group>
                 <Form.Label>{t("client.location")}</Form.Label>
@@ -361,6 +385,8 @@ export default function ClientesPage() {
                   name="locationId"
                   value={editClient.locationId}
                   onChange={handleEditChange}
+                  required
+                  isInvalid={validatedEdit && !editClient.locationId}
                 >
                   <option value="">{t("client.filterLocation")}</option>
                   {locations.map((l) => (
@@ -369,6 +395,9 @@ export default function ClientesPage() {
                     </option>
                   ))}
                 </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  {t("client.requiredLocation")}
+                </Form.Control.Feedback>
               </Form.Group>
             </Form>
           )}

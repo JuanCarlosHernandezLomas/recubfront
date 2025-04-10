@@ -2,10 +2,11 @@
 
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
-import { Journal, JournalPlus } from "react-bootstrap-icons";
+import {  JournalPlus } from "react-bootstrap-icons";
 import Link from "next/link";
 import "animate.css";
 import { useTranslation } from "react-i18next";
+import { FolderOpen } from "lucide-react";
 
 const Profile = () => {
   const { t } = useTranslation();
@@ -20,7 +21,7 @@ const Profile = () => {
 
     {
       title: t("Project.titlecardDes"),
-      icon: <Journal size={32} className="text-success" />,
+      icon:   <FolderOpen size={32} className="text-succes" />,
       description: t("Project.cardDesclist"),
       path: "/project/list-projects",
       animation: "animate__fadeInRight",

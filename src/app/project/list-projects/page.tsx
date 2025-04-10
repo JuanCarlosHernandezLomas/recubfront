@@ -74,6 +74,7 @@ export default function ListProjectsPage() {
         control,
         reset,
         formState: { errors },
+        watch 
     } = useForm<FormValues>();
 
     const fetchData = async () => {
@@ -269,10 +270,10 @@ export default function ListProjectsPage() {
                                 <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
                                 <div className="d-flex justify-content-end">
                                     <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                    {t('ListProject.edit')}
+                                        {t('ListProject.edit')}
                                     </Button>
                                     <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                    {t('ListProject.delete')}
+                                        {t('ListProject.delete')}
                                     </Button>
                                 </div>
                             </motion.div>
@@ -323,7 +324,7 @@ export default function ListProjectsPage() {
                                                 {t("ListProject.edit")}
                                             </Button>
                                             <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                            {t("ListProject.delete")}
+                                                {t("ListProject.delete")}
                                             </Button>
                                         </td>
                                     </tr>
@@ -339,23 +340,24 @@ export default function ListProjectsPage() {
                     <Modal.Title>{t("Project.editTitle")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleSubmit(onSubmit)}>
+                    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label>{t('ListProject.name')}</Form.Label>
-                                    <Form.Control {...register('name', { required: true })} isInvalid={!!errors.name} />
-                                    <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                                    <Form.Control {...register('name', { required: t("Project.requiredName") })} isInvalid={!!errors.name} />
+                                    <Form.Control.Feedback type="invalid">{errors.name?.message}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label>{t("Project.description")}</Form.Label>
-                                    <Form.Control {...register('description', { required: true })} isInvalid={!!errors.description} />
-                                    <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                                    <Form.Control {...register('description', { required: t("Project.requiredDescription") })} isInvalid={!!errors.description} />
+                                    <Form.Control.Feedback type="invalid">{errors.description?.message}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
+
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
@@ -363,12 +365,16 @@ export default function ListProjectsPage() {
                                     <Controller
                                         control={control}
                                         name="startDate"
-                                        rules={{ required: true }}
+                                        rules={{ required: t("Project.requiredStartDate") }}
                                         render={({ field }) => (
-                                            <DatePicker className="form-control" selected={field.value} onChange={field.onChange} />
+                                            <DatePicker
+                                                className={`form-control ${errors.startDate ? 'is-invalid' : ''}`}
+                                                selected={field.value}
+                                                onChange={field.onChange}
+                                            />
                                         )}
                                     />
-                                    {errors.startDate && <div className="text-danger">Campo requerido</div>}
+                                    {errors.startDate && <div className="text-danger">{errors.startDate.message as string}</div>}
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
@@ -377,54 +383,72 @@ export default function ListProjectsPage() {
                                     <Controller
                                         control={control}
                                         name="endDate"
-                                        rules={{ required: true }}
+                                        rules={{
+                                            required: t("Project.requiredEndDate"),
+                                            validate: (end) =>
+                                                !watch("startDate") || !end || end >= watch("startDate") || t("Project.invalidDateRange"),
+                                        }}
                                         render={({ field }) => (
-                                            <DatePicker className="form-control" selected={field.value} onChange={field.onChange} />
+                                            <DatePicker
+                                                className={`form-control ${errors.endDate ? 'is-invalid' : ''}`}
+                                                selected={field.value}
+                                                onChange={field.onChange}
+                                            />
                                         )}
                                     />
-                                    {errors.endDate && <div className="text-danger">Campo requerido</div>}
+                                    {errors.endDate && <div className="text-danger">{errors.endDate.message as string}</div>}
                                 </Form.Group>
                             </Col>
                         </Row>
+
                         <Row className="mb-3">
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label>{t('ListProject.client')}</Form.Label>
-                                    <Form.Select {...register('clientId', { required: true })} isInvalid={!!errors.clientId}>
-                                        <option value="">Seleccione</option>
+                                    <Form.Select {...register('clientId', { required: t("Project.requiredClient") })} isInvalid={!!errors.clientId}>
+                                        <option value="">{t("Project.clientSelect")}</option>
                                         {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                     </Form.Select>
-                                    <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid">{errors.clientId?.message}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label>{t('ListProject.owner')}</Form.Label>
-                                    <Form.Select {...register('ownerId', { required: true })} isInvalid={!!errors.ownerId}>
-                                        <option value="">Seleccione</option>
+                                    <Form.Select {...register('ownerId', { required: t("Project.requiredOwner") })} isInvalid={!!errors.ownerId}>
+                                        <option value="">{t("Project.ownerSelect")}</option>
                                         {owners.map(o => <option key={o.id} value={o.id}>{o.employeeId}</option>)}
                                     </Form.Select>
-                                    <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid">{errors.ownerId?.message}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
+
                         <Row>
                             <Col md={12}>
                                 <Form.Group className="mb-3">
                                     <Form.Label>{t('ListProject.skill')}</Form.Label>
-                                    <Form.Select multiple {...register('skillIds', { required: true })} isInvalid={!!errors.skillIds}>
+                                    <Form.Select
+                                        multiple
+                                        {...register('skillIds', {
+                                            validate: (value) => value.length > 0 || t("Project.requiredSkill"),
+                                        })}
+                                        isInvalid={!!errors.skillIds}
+                                    >
                                         {skills.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                                     </Form.Select>
-                                    <Form.Control.Feedback type="invalid">Seleccione al menos uno</Form.Control.Feedback>
+                                    <Form.Control.Feedback type="invalid">{errors.skillIds?.message as string}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
                         </Row>
+
                         <div className="text-end">
                             <Button type="submit" variant="primary">{t("Project.savechange")}</Button>
                         </div>
                     </Form>
                 </Modal.Body>
             </Modal>
+
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
                 <motion.div
                     initial={{ scale: 0.7, opacity: 0 }}
@@ -437,16 +461,16 @@ export default function ListProjectsPage() {
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                        {t("warningmessage.Project")} <strong>{projectToDelete?.name}</strong>?
+                            {t("warningmessage.Project")} <strong>{projectToDelete?.name}</strong>?
                         </p>
                         <p className="text-muted small">{t("warningmessage.caution")}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        {t("warningmessage.cancel")}
+                            {t("warningmessage.cancel")}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                        {t("warningmessage.accept")}
+                            {t("warningmessage.accept")}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

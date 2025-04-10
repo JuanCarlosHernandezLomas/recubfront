@@ -44,7 +44,6 @@ export default function ListAssignmentsPage() {
     const [filtered, setFiltered] = useState<Assignment[]>([]);
     const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const { register, handleSubmit, control, reset } = useForm<FormValues>();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [assigmentToDelete, setAssigmentToDelete] = useState<Assignment | null>(null);
     const [filterProfile, setFilterProfile] = useState('');
@@ -53,6 +52,15 @@ export default function ListAssignmentsPage() {
     const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
     const [profiles, setProfiles] = useState<Option[]>([]);
     const [projects, setProjects] = useState<Option[]>([]);
+    const {
+        register,
+        handleSubmit,
+        control,
+        reset,
+        watch,
+        formState: { errors }
+      } = useForm<FormValues>();
+      
 
     const fetchAssignments = async () => {
         const res = await fetch('http://localhost:8090/api/resource-assignments', {
@@ -253,56 +261,88 @@ export default function ListAssignmentsPage() {
                     <Modal.Title>{t('AssignProfiletoProjectList.editTitle')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={handleSubmit(onSubmit)}>
+                    <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.profile')}</Form.Label>
-                            <Form.Select {...register("profileId", { required: true })}>
+                            <Form.Select {...register("profileId", { required: t("AssignProfiletoProjectList.requiredProfile") })} isInvalid={!!errors.profileId}>
+                                <option value="">{t("AssignProfiletoProjectList.selectProfile")}</option>
                                 {profiles.map((p) => (
                                     <option key={p.id} value={p.id}>{p.firstName}</option>
                                 ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.profileId?.message}
+                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.project')}</Form.Label>
-                            <Form.Select {...register("projectId", { required: true })}>
+                            <Form.Select {...register("projectId", { required: t("AssignProfiletoProjectList.requiredProject") })} isInvalid={!!errors.projectId}>
+                                <option value="">{t("AssignProfiletoProjectList.selectProject")}</option>
                                 {projects.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.projectId?.message}
+                            </Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.statusPro')}</Form.Label>
-                            <Form.Select {...register('status', { required: true })}>
+                            <Form.Select {...register('status', { required: t("AssignProfiletoProjectList.requiredStatus") })} isInvalid={!!errors.status}>
+                                <option value="">{t("AssignProfiletoProjectList.selectStatus")}</option>
                                 <option value="FINISHED">FINISHED</option>
                                 <option value="IN_PROGRESS">IN_PROGRESS</option>
                             </Form.Select>
+                            <Form.Control.Feedback type="invalid">
+                                {errors.status?.message}
+                            </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.starDate')}</Form.Label>
                             <Controller
                                 name="startDate"
                                 control={control}
+                                rules={{ required: t("AssignProfiletoProjectList.requiredStartDate") }}
                                 render={({ field }) => (
-                                    <DatePicker className="form-control" selected={field.value} onChange={field.onChange} />
+                                    <DatePicker
+                                        className={`form-control ${errors.startDate ? 'is-invalid' : ''}`}
+                                        selected={field.value}
+                                        onChange={field.onChange}
+                                    />
                                 )}
                             />
+                            {errors.startDate && <div className="invalid-feedback d-block">{errors.startDate.message as string}</div>}
                         </Form.Group>
+
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.EndDate')}</Form.Label>
                             <Controller
                                 name="endDate"
                                 control={control}
+                                rules={{
+                                    required: t("AssignProfiletoProjectList.requiredEndDate"),
+                                    validate: (value) =>
+                                        !watch("startDate") || !value || value >= watch("startDate") || t("AssignProfiletoProjectList.invalidDateRange"),
+                                }}
                                 render={({ field }) => (
-                                    <DatePicker className="form-control" selected={field.value} onChange={field.onChange} />
+                                    <DatePicker
+                                        className={`form-control ${errors.endDate ? 'is-invalid' : ''}`}
+                                        selected={field.value}
+                                        onChange={field.onChange}
+                                    />
                                 )}
                             />
+                            {errors.endDate && <div className="invalid-feedback d-block">{errors.endDate.message as string}</div>}
                         </Form.Group>
+
                         <div className="text-end mt-3">
                             <Button variant="primary" type="submit">{t('AssignProfiletoProjectList.savechange')}</Button>
                         </div>
                     </Form>
+
                 </Modal.Body>
             </Modal>
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
@@ -317,17 +357,17 @@ export default function ListAssignmentsPage() {
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                        {t('warningmessage.assignment')}  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
-                        {t('warningmessage.projectss')}  <strong>{assigmentToDelete?.projectName}</strong>?
+                            {t('warningmessage.assignment')}  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
+                            {t('warningmessage.projectss')}  <strong>{assigmentToDelete?.projectName}</strong>?
                         </p>
                         <p className="text-muted small">{t('warningmessage.caution')}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                        {t('warningmessage.cancel')}
+                            {t('warningmessage.cancel')}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                        {t('warningmessage.accept')}
+                            {t('warningmessage.accept')}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

@@ -47,7 +47,20 @@
     "SelectLocation": "Select a location",
     "Register": "Register",
     "ProfilSucces": "Profile created successfully!",
-    "ProfilError": "Error while registering profile."
+    "ProfilError": "Error while registering profile.",
+    "requiredId": "Employee ID is required.",
+    "requiredName": "First name is required.",
+    "requiredLastName": "Last name is required.",
+    "requiredPosition": "Position is required.",
+    "requiredCV": "You must upload a file.",
+    "requiredAvailability": "You must select an availability.",
+    "requiredExperience": "You must select an experience level.",
+    "requiredLocation": "You must select a location.",
+    "requiredUser": "You must enter a user ID.",
+    "requiredSkills": "You must select at least one skill.",
+    "noWhitespaceError": "Text fields cannot be empty or contain only spaces.",
+
+    "success": "Employee Successfully Added"
   },
   "manager": {
     "titleAdmin": "Manage System Data",
@@ -95,9 +108,9 @@
     "add": "ADD",
     "filterCustomer": "Customer Name",
     "filterLocation": "Select a location",
-    "editTitle":"Edit Customer",
-    "cancel":"Cancel",
-    "savechange":"Save Changes"
+    "editTitle": "Edit Customer",
+    "cancel": "Cancel",
+    "savechange": "Save Changes"
   },
 
   "report": {
@@ -117,11 +130,10 @@
     "location": "Are you sure you want to delete the location",
     "customer": "Are you sure you want to delete the customer",
     "Project": "Are you sure you want to delete the Project",
- "assignment":"Are you sure you want to remove the assignment from",
-"projectss":"to the project",
-"Team": "Do you want to delete the team",
-"TeamAssg":"to the team"
-
+    "assignment": "Are you sure you want to remove the assignment from",
+    "projectss": "to the project",
+    "Team": "Do you want to delete the team",
+    "TeamAssg": "to the team"
   },
 
   "location": {
@@ -142,7 +154,7 @@
     "name": "Name",
     "city": "City",
     "state": "State",
-    "status":"Status",
+    "status": "Status",
     "country": "Country",
     "Action": "Actions",
     "Active": "Active",
@@ -169,10 +181,9 @@
     "ownerSelect": "Select User",
     "skill": "Required Skills",
     "button": "Create Project",
-    "editTitle":"Edit Project",
-    "savechange":"Save Changes",
-    "descripcion":"Description"
-
+    "editTitle": "Edit Project",
+    "savechange": "Save Changes",
+    "descripcion": "Description"
   },
   "ListProject": {
     "title": "List of Project",
@@ -186,10 +197,10 @@
     "Action": "Action",
     "filterName": "Search for Name",
     "filter": "All",
-    "Active":"Active",
-    "Inactive":"Inactive",
-    "delete":"Delete",
-    "edit":"Edit"
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "delete": "Delete",
+    "edit": "Edit"
   },
   "AssignProfiletoProject": {
     "title": "Assign Profile to Project",
@@ -205,24 +216,24 @@
     "selecStatus": "Select the project status",
     "button": "Assign Project"
   },
-  "AssignProfiletoProjectList":{
-"title":"Profile Assignment",
-"profile":"Profile",
-"project":"Project",
-"statusPro":"Status of Proyect",
-"starDate":"Start Date",
-"EndDate":"End Date",
-"status":"Status",
-"Action":"Actions",
-"Active":"Active",
-"Inactive":"Inactive",
-"edit":"Edit",
-"delete":"Delete",
-"editTitle":"Edit Assignment",
-"savechange":"Save Changes",
-"filterProfile": "Search by profile",
-"filterProject": "Search by project"
-},
+  "AssignProfiletoProjectList": {
+    "title": "Profile Assignment",
+    "profile": "Profile",
+    "project": "Project",
+    "statusPro": "Status of Proyect",
+    "starDate": "Start Date",
+    "EndDate": "End Date",
+    "status": "Status",
+    "Action": "Actions",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editTitle": "Edit Assignment",
+    "savechange": "Save Changes",
+    "filterProfile": "Search by profile",
+    "filterProject": "Search by project"
+  },
 
   "AssignProyect": {
     "title": "Create an assignment",
@@ -240,57 +251,55 @@
     "AssignTeamList": "View teams with assignments",
     "AssignTeamListDesc": "View and manage user assignments"
   },
-  "Team":{
-"Teamtitle": "Create new team",
-"name":"📛 Team Name",
-"description":"📝 Team Description",
-"project":"📁 Project",
-"select":"select a project",
-"button": "Create team"
-},
-"TeamList":{
-"title": "🏢 Created Teams",
-"filtername": "Search by team name",
-"filterproyect": "Search by project",
-"project": "Project",
-"descripcion": "Description",
-"status": "Status",
-"delete": "Delete",
-"edit": "Edit",
-"name":"Name",
-"Action":"Actions",
-"editTitle":"Edit Team",
-"cancel":"Cancel",
-"savechange":"Save Changes"
-
-},
-
-"AssigmenTeam":{
-  "title": "👥 Assign Member to a Team",
-  "selectProfile":"Select a Profile",
-  "profile":"👤 Select Profile",
-  "Team":"🏢 Select Team",
-  "selectTeam":"Select a team",
-  "rol":"🎯 Role in the Team",
-  "button": "Assign Member",
-  "Success":"✅ Member assigned successfully!",
-  "error":"❌ The member could not be assigned to the team."
-  
+  "Team": {
+    "Teamtitle": "Create new team",
+    "name": "📛 Team Name",
+    "description": "📝 Team Description",
+    "project": "📁 Project",
+    "select": "select a project",
+    "button": "Create team"
+  },
+  "TeamList": {
+    "title": "🏢 Created Teams",
+    "filtername": "Search by team name",
+    "filterproyect": "Search by project",
+    "project": "Project",
+    "descripcion": "Description",
+    "status": "Status",
+    "delete": "Delete",
+    "edit": "Edit",
+    "name": "Name",
+    "Action": "Actions",
+    "editTitle": "Edit Team",
+    "cancel": "Cancel",
+    "savechange": "Save Changes"
   },
 
-  "AssigmenTeamList":{
+  "AssigmenTeam": {
+    "title": "👥 Assign Member to a Team",
+    "selectProfile": "Select a Profile",
+    "profile": "👤 Select Profile",
+    "Team": "🏢 Select Team",
+    "selectTeam": "Select a team",
+    "rol": "🎯 Role in the Team",
+    "button": "Assign Member",
+    "Success": "✅ Member assigned successfully!",
+    "error": "❌ The member could not be assigned to the team."
+  },
+
+  "AssigmenTeamList": {
     "title": "👥 Members Assigned to a Team",
-    "Team":"Team",
-    "rol":"role",
-    "status":"Status",
-    "Active":"Active",
-    "Inactive":"Inactive",
-    "delete":"Delete",
-    "Action":"Actions",
-    "user":"User",
-    "filtername":"Search by  user name",
-    "filterteam":"Search by  Team",
-    "edit":"Edit",
+    "Team": "Team",
+    "rol": "role",
+    "status": "Status",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "delete": "Delete",
+    "Action": "Actions",
+    "user": "User",
+    "filtername": "Search by  user name",
+    "filterteam": "Search by  Team",
+    "edit": "Edit",
     "editTitle": "Edit Member Assignment"
-    }
+  }
 }

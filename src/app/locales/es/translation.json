@@ -47,7 +47,19 @@
     "SelectLocation": "selecciona una ubicacion",
     "Register": "Registrar",
     "ProfilSucces": "¡Perfil creado exitosamente!",
-    "ProfilError": "Error al registrar el perfil."
+    "ProfilError": "Error al registrar el perfil.",
+    "requiredId": "El ID del empleado es obligatorio.",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredLastName": "El apellido es obligatorio.",
+    "requiredPosition": "El puesto es obligatorio.",
+    "requiredCV": "Debe subir un archivo.",
+    "requiredAvailability": "Debe seleccionar una disponibilidad.",
+    "requiredExperience": "Debe seleccionar un nivel de experiencia.",
+    "requiredLocation": "Debe seleccionar una ubicación.",
+    "requiredUser": "Debe ingresar el ID del usuario.",
+    "requiredSkills": "Debe seleccionar al menos una habilidad.",
+    "noWhitespaceError": "Los campos de texto no pueden estar vacíos o contener solo espacios.",
+    "success": "Empleado Agegado exitosamente"
   },
 
   "manager": {
@@ -98,10 +110,9 @@
     "filterCustomer": "Nombre del cliente",
     "filterLocation": "Seleccione una ubicación",
     "Succes": "Cliente agregado correctamente",
-    "editTitle":"Editar Cliente",
-    "cancel":"Cancelar",
-    "savechange":"Guardar Cambios"
-
+    "editTitle": "Editar Cliente",
+    "cancel": "Cancelar",
+    "savechange": "Guardar Cambios"
   },
   "report": {
     "title": "Generar reporte de empleado",
@@ -120,10 +131,10 @@
     "location": "¿Estás seguro de que deseas eliminar la locacion",
     "customer": "¿Estás seguro de que deseas eliminar al cliente",
     "Project": "¿Estás seguro de que deseas eliminar el Projecto",
-    "assignment":"¿Estás seguro de que deseas eliminar la asignacion de",
-    "projectss":"al proyecto",
-    "Team":"¿Deseas eliminar el equipo",
-    "TeamAssg":"al equipo"
+    "assignment": "¿Estás seguro de que deseas eliminar la asignacion de",
+    "projectss": "al proyecto",
+    "Team": "¿Deseas eliminar el equipo",
+    "TeamAssg": "al equipo"
   },
   "location": {
     "title": "Agregar Nueva Ubicación",
@@ -143,16 +154,16 @@
     "name": "Nombre",
     "city": "ciudad",
     "state": "Estado",
-    "status":"Estatus",
+    "status": "Estatus",
     "country": "País",
     "Action": "Acciones",
     "Active": "Activo",
     "Inactive": "Inactivo",
     "edit": "Editar",
     "delete": "Elimminar",
-    "editTitle":"Editar Locación",
-    "cancel":"Cancelar",
-    "savechange":"Guardar Cambios"
+    "editTitle": "Editar Locación",
+    "cancel": "Cancelar",
+    "savechange": "Guardar Cambios"
   },
 
   "Project": {
@@ -171,9 +182,9 @@
     "ownerSelect": "Selecciona un usuario",
     "skill": "Habilidades requeridas",
     "button": "Crear proyecto",
-    "editTitle":"Editar Projecto",
-    "savechange":"Guardar Cambios",
-    "descripcion":"Descripcion"
+    "editTitle": "Editar Projecto",
+    "savechange": "Guardar Cambios",
+    "descripcion": "Descripcion"
   },
   "ListProject": {
     "title": "Listado de proyectos",
@@ -187,10 +198,10 @@
     "Action": "Action",
     "filterName": "Buscar por nombre",
     "filter": "Todos",
-    "Active":"Activo",
-    "Inactive":"Inactivo",
-    "delete":"Delete",
-    "edit":"Editar"
+    "Active": "Activo",
+    "Inactive": "Inactivo",
+    "delete": "Delete",
+    "edit": "Editar"
   },
   "AssignProfiletoProject": {
     "title": "Asignar Perfil a Proyecto",
@@ -206,22 +217,22 @@
     "selecStatus": "Seleccione el estado del proyecto",
     "button": "Asignar Proyecto"
   },
-  "AssignProfiletoProjectList":{
-    "title":"Asignacion de perfiles",
-    "profile":"Perfil",
-    "project":"Proyecto",
-    "starDate":"Fecha de Inicio",
-    "EndDate":"Fecha de Fin",
-    "statusPro":"estado del proyecto",
-    "status":"Estatus",
-    "Action":"Acciones",
-    "Active":"Activo",
-    "Inactive":"Inactivo",
-    "edit":"Editar",
-    "delete":"Elimminar",
-    "editTitle":"Editar Asignacion",
-    "savechange":"Guardar Cambios",
-    "filterProfile":"Buscar por perfil",
+  "AssignProfiletoProjectList": {
+    "title": "Asignacion de perfiles",
+    "profile": "Perfil",
+    "project": "Proyecto",
+    "starDate": "Fecha de Inicio",
+    "EndDate": "Fecha de Fin",
+    "statusPro": "estado del proyecto",
+    "status": "Estatus",
+    "Action": "Acciones",
+    "Active": "Activo",
+    "Inactive": "Inactivo",
+    "edit": "Editar",
+    "delete": "Elimminar",
+    "editTitle": "Editar Asignacion",
+    "savechange": "Guardar Cambios",
+    "filterProfile": "Buscar por perfil",
     "filterProject": "Buscar por proyecto"
   },
   "AssignProyect": {
@@ -241,56 +252,53 @@
     "AssignTeamList": "ve los equipos con Asignacion",
     "AssignTeamListDesc": "consulta y gestiona las asignaciones de usuarios"
   },
-  "Team":{
+  "Team": {
     "Teamtitle": "Crear nuevo equipo",
-    "name":"📛 Nombre del Equipo",
-    "description":"📝 Descripción del Equipo",
-    "proyect":"📁 Proyecto",
-    "select":"seleccione un proyecto",
+    "name": "📛 Nombre del Equipo",
+    "description": "📝 Descripción del Equipo",
+    "proyect": "📁 Proyecto",
+    "select": "seleccione un proyecto",
     "button": "Crear equipo"
   },
-  "TeamList":{
+  "TeamList": {
     "title": "🏢 Equipos Creados",
-    "filtername":"Buscar por nombre del equipo",
-    "filterproyect":"Buscar por proyecto",
-    "project":"Proyecto",
-    "descripcion":"Descripcion",
-    "status":"Estado",
-    "delete":"Elimminar",
-    "edit":"Editar",
-    "name":"Nombre",
-    "Action":"Acciones",
-    "editTitle":"Editar Equipo",
-    "cancel":"Cancelar",
-    "savechange":"Guardar Cambios"
+    "filtername": "Buscar por nombre del equipo",
+    "filterproyect": "Buscar por proyecto",
+    "project": "Proyecto",
+    "descripcion": "Descripcion",
+    "status": "Estado",
+    "delete": "Elimminar",
+    "edit": "Editar",
+    "name": "Nombre",
+    "Action": "Acciones",
+    "editTitle": "Editar Equipo",
+    "cancel": "Cancelar",
+    "savechange": "Guardar Cambios"
   },
-  "AssigmenTeam":{
+  "AssigmenTeam": {
     "title": "👥 Asignar Miembro a un Equipo",
-    "selectProfile":"Seleccione un Perfil",
-    "profile":"👤 Seleccionar Perfil",
-    "Team":"🏢 Seleccionar Equipo",
-    "selectTeam":"Seleccione un equipo",
-    "rol":"🎯 Rol en el Equipo",
+    "selectProfile": "Seleccione un Perfil",
+    "profile": "👤 Seleccionar Perfil",
+    "Team": "🏢 Seleccionar Equipo",
+    "selectTeam": "Seleccione un equipo",
+    "rol": "🎯 Rol en el Equipo",
     "button": "Asignar Miembro",
-    "Success":"✅ ¡Miembro asignado correctamente!",
-    "error":"❌ No se pudo asignar el miembro al equipo."
-
+    "Success": "✅ ¡Miembro asignado correctamente!",
+    "error": "❌ No se pudo asignar el miembro al equipo."
   },
-  "AssigmenTeamList":{
+  "AssigmenTeamList": {
     "title": "👥 Miembros Asignados a un Equipo",
-    "Team":"Equipo",
-    "rol":"rol",
-    "status":"Estado",
-    "Active":"Activo",
-    "Inactive":"Inactivo",
-    "delete":"Elimminar",
-    "Action":"Acciones",
-    "user":"Usuario",
-    "filtername":"Buscar por nombre",
-    "filterteam":"Buscar por equipo",
-    "edit":"Editar",
-    "editTitle":" Editar Asignacion de miembros"
-
-  } 
-
+    "Team": "Equipo",
+    "rol": "rol",
+    "status": "Estado",
+    "Active": "Activo",
+    "Inactive": "Inactivo",
+    "delete": "Elimminar",
+    "Action": "Acciones",
+    "user": "Usuario",
+    "filtername": "Buscar por nombre",
+    "filterteam": "Buscar por equipo",
+    "edit": "Editar",
+    "editTitle": " Editar Asignacion de miembros"
+  }
 }

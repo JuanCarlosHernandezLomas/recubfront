@@ -8,6 +8,7 @@ import { useAuth } from "../context/useAuth";
 import { useTranslation } from 'react-i18next';
 
 import QRCode from "qrcode";
+import { ClipboardMinus } from "react-bootstrap-icons";
 
 interface ProfileSummary {
     id: number;
@@ -154,7 +155,7 @@ export default function GenerateReportPage() {
     };
     return (
         <Container className="py-4">
-            <h3 className="mb-4 text-primary">{t('report.title')}</h3>
+            <h3 className="mb-4 text-primary"> <ClipboardMinus size={40} />{t('report.title')}</h3>
             {loading && <Spinner animation="border" />}
             {error && <Alert variant="danger">{error}</Alert>}
             {!loading && !error && (
