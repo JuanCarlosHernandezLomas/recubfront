@@ -251,6 +251,7 @@ export default function RegisterPage() {
             type="file"
             name="resume"
             accept=".pdf,.doc,.docx"
+            lang="en"
             onChange={handleFileChange}
           />
         </Form.Group>

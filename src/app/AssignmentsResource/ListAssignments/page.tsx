@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '@/app/context/useAuth';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 interface Assignment {
     id: number;
@@ -37,6 +38,7 @@ interface Option {
 }
 
 export default function ListAssignmentsPage() {
+    const { t } = useTranslation();
     const { token } = useAuth();
     const [assignments, setAssignments] = useState<Assignment[]>([]);
     const [filtered, setFiltered] = useState<Assignment[]>([]);
@@ -143,11 +145,11 @@ export default function ListAssignmentsPage() {
 
     return (
         <Container className="py-4">
-            <h2 className="text-primary text-center mb-4">Asignaciones de Perfiles</h2>
+            <h2 className="text-primary text-center mb-4">{t('AssignProfiletoProjectList.title')}</h2>
 
             <Row className="mb-4">
                 <Col md={2}>
-                    <Form.Label>Perfil</Form.Label>
+                    <Form.Label>{t('AssignProfiletoProjectList.profile')}</Form.Label>
                     <Form.Control
                         value={filterProfile}
                         onChange={(e) => setFilterProfile(e.target.value)}
@@ -155,7 +157,7 @@ export default function ListAssignmentsPage() {
                     />
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Proyecto</Form.Label>
+                    <Form.Label>{t('AssignProfiletoProjectList.project')}</Form.Label>
                     <Form.Control
                         value={filterProject}
                         onChange={(e) => setFilterProject(e.target.value)}
@@ -163,7 +165,7 @@ export default function ListAssignmentsPage() {
                     />
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Desde</Form.Label>
+                    <Form.Label>{t('AssignProfiletoProjectList.starDate')}</Form.Label>
                     <DatePicker
                         selected={filterStartDate}
                         onChange={(date) => setFilterStartDate(date)}
@@ -172,7 +174,7 @@ export default function ListAssignmentsPage() {
                     />
                 </Col>
                 <Col md={2}>
-                    <Form.Label>Hasta</Form.Label>
+                    <Form.Label>{t('AssignProfiletoProjectList.EndDate')}</Form.Label>
                     <DatePicker
                         selected={filterEndDate}
                         onChange={(date) => setFilterEndDate(date)}
@@ -188,19 +190,19 @@ export default function ListAssignmentsPage() {
                         <Col key={a.id}>
                             <div className="border rounded shadow-sm p-3 bg-light">
                                 <h5 className="text-primary mb-2">{a.profileName}</h5>
-                                <p className="mb-1"><strong>Proyecto:</strong> {a.projectName}</p>
-                                <p className="mb-1"><strong>Estado:</strong> {a.status}</p>
-                                <p className="mb-1"><strong>Inicio:</strong> {a.startDate}</p>
-                                <p className="mb-1"><strong>Fin:</strong> {a.endDate}</p>
+                                <p className="mb-1"><strong>{t('AssignProfiletoProjectList.project')}</strong> {a.projectName}</p>
+                                <p className="mb-1"><strong>{t('AssignProfiletoProjectList.statusPro')}</strong> {a.status}</p>
+                                <p className="mb-1"><strong>{t('AssignProfiletoProjectList.starDate')}</strong> {a.startDate}</p>
+                                <p className="mb-1"><strong>{t('AssignProfiletoProjectList.EndDate')}</strong> {a.endDate}</p>
                                 <p className="mb-1">
-                                    <strong>Activo:</strong>{" "}
+                                    <strong>{t('AssignProfiletoProjectList.status')}</strong>{" "}
                                     <Badge bg={a.active ? "success" : "danger"}>
-                                        {a.active ? "Sí" : "No"}
+                                        {a.active ? t('AssignProfiletoProjectList.Active') : t('AssignProfiletoProjectList.Inactive')}
                                     </Badge>
                                 </p>
                                 <div className="d-flex justify-content-end gap-2 mt-2">
-                                    <Button size="sm" variant="warning" onClick={() => handleEdit(a)}>Editar</Button>
-                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>Eliminar</Button>
+                                    <Button size="sm" variant="warning" onClick={() => handleEdit(a)}>{t('AssignProfiletoProjectList.edit')}</Button>
+                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>{t('AssignProfiletoProjectList.delete')}</Button>
                                 </div>
                             </div>
                         </Col>
@@ -213,13 +215,13 @@ export default function ListAssignmentsPage() {
                 <Table striped bordered hover responsive>
                     <thead className="text-center">
                         <tr>
-                            <th>Perfil</th>
-                            <th>Proyecto</th>
-                            <th>Estado</th>
-                            <th>Inicio</th>
-                            <th>Fin</th>
-                            <th>Activo</th>
-                            <th>Acciones</th>
+                            <th>{t('AssignProfiletoProjectList.profile')}</th>
+                            <th>{t('AssignProfiletoProjectList.project')}</th>
+                            <th>{t('AssignProfiletoProjectList.statusPro')}</th>
+                            <th>{t('AssignProfiletoProjectList.starDate')}</th>
+                            <th>{t('AssignProfiletoProjectList.EndDate')}</th>
+                            <th>{t('AssignProfiletoProjectList.status')}</th>
+                            <th>{t('AssignProfiletoProjectList.Action')}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -232,12 +234,12 @@ export default function ListAssignmentsPage() {
                                 <td>{a.endDate}</td>
                                 <td>
                                     <Badge bg={a.active ? 'success' : 'danger'}>
-                                        {a.active ? 'Activo' : 'Inactivo'}
+                                        {a.active ? t('AssignProfiletoProjectList.Active') : t('AssignProfiletoProjectList.Inactive')}
                                     </Badge>
                                 </td>
                                 <td>
-                                    <Button size="sm" variant="warning" onClick={() => handleEdit(a)} className="me-2">Editar</Button>
-                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>Eliminar</Button>
+                                    <Button size="sm" variant="warning" onClick={() => handleEdit(a)} className="me-2">{t('AssignProfiletoProjectList.edit')}</Button>
+                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(a)}>{t('AssignProfiletoProjectList.delete')}</Button>
                                 </td>
                             </tr>
                         ))}
@@ -248,12 +250,12 @@ export default function ListAssignmentsPage() {
             {/* Modal de edición */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Editar Asignación</Modal.Title>
+                    <Modal.Title>{t('AssignProfiletoProjectList.editTitle')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Form.Group className="mb-3">
-                            <Form.Label>Perfil</Form.Label>
+                            <Form.Label>{t('AssignProfiletoProjectList.profile')}</Form.Label>
                             <Form.Select {...register("profileId", { required: true })}>
                                 {profiles.map((p) => (
                                     <option key={p.id} value={p.id}>{p.firstName}</option>
@@ -262,7 +264,7 @@ export default function ListAssignmentsPage() {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Proyecto</Form.Label>
+                            <Form.Label>{t('AssignProfiletoProjectList.project')}</Form.Label>
                             <Form.Select {...register("projectId", { required: true })}>
                                 {projects.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
@@ -271,14 +273,14 @@ export default function ListAssignmentsPage() {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label>Estado</Form.Label>
+                            <Form.Label>{t('AssignProfiletoProjectList.statusPro')}</Form.Label>
                             <Form.Select {...register('status', { required: true })}>
                                 <option value="FINISHED">FINISHED</option>
                                 <option value="IN_PROGRESS">IN_PROGRESS</option>
                             </Form.Select>
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Fecha Inicio</Form.Label>
+                            <Form.Label>{t('AssignProfiletoProjectList.starDate')}</Form.Label>
                             <Controller
                                 name="startDate"
                                 control={control}
@@ -288,7 +290,7 @@ export default function ListAssignmentsPage() {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
-                            <Form.Label>Fecha Fin</Form.Label>
+                            <Form.Label>{t('AssignProfiletoProjectList.EndDate')}</Form.Label>
                             <Controller
                                 name="endDate"
                                 control={control}
@@ -298,7 +300,7 @@ export default function ListAssignmentsPage() {
                             />
                         </Form.Group>
                         <div className="text-end mt-3">
-                            <Button variant="primary" type="submit">Guardar Cambios</Button>
+                            <Button variant="primary" type="submit">{t('AssignProfiletoProjectList.savechange')}</Button>
                         </div>
                     </Form>
                 </Modal.Body>
@@ -311,21 +313,21 @@ export default function ListAssignmentsPage() {
                     transition={{ duration: 0.4 }}
                 >
                     <Modal.Header closeButton className="bg-danger text-white">
-                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                        <Modal.Title>{t('warningmessage.title')}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                            ¿Estás seguro de que deseas eliminar la asignacion de  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
-                            al proyecto  <strong>{assigmentToDelete?.projectName}</strong>?
+                        {t('warningmessage.assignment')}  <strong>{' '}{assigmentToDelete?.profileName}</strong>{' '}
+                        {t('warningmessage.projectss')}  <strong>{assigmentToDelete?.projectName}</strong>?
                         </p>
-                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                        <p className="text-muted small">{t('warningmessage.caution')}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                            Cancelar
+                        {t('warningmessage.cancel')}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                            Sí, Eliminar
+                        {t('warningmessage.accept')}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

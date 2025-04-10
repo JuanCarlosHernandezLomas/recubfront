@@ -257,22 +257,22 @@ export default function ListProjectsPage() {
                                 className="shadow-sm border rounded p-3 h-100"
                             >
                                 <h5 className="text-primary">{proj.name}</h5>
-                                <p className="mb-1"><strong>Cliente:</strong> {proj.clienteName}</p>
-                                <p className="mb-1"><strong>Dueño:</strong> {proj.wonerName}</p>
-                                <p className="mb-1"><strong>Inicio:</strong> {proj.startDate}</p>
-                                <p className="mb-1"><strong>Fin:</strong> {proj.endDate}</p>
-                                <p className="mb-1"><strong>Activo:</strong>{' '}
+                                <p className="mb-1"><strong>{t('ListProject.client')}</strong> {proj.clienteName}</p>
+                                <p className="mb-1"><strong>{t('ListProject.owner')}</strong> {proj.wonerName}</p>
+                                <p className="mb-1"><strong>{t('ListProject.starDate')}</strong> {proj.startDate}</p>
+                                <p className="mb-1"><strong>{t('ListProject.EndDate')}</strong> {proj.endDate}</p>
+                                <p className="mb-1"><strong>{t('ListProject.status')}</strong>{' '}
                                     <Badge bg={proj.active ? 'success' : 'danger'}>
-                                        {proj.active ? 'Activo' : 'Inactivo'}
+                                        {proj.active ? t('ListProject.Active') : t('ListProject.Inactive')}
                                     </Badge>
                                 </p>
                                 <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
                                 <div className="d-flex justify-content-end">
                                     <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                        Editar
+                                    {t('ListProject.edit')}
                                     </Button>
                                     <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                        Eliminar
+                                    {t('ListProject.delete')}
                                     </Button>
                                 </div>
                             </motion.div>
@@ -314,16 +314,16 @@ export default function ListProjectsPage() {
                                         <td>{proj.endDate}</td>
                                         <td>
                                             <Badge bg={proj.active ? 'success' : 'danger'}>
-                                                {proj.active ? 'Activo' : 'Inactivo'}
+                                                {proj.active ? t("ListProject.Active") : t("ListProject.Inactive")}
                                             </Badge>
                                         </td>
                                         <td>{proj.skillName.join(', ')}</td>
                                         <td>
                                             <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                                Editar
+                                                {t("ListProject.edit")}
                                             </Button>
                                             <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                                Eliminar
+                                            {t("ListProject.delete")}
                                             </Button>
                                         </td>
                                     </tr>
@@ -336,7 +336,7 @@ export default function ListProjectsPage() {
             {/* MODAL */}
             <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered backdrop="static">
                 <Modal.Header closeButton>
-                    <Modal.Title>Editar Proyecto</Modal.Title>
+                    <Modal.Title>{t("Project.editTitle")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -350,7 +350,7 @@ export default function ListProjectsPage() {
                             </Col>
                             <Col md={6}>
                                 <Form.Group>
-                                    <Form.Label>Descripción</Form.Label>
+                                    <Form.Label>{t("Project.description")}</Form.Label>
                                     <Form.Control {...register('description', { required: true })} isInvalid={!!errors.description} />
                                     <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
                                 </Form.Group>
@@ -420,7 +420,7 @@ export default function ListProjectsPage() {
                             </Col>
                         </Row>
                         <div className="text-end">
-                            <Button type="submit" variant="primary">Guardar Cambios</Button>
+                            <Button type="submit" variant="primary">{t("Project.savechange")}</Button>
                         </div>
                     </Form>
                 </Modal.Body>
@@ -433,20 +433,20 @@ export default function ListProjectsPage() {
                     transition={{ duration: 0.4 }}
                 >
                     <Modal.Header closeButton className="bg-danger text-white">
-                        <Modal.Title>⚠️ Confirmación</Modal.Title>
+                        <Modal.Title>{t("warningmessage.title")}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                            ¿Estás seguro de que deseas eliminar el proyecto <strong>{projectToDelete?.name}</strong>?
+                        {t("warningmessage.Project")} <strong>{projectToDelete?.name}</strong>?
                         </p>
-                        <p className="text-muted small">Esta acción no se puede deshacer.</p>
+                        <p className="text-muted small">{t("warningmessage.caution")}</p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-                            Cancelar
+                        {t("warningmessage.cancel")}
                         </Button>
                         <Button variant="danger" onClick={handleDelete}>
-                            Sí, Eliminar
+                        {t("warningmessage.accept")}
                         </Button>
                     </Modal.Footer>
                 </motion.div>

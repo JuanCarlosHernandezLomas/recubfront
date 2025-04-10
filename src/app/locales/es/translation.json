@@ -1,13 +1,12 @@
 {
-  "login":{
-    "title":"Iniciar Sesión",
-    "texthelp":"Accede a tu cuenta para continuar",
-    "email":"Correo electrónico",
-    "password":"Contraseña",
-    "button":"Ingresar",
-    "procces":"Verificando credenciales...",
-    "error":"Credenciales inválidas. Por favor verifica e intenta nuevamente."
-
+  "login": {
+    "title": "Iniciar Sesión",
+    "texthelp": "Accede a tu cuenta para continuar",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "button": "Ingresar",
+    "procces": "Verificando credenciales...",
+    "error": "Credenciales inválidas. Por favor verifica e intenta nuevamente."
   },
   "dashboard": {
     "welcome": "Bienvenido a ResourceHub",
@@ -81,7 +80,9 @@
     "FilterAvailability": "Disponibilidad",
     "FilterLocation": "Ubicacion",
     "FilterSkill": "Habilidad",
-    "EditProfile": "Editar Perfil"
+    "EditProfile": "Editar Perfil",
+    "cancel": "Cancelar",
+    "savechange": "Guardar Cambios"
   },
 
   "client": {
@@ -96,7 +97,11 @@
     "add": "Agregar",
     "filterCustomer": "Nombre del cliente",
     "filterLocation": "Seleccione una ubicación",
-    "Succes": "Cliente agregado correctamente"
+    "Succes": "Cliente agregado correctamente",
+    "editTitle":"Editar Cliente",
+    "cancel":"Cancelar",
+    "savechange":"Guardar Cambios"
+
   },
   "report": {
     "title": "Generar reporte de empleado",
@@ -111,80 +116,125 @@
     "caution": "Esta acción no se puede deshacer.",
     "cancel": "Cancelar",
     "accept": "Sí, Eliminar",
-    "user": "¿Estás seguro de que deseas eliminar al usuario"
+    "user": "¿Estás seguro de que deseas eliminar al usuario",
+    "location": "¿Estás seguro de que deseas eliminar la locacion",
+    "customer": "¿Estás seguro de que deseas eliminar al cliente",
+    "Project": "¿Estás seguro de que deseas eliminar el Projecto",
+    "assignment":"¿Estás seguro de que deseas eliminar la asignacion de",
+    "projectss":"al proyecto"
   },
   "location": {
     "title": "Agregar Nueva Ubicación",
-    "titleCard":"Agrega una locacion",
-    "titlecarDesc":"crea una nueva locacion",
-    "showlocation":"ve todas las locaciones existentes",
-    "showlocationDes":"consulta todas las locaciones existentes",
+    "titleCard": "Agrega una locacion",
+    "titlecarDesc": "crea una nueva locacion",
+    "showlocation": "ve todas las locaciones existentes",
+    "showlocationDes": "consulta todas las locaciones existentes",
     "country": "País",
     "state": "Estado",
     "city": "Ciudad",
     "locationName": "Nombre de la Ubicación",
     "button": "Agregar Ubicación"
   },
+  "listlocation": {
+    "title": "Listado de Locaciones",
+    "id": "ID",
+    "name": "Nombre",
+    "city": "ciudad",
+    "state": "Estado",
+    "status":"Estatus",
+    "country": "País",
+    "Action": "Acciones",
+    "Active": "Activo",
+    "Inactive": "Inactivo",
+    "edit": "Editar",
+    "delete": "Elimminar",
+    "editTitle":"Editar Locación",
+    "cancel":"Cancelar",
+    "savechange":"Guardar Cambios"
+  },
+
   "Project": {
     "title": "Crear Proyecto",
-    "titlecard":"Agrega un Projecto",
-    "cardDesc":"crea un nuevo proyecto",
-    "titlecardDes":"Ve todos los projectos existentes",
-    "cardDesclist":"consulta y gestiona los proyectos existentes",
+    "titlecard": "Agrega un Projecto",
+    "cardDesc": "crea un nuevo proyecto",
+    "titlecardDes": "Ve todos los projectos existentes",
+    "cardDesclist": "consulta y gestiona los proyectos existentes",
     "name": "Nombre",
     "client": "Cliente",
-    "clientSelect":"Selecciona un cliente",
+    "clientSelect": "Selecciona un cliente",
     "description": "descripción",
     "starDate": "Fecha de Inicio",
     "EndDate": "Fecha de Fin",
     "owner": "Propietario",
-    "ownerSelect":"Selecciona un usuario",
+    "ownerSelect": "Selecciona un usuario",
     "skill": "Habilidades requeridas",
-    "button": "Crear proyecto"
+    "button": "Crear proyecto",
+    "editTitle":"Editar Projecto",
+    "savechange":"Guardar Cambios",
+    "descripcion":"Descripcion"
   },
-  "ListProject":{
+  "ListProject": {
     "title": "Listado de proyectos",
-    "name":"Nombre",
-    "client":"Cliente",
-    "owner":"Dueño",
-    "skill":"Habilidades",
-    "starDate":"Fecha de Inicio",
-    "EndDate":"Fecha de Fin",
-    "status":"Estado",
-    "Action":"Action",
-    "filterName":"Buscar por nombre",
-    "filter":"Todos"
+    "name": "Nombre",
+    "client": "Cliente",
+    "owner": "Dueño",
+    "skill": "Habilidades",
+    "starDate": "Fecha de Inicio",
+    "EndDate": "Fecha de Fin",
+    "status": "Estado",
+    "Action": "Action",
+    "filterName": "Buscar por nombre",
+    "filter": "Todos",
+    "Active":"Activo",
+    "Inactive":"Inactivo",
+    "delete":"Delete",
+    "edit":"Editar"
   },
-  "AssignProfiletoProject":{
-    "title":"Asignar Perfil a Proyecto",
-    "profile":"Profile",
-    "selectProfile":"Seleccione un Perfil",
+  "AssignProfiletoProject": {
+    "title": "Asignar Perfil a Proyecto",
+    "profile": "Profile",
+    "selectProfile": "Seleccione un Perfil",
+    "project": "Proyecto",
+    "selectProject": "Seleccione un Proyecto",
+    "starDate": "Fecha de Inicio",
+    "selecDate": "Seleccione la Fecha de Inicio ",
+    "EndDate": "Fecha de Fin",
+    "selecDateEnd": "Seleccione la Fecha de Fin ",
+    "status": "Estado",
+    "selecStatus": "Seleccione el estado del proyecto",
+    "button": "Asignar Proyecto"
+  },
+  "AssignProfiletoProjectList":{
+    "title":"Asignacion de perfiles",
+    "profile":"Perfil",
     "project":"Proyecto",
-    "selectProject":"Seleccione un Proyecto",
     "starDate":"Fecha de Inicio",
-    "selecDate":"Seleccione la Fecha de Inicio ",
     "EndDate":"Fecha de Fin",
-    "selecDateEnd":"Seleccione la Fecha de Fin ",
-    "status":"Estado",
-    "selecStatus":"Seleccione el estado del proyecto",
-    "button":"Asignar Proyecto"
-
+    "statusPro":"estado del proyecto",
+    "status":"Estatus",
+    "Action":"Acciones",
+    "Active":"Activo",
+    "Inactive":"Inactivo",
+    "edit":"Editar",
+    "delete":"Elimminar",
+    "editTitle":"Editar Asignacion",
+    "savechange":"Guardar Cambios"
   },
-  "AssignProyect":{
-    "title":"Crea una asignacion",
-    "description":"Assigna un usuario a un proyecto",
-    "titleDesc":"ve todas las asignaciones",
-    "descriptionlist":"consulta y gestiona las asignaciones"
+  "AssignProyect": {
+    "title": "Crea una asignacion",
+    "description": "Assigna un usuario a un proyecto",
+    "titleDesc": "ve todas las asignaciones",
+    "descriptionlist": "consulta y gestiona las asignaciones"
   },
 
-  "TeamCard":{
-    "Teamtitle":"Crea un Equipo",
-    "TeamDesc":"Crea nuevos equipos",
-    "Teamlist":"ve todos los equipos existentes",
-    "TeamlistDesc":"consulta y gestiona los equipos existentes",
-    "AssignTeam":"Asigna usuarios a equipos",
-    "AssignTeamDesc":"Crea asignaciones de usuario a equipos",
-    "AssignTeamList":"ve los equipos con Asignacion",
-    "AssignTeamListDesc":"consulta y gestiona las asignaciones de usuarios"
+  "TeamCard": {
+    "Teamtitle": "Crea un Equipo",
+    "TeamDesc": "Crea nuevos equipos",
+    "Teamlist": "ve todos los equipos existentes",
+    "TeamlistDesc": "consulta y gestiona los equipos existentes",
+    "AssignTeam": "Asigna usuarios a equipos",
+    "AssignTeamDesc": "Crea asignaciones de usuario a equipos",
+    "AssignTeamList": "ve los equipos con Asignacion",
+    "AssignTeamListDesc": "consulta y gestiona las asignaciones de usuarios"
   }
 }

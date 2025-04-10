@@ -102,7 +102,7 @@ export default function ViewLocationsPage() {
     const handleDelete = async () => {
         if (!locationToDelete) return;
         try {
-            const response = await fetch(`http://localhost:8090/api/locations/${selectedLocation?.id}`, {
+            const response = await fetch(`http://localhost:8090/api/locations/${locationToDelete?.id}`, {
                 method: "DELETE",
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -116,7 +116,7 @@ export default function ViewLocationsPage() {
 
     return (
         <Container className="py-4">
-            <h2 className="mb-4">Listado de Locaciones</h2>
+            <h2 className="mb-4">{t('listlocation.title')}</h2>
 
             {error && <Alert variant="danger">{error}</Alert>}
             <Fade cascade>
@@ -124,13 +124,13 @@ export default function ViewLocationsPage() {
                     <Table striped bordered hover responsive className="shadow-sm">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Ciudad</th>
-                                <th>Estado</th>
-                                <th>País</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t('listlocation.id')}</th>
+                                <th>{t('listlocation.name')}</th>
+                                <th>{t('listlocation.city')}</th>
+                                <th>{t('listlocation.state')}</th>
+                                <th>{t('listlocation.country')}</th>
+                                <th>{t('listlocation.status')}</th>
+                                <th>{t('listlocation.Action')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,15 +143,15 @@ export default function ViewLocationsPage() {
                                     <td>{loc.country}</td>
                                     <td>
                                         <Badge bg={loc.active ? 'success' : 'danger'}>
-                                            {loc.active ? "Activo" : "Inactivo"}
+                                            {loc.active ? t('listlocation.Active') : t('listlocation.Inactive')}
                                         </Badge>
                                     </td>
                                     <td>
                                         <Button size="sm" variant="warning" onClick={() => handleEditClick(loc)}>
-                                            Editar
+                                            {t('listlocation.edit')}
                                         </Button>{" "}
                                         <Button size="sm" variant="danger" onClick={() => confirmDelete(loc)}>
-                                            Eliminar
+                                            {t('listlocation.delete')}
                                         </Button>
                                     </td>
                                 </tr>
@@ -166,17 +166,17 @@ export default function ViewLocationsPage() {
                     <div key={loc.id} className="card mb-3 shadow-sm">
                         <div className="card-body">
                             <h5 className="card-title text-primary">{loc.name}</h5>
-                            <p className="mb-1"><strong>Ciudad:</strong> {loc.city}</p>
-                            <p className="mb-1"><strong>Estado:</strong> {loc.state}</p>
-                            <p className="mb-1"><strong>País:</strong> {loc.country}</p>
-                            <p className="mb-2"><strong>Estado:</strong>{' '}
+                            <p className="mb-1"><strong>{t('listlocation.city')}</strong> {loc.city}</p>
+                            <p className="mb-1"><strong>{t('listlocation.state')}</strong> {loc.state}</p>
+                            <p className="mb-1"><strong>{t('listlocation.country')}</strong> {loc.country}</p>
+                            <p className="mb-2"><strong>{t('listlocation.status')}</strong>{' '}
                                 <Badge bg={loc.active ? 'success' : 'danger'}>
-                                    {loc.active ? "Activo" : "Inactivo"}
+                                    {loc.active ? t('listlocation.Active') : t('listlocation.Inactive')}
                                 </Badge>
                             </p>
                             <div className="d-flex justify-content-between">
-                                <Button size="sm" variant="warning" onClick={() => handleEditClick(loc)}>Editar</Button>
-                                <Button size="sm" variant="danger" onClick={() => confirmDelete(loc)}>Eliminar</Button>
+                                <Button size="sm" variant="warning" onClick={() => handleEditClick(loc)}>{t('listlocation.edit')}</Button>
+                                <Button size="sm" variant="danger" onClick={() => confirmDelete(loc)}>{t('listlocation.delete')}</Button>
                             </div>
                         </div>
                     </div>
@@ -186,7 +186,7 @@ export default function ViewLocationsPage() {
             {/* Modal editar */}
             <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Editar Locación</Modal.Title>
+                    <Modal.Title>{t('listlocation.editTitle')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedLocation && (
@@ -194,7 +194,7 @@ export default function ViewLocationsPage() {
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Nombre</Form.Label>
+                                        <Form.Label>{t('listlocation.name')}</Form.Label>
                                         <Form.Control
                                             name="name"
                                             value={selectedLocation.name}
@@ -204,7 +204,7 @@ export default function ViewLocationsPage() {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Ciudad</Form.Label>
+                                        <Form.Label>{t('listlocation.city')}</Form.Label>
                                         <Form.Control
                                             name="city"
                                             value={selectedLocation.city}
@@ -216,7 +216,7 @@ export default function ViewLocationsPage() {
                             <Row>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>Estado</Form.Label>
+                                        <Form.Label>{t('listlocation.state')}</Form.Label>
                                         <Form.Control
                                             name="state"
                                             value={selectedLocation.state}
@@ -226,7 +226,7 @@ export default function ViewLocationsPage() {
                                 </Col>
                                 <Col md={6}>
                                     <Form.Group className="mb-3">
-                                        <Form.Label>País</Form.Label>
+                                        <Form.Label>{t('listlocation.country')}</Form.Label>
                                         <Form.Control
                                             name="country"
                                             value={selectedLocation.country}
@@ -240,10 +240,10 @@ export default function ViewLocationsPage() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>
-                        Cancelar
+                    {t('listlocation.cancel')}
                     </Button>
                     <Button variant="primary" onClick={handleUpdate}>
-                        Guardar Cambios
+                    {t('listlocation.savechange')}
                     </Button>
                 </Modal.Footer>
             </Modal>
@@ -261,7 +261,7 @@ export default function ViewLocationsPage() {
                     </Modal.Header>
                     <Modal.Body className="text-center">
                         <p className="mb-3">
-                            {t("warningmessage.user")} <strong>{locationToDelete?.name}</strong>?
+                            {t("warningmessage.location")} <strong>{locationToDelete?.name}</strong>?
                         </p>
                         <p className="text-muted small">{t("warningmessage.caution")}</p>
                     </Modal.Body>

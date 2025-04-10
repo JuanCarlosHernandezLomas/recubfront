@@ -345,23 +345,23 @@ export default function ViewProfilesPage() {
                                     <h5 className="card-title">
                                         {profile.firstName} {profile.lastName}
                                     </h5>
-                                    <p className="mb-1"><strong>ID:</strong> {profile.employeeId}</p>
-                                    <p className="mb-1"><strong>Puesto:</strong> {profile.jobTitle}</p>
-                                    <p className="mb-1"><strong>Ubicación:</strong> {profile.locationName}</p>
-                                    <p className="mb-1"><strong>Experiencia:</strong> {profile.experience}</p>
-                                    <p className="mb-1"><strong>Disponibilidad:</strong> {profile.statusName}</p>
-                                    <p className="mb-1"><strong>Usuario:</strong> {profile.userName}</p>
-                                    <p className="mb-1"><strong>Skills:</strong>{" "}
+                                    <p className="mb-1"><strong>{t("list.Id")}</strong> {profile.employeeId}</p>
+                                    <p className="mb-1"><strong>{t("list.Position")}</strong> {profile.jobTitle}</p>
+                                    <p className="mb-1"><strong>{t("list.location")}</strong> {profile.locationName}</p>
+                                    <p className="mb-1"><strong>{t("list.ExperienceLevel")}</strong> {profile.experience}</p>
+                                    <p className="mb-1"><strong>{t("list.availability")}</strong> {profile.statusName}</p>
+                                    <p className="mb-1"><strong>{t("list.UserId")}</strong> {profile.userName}</p>
+                                    <p className="mb-1"><strong>{t("list.Skills")}</strong>{" "}
                                         {profile.skillName.map((skill, i) => (
                                             <Badge key={i} bg="info" className="me-1">{skill}</Badge>
                                         ))}
                                     </p>
                                     <p className="mb-2">
-                                        <strong>Estado:</strong>{" "}
+                                        <strong>{t("list.status")}</strong>{" "}
                                         {profile.active ? (
-                                            <Badge bg="success">Activo</Badge>
+                                            <Badge bg="success">{t("list.Active")}</Badge>
                                         ) : (
-                                            <Badge bg="danger">Inactivo</Badge>
+                                            <Badge bg="danger">{t("list.Inactive")}</Badge>
                                         )}
                                     </p>
                                     <div className="d-flex justify-content-between">
@@ -382,10 +382,10 @@ export default function ViewProfilesPage() {
                                                 document.body.removeChild(link);
                                             }}
                                         >
-                                            Descargar CV
+                                            {t("list.download")}
                                         </Button>
-                                        <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>Editar</Button>
-                                        <Button size="sm" variant="danger" onClick={() => handleDelete(profile.id)}>{t("list.delete")}</Button>
+                                        <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>{t("list.EditProfile")}</Button>
+                                        <Button size="sm" variant="danger" onClick={() => confirmDelete(profile.id)}>{t("list.delete")}</Button>
                                     </div>
                                 </div>
                             </div>
@@ -456,7 +456,7 @@ export default function ViewProfilesPage() {
                                         </td>
                                         <td>
                                             <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
-                                                {t("list.edit")}
+                                                {t("list.EditProfile")}
                                             </Button>
                                         </td>
                                         <td>
@@ -524,8 +524,8 @@ export default function ViewProfilesPage() {
                     )}
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>Cancelar</Button>
-                    <Button variant="primary" onClick={handleUpdateSubmit}>Guardar Cambios</Button>
+                    <Button variant="secondary" onClick={handleCloseModal}>{t("list.cancel")}</Button>
+                    <Button variant="primary" onClick={handleUpdateSubmit}>{t("list.savechange")}</Button>
                 </Modal.Footer>
             </Modal>
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">

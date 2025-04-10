@@ -6,8 +6,7 @@
     "password": "Password",
     "button": "Login",
     "procces": "Verifying credentials...",
-    "error":"Invalid credentials. Please check and try again."
-
+    "error": "Invalid credentials. Please check and try again."
   },
   "dashboard": {
     "welcome": "Welcome to ResourceHub",
@@ -80,7 +79,9 @@
     "FilterAvailability": "Availability",
     "FilterLocation": "Location",
     "FilterSkill": "Skill",
-    "EditProfile": "Edit Profile"
+    "EditProfile": "Edit Profile",
+    "cancel": "Cancel",
+    "savechange": "Save Changes"
   },
   "client": {
     "title": "Customer Management",
@@ -93,7 +94,10 @@
     "delete": "Delete",
     "add": "ADD",
     "filterCustomer": "Customer Name",
-    "filterLocation": "Select a location"
+    "filterLocation": "Select a location",
+    "editTitle":"Edit Customer",
+    "cancel":"Cancel",
+    "savechange":"Save Changes"
   },
 
   "report": {
@@ -109,7 +113,13 @@
     "caution": "This action cannot be undone.",
     "cancel": "Cancel",
     "accept": "Yes, Delete",
-    "user": "Are you sure you want to delete the user"
+    "user": "Are you sure you want to delete the user",
+    "location": "Are you sure you want to delete the location",
+    "customer": "Are you sure you want to delete the customer",
+    "Project": "Are you sure you want to delete the Project",
+ "assignment":"Are you sure you want to remove the assignment from",
+"projectss":"to the project"
+
   },
 
   "location": {
@@ -123,6 +133,23 @@
     "city": "City",
     "locationName": "Location name",
     "button": "Add location"
+  },
+  "listlocation": {
+    "title": "List of Locations",
+    "id": "ID",
+    "name": "Name",
+    "city": "City",
+    "state": "State",
+    "status":"Status",
+    "country": "Country",
+    "Action": "Actions",
+    "Active": "Active",
+    "Inactive": "Inactive",
+    "edit": "Edit",
+    "delete": "Delete",
+    "editTitle": "Edit Location",
+    "cancel": "Cancel",
+    "savechange": "Save Changes"
   },
   "Project": {
     "title": "Create Project",
@@ -139,7 +166,11 @@
     "owner": "Owner",
     "ownerSelect": "Select User",
     "skill": "Required Skills",
-    "button": "Create Project"
+    "button": "Create Project",
+    "editTitle":"Edit Project",
+    "savechange":"Save Changes",
+    "descripcion":"Description"
+
   },
   "ListProject": {
     "title": "List of Project",
@@ -152,7 +183,11 @@
     "status": "Status",
     "Action": "Action",
     "filterName": "Search for Name",
-    "filter": "All"
+    "filter": "All",
+    "Active":"Active",
+    "Inactive":"Inactive",
+    "delete":"Delete",
+    "edit":"Edit"
   },
   "AssignProfiletoProject": {
     "title": "Assign Profile to Project",
@@ -168,6 +203,23 @@
     "selecStatus": "Select the project status",
     "button": "Assign Project"
   },
+  "AssignProfiletoProjectList":{
+"title":"Profile Assignment",
+"profile":"Profile",
+"project":"Project",
+"statusPro":"Status of Proyect",
+"starDate":"Start Date",
+"EndDate":"End Date",
+"status":"Status",
+"Action":"Actions",
+"Active":"Active",
+"Inactive":"Inactive",
+"edit":"Edit",
+"delete":"Delete",
+"editTitle":"Edit Assignment",
+"savechange":"Save Changes"
+},
+
   "AssignProyect": {
     "title": "Create an assignment",
     "description": "Assign a user to a project",

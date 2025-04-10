@@ -13,8 +13,8 @@ import {
   Modal,
   Badge,
 } from "react-bootstrap";
-import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
+import { useTranslation } from "react-i18next";
+import { motion } from "framer-motion";
 
 interface Client {
   id: number;
@@ -27,12 +27,12 @@ interface Client {
 interface Location {
   id: number;
   name: string;
-  city: string
+  city: string;
 }
 
 export default function ClientesPage() {
   const { t } = useTranslation();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const [client, setClient] = useState({ name: "", locationId: 0 });
   const [clients, setClients] = useState<Client[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
@@ -67,7 +67,9 @@ export default function ClientesPage() {
     fetchInitialData();
   }, [token]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setClient((prev) => ({
       ...prev,
@@ -92,14 +94,13 @@ export default function ClientesPage() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || 'Error al agregar cliente');
+        throw new Error(errorData.message || "Error al agregar cliente");
       }
-
 
       const data = await res.json();
 
       // Enriquecer con locationName para mostrar correctamente en tabla
-      const locationObj = locations.find(loc => loc.id === client.locationId);
+      const locationObj = locations.find((loc) => loc.id === client.locationId);
       const enrichedClient = {
         ...data,
         locationName: locationObj?.city || "", // o loc.city
@@ -110,8 +111,7 @@ export default function ClientesPage() {
       setMessage("Cliente agregado correctamente");
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message || 'Ocurrió un error al cargar el cliente.');
-
+        setError(error.message || "Ocurrió un error al cargar el cliente.");
       }
     }
   };
@@ -125,24 +125,30 @@ export default function ClientesPage() {
     if (!clientToDelete) return;
 
     try {
-      const res = await fetch(`http://localhost:8090/api/clients/${clientToDelete.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          ...clientToDelete,
-          active: false, //  baja lógica
-        }),
-      });
+      const res = await fetch(
+        `http://localhost:8090/api/clients/${clientToDelete.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...clientToDelete,
+            active: false, //  baja lógica
+          }),
+        }
+      );
 
       if (!res.ok) throw new Error("Error al desactivar cliente");
 
       //  Recargar la lista completa desde el backend
-      const refreshedClients = await fetch("http://localhost:8090/api/clients", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const refreshedClients = await fetch(
+        "http://localhost:8090/api/clients",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const data = await refreshedClients.json();
       setClients(data);
 
@@ -153,38 +159,46 @@ export default function ClientesPage() {
     }
   };
 
-
   const handleEdit = (client: Client) => {
     setEditClient(client);
     setShowModal(true);
   };
 
-  const handleEditChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleEditChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     if (!editClient) return;
     const { name, value } = e.target;
     setEditClient((prev) =>
-      prev ? { ...prev, [name]: name === "locationId" ? Number(value) : value } : null
+      prev
+        ? { ...prev, [name]: name === "locationId" ? Number(value) : value }
+        : null
     );
   };
 
   const handleEditSubmit = async () => {
     if (!editClient) return;
     try {
-      const res = await fetch(`http://localhost:8090/api/clients/${editClient.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(editClient),
-      });
+      const res = await fetch(
+        `http://localhost:8090/api/clients/${editClient.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editClient),
+        }
+      );
 
       if (!res.ok) throw new Error("Error al editar cliente");
 
       const updated = await res.json();
 
       // 🛠 Enriquecer con el locationName (para que no se borre de la tabla)
-      const locationObj = locations.find(loc => loc.id === updated.locationId);
+      const locationObj = locations.find(
+        (loc) => loc.id === updated.locationId
+      );
 
       const enrichedClient = {
         ...updated,
@@ -249,19 +263,29 @@ export default function ClientesPage() {
               <Card.Body>
                 <Card.Title>{client.name}</Card.Title>
                 <Card.Text>
-                  <strong>Ubicación:</strong>{" "}
-                  {client.locationName}
+                  <strong>{t("client.location")}</strong> {client.locationName}
                 </Card.Text>
+                <p>
+                  <Badge bg={client.active ? "success" : "danger"}>
+                    {client.active
+                      ? t("listlocation.Active")
+                      : t("listlocation.Inactive")}
+                  </Badge>
+                </p>
                 <Button
                   size="sm"
                   variant="warning"
                   className="me-2"
                   onClick={() => handleEdit(client)}
                 >
-                  Editar
+                  {t("client.edit")}
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => confirmDelete(client)}>
-                  Eliminar
+                <Button
+                  size="sm"
+                  variant="danger"
+                  onClick={() => confirmDelete(client)}
+                >
+                  {t("client.delete")}
                 </Button>
               </Card.Body>
             </Card>
@@ -288,8 +312,8 @@ export default function ClientesPage() {
                 <td>{cli.name}</td>
                 <td>{cli.locationName}</td>
                 <td>
-                  <Badge bg={cli.active ? 'success' : 'danger'}>
-                    {cli.active ? 'Activo' : 'Inactivo'}
+                  <Badge bg={cli.active ? "success" : "danger"}>
+                    {cli.active ? "Activo" : "Inactivo"}
                   </Badge>
                 </td>
                 <td>
@@ -301,7 +325,11 @@ export default function ClientesPage() {
                   >
                     {t("client.edit")}
                   </Button>
-                  <Button size="sm" variant="danger" onClick={() => confirmDelete(cli)}>
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => confirmDelete(cli)}
+                  >
                     {t("client.delete")}
                   </Button>
                 </td>
@@ -314,13 +342,13 @@ export default function ClientesPage() {
       {/* Modal edición */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Editar Cliente</Modal.Title>
+          <Modal.Title>{t("client.editTitle")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {editClient && (
             <Form>
               <Form.Group className="mb-3">
-                <Form.Label>Nombre</Form.Label>
+                <Form.Label>{t("client.name")}</Form.Label>
                 <Form.Control
                   name="name"
                   value={editClient.name}
@@ -328,13 +356,13 @@ export default function ClientesPage() {
                 />
               </Form.Group>
               <Form.Group>
-                <Form.Label>Ubicación</Form.Label>
+                <Form.Label>{t("client.location")}</Form.Label>
                 <Form.Select
                   name="locationId"
                   value={editClient.locationId}
                   onChange={handleEditChange}
                 >
-                  <option value="">Seleccione ubicación</option>
+                  <option value="">{t("client.filterLocation")}</option>
                   {locations.map((l) => (
                     <option key={l.id} value={l.id}>
                       {l.name}
@@ -347,14 +375,19 @@ export default function ClientesPage() {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancelar
+            {t("client.cancel")}
           </Button>
           <Button variant="primary" onClick={handleEditSubmit}>
-            Guardar Cambios
+            {t("client.savechange")}
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        centered
+        backdrop="static"
+      >
         <motion.div
           initial={{ scale: 0.7, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -362,25 +395,28 @@ export default function ClientesPage() {
           transition={{ duration: 0.4 }}
         >
           <Modal.Header closeButton className="bg-danger text-white">
-            <Modal.Title>⚠️ Confirmación</Modal.Title>
+            <Modal.Title>{t("warningmessage.title")}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="text-center">
             <p className="mb-3">
-              ¿Estás seguro de que deseas eliminar el cliente <strong>{clientToDelete?.name}</strong>?
+              {t("warningmessage.customer")}{" "}
+              <strong>{clientToDelete?.name}</strong>?
             </p>
-            <p className="text-muted small">Esta acción no se puede deshacer.</p>
+            <p className="text-muted small">{t("warningmessage.caution")}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-              Cancelar
+            <Button
+              variant="secondary"
+              onClick={() => setShowDeleteModal(false)}
+            >
+              {t("warningmessage.cancel")}
             </Button>
             <Button variant="danger" onClick={handleDelete}>
-              Sí, Eliminar
+              {t("warningmessage.accept")}
             </Button>
           </Modal.Footer>
         </motion.div>
       </Modal>
-
     </Container>
   );
 }
