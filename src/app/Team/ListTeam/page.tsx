@@ -15,44 +15,75 @@ import {
 } from "react-bootstrap";
 import { useAuth } from "@/app/context/useAuth";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface Team {
   id: number;
   name: string;
   description: string;
+  projectId?: number;
   projectName: string;
   active: boolean;
 }
 
+interface ProjectOption {
+  id: number;
+  name: string;
+}
+
 export default function ListTeamsPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [teams, setTeams] = useState<Team[]>([]);
   const [filteredTeams, setFilteredTeams] = useState<Team[]>([]);
   const [filters, setFilters] = useState({ name: "", project: "" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [projects, setProjects] = useState<ProjectOption[]>([]);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [teamToEdit, setTeamToEdit] = useState<Team | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    description: "",
+    projectId: "",
+  });
+
+  useEffect(() => {
+    fetchTeams();
+    fetchProjects();
+  }, [token]);
 
   const fetchTeams = async () => {
     try {
       const res = await fetch("http://localhost:8090/api/teams", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("No se pudo obtener la lista de equipos.");
       const data = await res.json();
       setTeams(data);
       setFilteredTeams(data);
     } catch (err: any) {
-      setError(err.message);
+      setError("No se pudo obtener la lista de equipos.");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchTeams();
-  }, [token]);
+  const fetchProjects = async () => {
+    try {
+      const res = await fetch("http://localhost:8090/api/projects", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setProjects(data);
+    } catch {
+      console.error("Error al cargar los proyectos");
+    }
+  };
 
   useEffect(() => {
     let filtered = teams;
@@ -93,23 +124,72 @@ export default function ListTeamsPage() {
         }
       );
       if (!res.ok) throw new Error("Error al eliminar el equipo.");
-      fetchTeams(); // refresca la lista
+      fetchTeams();
       setShowDeleteModal(false);
     } catch {
       alert("Error al eliminar.");
     }
   };
 
+  const handleEditClick = (team: Team) => {
+    setTeamToEdit(team);
+    setEditForm({
+      name: team.name,
+      description: team.description,
+      projectId: team.projectId ? String(team.projectId) : "",
+    });
+    setShowEditModal(true);
+  };
+
+  const handleFormChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSubmit = async () => {
+    if (!teamToEdit) return;
+
+    const updatedTeam = {
+      name: editForm.name,
+      description: editForm.description,
+      projectId: parseInt(editForm.projectId),
+      active: true,
+    };
+
+    try {
+      const res = await fetch(
+        `http://localhost:8090/api/teams/${teamToEdit.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(updatedTeam),
+        }
+      );
+
+      if (!res.ok) throw new Error("Error al editar el equipo");
+
+      setShowEditModal(false);
+      fetchTeams();
+    } catch {
+      alert("Error al editar el equipo.");
+    }
+  };
+
   return (
     <Container className="py-4">
-      <h2 className="text-primary mb-4">🏢 Equipos Creados</h2>
+      <h2 className="text-primary mb-4">{t("TeamList.title")}</h2>
 
       {/* Filtros */}
       <Row className="mb-3">
         <Col md={4}>
           <Form.Control
             name="name"
-            placeholder="Buscar por nombre del equipo"
+            placeholder={t("TeamList.filtername")}
             value={filters.name}
             onChange={handleFilterChange}
           />
@@ -117,7 +197,7 @@ export default function ListTeamsPage() {
         <Col md={4}>
           <Form.Control
             name="project"
-            placeholder="Buscar por proyecto"
+            placeholder={t("TeamList.filterproyect")}
             value={filters.project}
             onChange={handleFilterChange}
           />
@@ -131,31 +211,41 @@ export default function ListTeamsPage() {
         <>
           {/* Cards en móviles */}
           <div className="d-md-none">
-            {filteredTeams.map((t) => (
-              <div key={t.id} className="card mb-3 shadow-sm">
+            {filteredTeams.map((team) => (
+              <div key={team.id} className="card mb-3 shadow-sm">
                 <div className="card-body">
-                  <h5 className="card-title">{t.name}</h5>
+                  <h5 className="card-title">{team.name}</h5>
                   <p>
-                    <strong>Proyecto:</strong> {t.projectName}
+                    <strong>{t("TeamList.project")}</strong> {team.projectName}
                   </p>
                   <p>
-                    <strong>Descripción:</strong> {t.description}
+                    <strong>{t("TeamList.descripcion")}</strong>{" "}
+                    {team.description}
                   </p>
                   <p>
-                    <strong>Estado:</strong>{" "}
-                    {t.active ? (
-                      <Badge bg="success">Activo</Badge>
+                    <strong>{t("TeamList.status")}</strong>{" "}
+                    {team.active ? (
+                      <Badge bg="success">{t("ListProject.Active")}</Badge>
                     ) : (
-                      <Badge bg="danger">Inactivo</Badge>
+                      <Badge bg="danger">{t("ListProject.Inactive")}</Badge>
                     )}
                   </p>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => confirmDelete(t)}
-                  >
-                    Eliminar
-                  </Button>
+                  <div className="d-flex justify-content-end gap-2 mt-2">
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      onClick={() => handleEditClick(team)}
+                    >
+                      {t("ListProject.edit")}
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => confirmDelete(team)}
+                    >
+                      {t("TeamList.delete")}
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -166,35 +256,43 @@ export default function ListTeamsPage() {
             <Table bordered hover responsive className="shadow-sm text-center">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Nombre</th>
-                  <th>Proyecto</th>
-                  <th>Descripción</th>
-                  <th>Estado</th>
-                  <th>Acción</th>
+                  <th>ID</th>
+                  <th>{t("TeamList.name")}</th>
+                  <th>{t("TeamList.project")}</th>
+                  <th>{t("TeamList.descripcion")}</th>
+                  <th>{t("TeamList.status")}</th>
+                  <th>{t("TeamList.Action")}</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredTeams.map((t) => (
-                  <tr key={t.id}>
-                    <td>{t.id}</td>
-                    <td>{t.name}</td>
-                    <td>{t.projectName}</td>
-                    <td>{t.description}</td>
+                {filteredTeams.map((team) => (
+                  <tr key={team.id}>
+                    <td>{team.id}</td>
+                    <td>{team.name}</td>
+                    <td>{team.projectName}</td>
+                    <td>{team.description}</td>
                     <td>
-                      {t.active ? (
-                        <Badge bg="success">Activo</Badge>
+                      {team.active ? (
+                        <Badge bg="success">{t("ListProject.Active")}</Badge>
                       ) : (
-                        <Badge bg="danger">Inactivo</Badge>
+                        <Badge bg="danger">{t("ListProject.Inactive")}</Badge>
                       )}
                     </td>
                     <td>
                       <Button
+                        variant="warning"
+                        size="sm"
+                        className="me-2"
+                        onClick={() => handleEditClick(team)}
+                      >
+                        {t("ListProject.edit")}
+                      </Button>
+                      <Button
                         variant="danger"
                         size="sm"
-                        onClick={() => confirmDelete(t)}
+                        onClick={() => confirmDelete(team)}
                       >
-                        Eliminar
+                        {t("TeamList.delete")}
                       </Button>
                     </td>
                   </tr>
@@ -205,7 +303,59 @@ export default function ListTeamsPage() {
         </>
       )}
 
-      {/* Modal confirmación */}
+      {/* Modal de edición */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{t("TeamList.editTitle")}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>{t("TeamList.name")}</Form.Label>
+              <Form.Control
+                name="name"
+                value={editForm.name}
+                onChange={handleFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>{t("TeamList.descripcion")}</Form.Label>
+              <Form.Control
+                name="description"
+                value={editForm.description}
+                onChange={handleFormChange}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>{t("TeamList.project")}</Form.Label>
+              <Form.Select
+                name="projectId"
+                value={editForm.projectId}
+                onChange={handleFormChange}
+              >
+                <option value="">{t("selectProject")}</option>
+                {projects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            {t("TeamList.cancel")}
+          </Button>
+          <Button variant="primary" onClick={handleEditSubmit}>
+            {t("TeamList.savechange")}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal de eliminación */}
       <Modal
         show={showDeleteModal}
         onHide={() => setShowDeleteModal(false)}
@@ -219,20 +369,20 @@ export default function ListTeamsPage() {
           transition={{ duration: 0.3 }}
         >
           <Modal.Header closeButton className="bg-danger text-white">
-            <Modal.Title>⚠️ Confirmar eliminación</Modal.Title>
+            <Modal.Title>{t("warningmessage.title")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            ¿Deseas eliminar el equipo <strong>{teamToDelete?.name}</strong>?
+            <p className="mb-3">
+              {t("warningmessage.Team")} <strong>{teamToDelete?.name}</strong>?
+            </p>
+            <p className="text-muted small">{t("warningmessage.caution")}</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => setShowDeleteModal(false)}
-            >
-              Cancelar
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              {t("warningmessage.cancel")}
             </Button>
             <Button variant="danger" onClick={handleDelete}>
-              Eliminar
+              {t("warningmessage.accept")}
             </Button>
           </Modal.Footer>
         </motion.div>

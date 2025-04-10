@@ -118,7 +118,9 @@
     "customer": "Are you sure you want to delete the customer",
     "Project": "Are you sure you want to delete the Project",
  "assignment":"Are you sure you want to remove the assignment from",
-"projectss":"to the project"
+"projectss":"to the project",
+"Team": "Do you want to delete the team",
+"TeamAssg":"to the team"
 
   },
 
@@ -217,7 +219,9 @@
 "edit":"Edit",
 "delete":"Delete",
 "editTitle":"Edit Assignment",
-"savechange":"Save Changes"
+"savechange":"Save Changes",
+"filterProfile": "Search by profile",
+"filterProject": "Search by project"
 },
 
   "AssignProyect": {
@@ -235,5 +239,58 @@
     "AssignTeamDesc": "Create user assignments to teams",
     "AssignTeamList": "View teams with assignments",
     "AssignTeamListDesc": "View and manage user assignments"
-  }
+  },
+  "Team":{
+"Teamtitle": "Create new team",
+"name":"📛 Team Name",
+"description":"📝 Team Description",
+"project":"📁 Project",
+"select":"select a project",
+"button": "Create team"
+},
+"TeamList":{
+"title": "🏢 Created Teams",
+"filtername": "Search by team name",
+"filterproyect": "Search by project",
+"project": "Project",
+"descripcion": "Description",
+"status": "Status",
+"delete": "Delete",
+"edit": "Edit",
+"name":"Name",
+"Action":"Actions",
+"editTitle":"Edit Team",
+"cancel":"Cancel",
+"savechange":"Save Changes"
+
+},
+
+"AssigmenTeam":{
+  "title": "👥 Assign Member to a Team",
+  "selectProfile":"Select a Profile",
+  "profile":"👤 Select Profile",
+  "Team":"🏢 Select Team",
+  "selectTeam":"Select a team",
+  "rol":"🎯 Role in the Team",
+  "button": "Assign Member",
+  "Success":"✅ Member assigned successfully!",
+  "error":"❌ The member could not be assigned to the team."
+  
+  },
+
+  "AssigmenTeamList":{
+    "title": "👥 Members Assigned to a Team",
+    "Team":"Team",
+    "rol":"role",
+    "status":"Status",
+    "Active":"Active",
+    "Inactive":"Inactive",
+    "delete":"Delete",
+    "Action":"Actions",
+    "user":"User",
+    "filtername":"Search by  user name",
+    "filterteam":"Search by  Team",
+    "edit":"Edit",
+    "editTitle": "Edit Member Assignment"
+    }
 }

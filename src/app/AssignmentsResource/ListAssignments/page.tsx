@@ -153,7 +153,7 @@ export default function ListAssignmentsPage() {
                     <Form.Control
                         value={filterProfile}
                         onChange={(e) => setFilterProfile(e.target.value)}
-                        placeholder="Buscar por perfil"
+                        placeholder={t('AssignProfiletoProjectList.filterProfile')}
                     />
                 </Col>
                 <Col md={2}>
@@ -161,7 +161,7 @@ export default function ListAssignmentsPage() {
                     <Form.Control
                         value={filterProject}
                         onChange={(e) => setFilterProject(e.target.value)}
-                        placeholder="Buscar por proyecto"
+                        placeholder={t('AssignProfiletoProjectList.filterProject')}
                     />
                 </Col>
                 <Col md={2}>
@@ -170,7 +170,7 @@ export default function ListAssignmentsPage() {
                         selected={filterStartDate}
                         onChange={(date) => setFilterStartDate(date)}
                         className="form-control"
-                        placeholderText="Fecha inicio"
+                        placeholderText={t('AssignProfiletoProjectList.starDate')}
                     />
                 </Col>
                 <Col md={2}>
@@ -179,7 +179,7 @@ export default function ListAssignmentsPage() {
                         selected={filterEndDate}
                         onChange={(date) => setFilterEndDate(date)}
                         className="form-control"
-                        placeholderText="Fecha fin"
+                        placeholderText={t('AssignProfiletoProjectList.EndDate')}
                     />
                 </Col>
             </Row>

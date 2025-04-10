@@ -8,11 +8,14 @@ import { useForm } from 'react-hook-form';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useAuth } from '@/app/context/useAuth';
+import { useTranslation } from 'react-i18next';
+
 
 interface TeamMemberForm {
   rolEnEquipo: string;
   perfilId: string;
   teamId: string;
+  active: number;
 }
 
 interface Profile {
@@ -27,6 +30,7 @@ interface Team {
 }
 
 export default function AssignMemberPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
@@ -74,14 +78,15 @@ export default function AssignMemberPage() {
           ...data,
           perfilId: parseInt(data.perfilId),
           teamId: parseInt(data.teamId),
+          active: true
         }),
       });
 
       if (!res.ok) throw new Error();
-      setSuccess('✅ ¡Miembro asignado correctamente!');
+      setSuccess(t('AssigmenTeam.Succes'));
       reset();
     } catch {
-      setError('❌ No se pudo asignar el miembro al equipo.');
+      setError(t('AssigmenTeam.error'));
     }
   };
 
@@ -92,7 +97,7 @@ export default function AssignMemberPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-center text-success mb-4">👥 Asignar Miembro a un Equipo</h2>
+        <h2 className="text-center text-success mb-4">{t('AssigmenTeam.title')}</h2>
 
         {success && (
           <Alert variant="success" className="d-flex align-items-center gap-2">
@@ -111,12 +116,12 @@ export default function AssignMemberPage() {
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>👤 Seleccionar Perfil</Form.Label>
+                    <Form.Label>{t('AssigmenTeam.profile')}</Form.Label>
                     <Form.Select
                       {...register('perfilId', { required: true })}
                       isInvalid={!!errors.perfilId}
                     >
-                      <option value="">Seleccione un perfil</option>
+                      <option value="">{t('AssigmenTeam.selectProfile')}</option>
                       {profiles.map((p) => (
                         <option key={p.id} value={p.id}>
                           {p.firstName} {p.lastName}
@@ -131,12 +136,12 @@ export default function AssignMemberPage() {
 
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>🏢 Seleccionar Equipo</Form.Label>
+                    <Form.Label>{t('AssigmenTeam.Team')}</Form.Label>
                     <Form.Select
                       {...register('teamId', { required: true })}
                       isInvalid={!!errors.teamId}
                     >
-                      <option value="">Seleccione un equipo</option>
+                      <option value="">{t('AssigmenTeam.selectTeam')}</option>
                       {teams.map((t) => (
                         <option key={t.id} value={t.id}>
                           {t.name}
@@ -153,7 +158,7 @@ export default function AssignMemberPage() {
               <Row className="mb-3">
                 <Col md={12}>
                   <Form.Group>
-                    <Form.Label>🎯 Rol en el Equipo</Form.Label>
+                    <Form.Label>{t('AssigmenTeam.rol')}</Form.Label>
                     <Form.Control
                       placeholder="Ej. Desarrollador Frontend"
                       {...register('rolEnEquipo', { required: true })}
@@ -169,7 +174,7 @@ export default function AssignMemberPage() {
               <div className="text-end">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button type="submit" variant="success" size="lg">
-                    Asignar Miembro
+                    {t('AssigmenTeam.button')}
                   </Button>
                 </motion.div>
               </div>

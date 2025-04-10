@@ -121,7 +121,9 @@
     "customer": "¿Estás seguro de que deseas eliminar al cliente",
     "Project": "¿Estás seguro de que deseas eliminar el Projecto",
     "assignment":"¿Estás seguro de que deseas eliminar la asignacion de",
-    "projectss":"al proyecto"
+    "projectss":"al proyecto",
+    "Team":"¿Deseas eliminar el equipo",
+    "TeamAssg":"al equipo"
   },
   "location": {
     "title": "Agregar Nueva Ubicación",
@@ -218,7 +220,9 @@
     "edit":"Editar",
     "delete":"Elimminar",
     "editTitle":"Editar Asignacion",
-    "savechange":"Guardar Cambios"
+    "savechange":"Guardar Cambios",
+    "filterProfile":"Buscar por perfil",
+    "filterProject": "Buscar por proyecto"
   },
   "AssignProyect": {
     "title": "Crea una asignacion",
@@ -236,5 +240,57 @@
     "AssignTeamDesc": "Crea asignaciones de usuario a equipos",
     "AssignTeamList": "ve los equipos con Asignacion",
     "AssignTeamListDesc": "consulta y gestiona las asignaciones de usuarios"
-  }
+  },
+  "Team":{
+    "Teamtitle": "Crear nuevo equipo",
+    "name":"📛 Nombre del Equipo",
+    "description":"📝 Descripción del Equipo",
+    "proyect":"📁 Proyecto",
+    "select":"seleccione un proyecto",
+    "button": "Crear equipo"
+  },
+  "TeamList":{
+    "title": "🏢 Equipos Creados",
+    "filtername":"Buscar por nombre del equipo",
+    "filterproyect":"Buscar por proyecto",
+    "project":"Proyecto",
+    "descripcion":"Descripcion",
+    "status":"Estado",
+    "delete":"Elimminar",
+    "edit":"Editar",
+    "name":"Nombre",
+    "Action":"Acciones",
+    "editTitle":"Editar Equipo",
+    "cancel":"Cancelar",
+    "savechange":"Guardar Cambios"
+  },
+  "AssigmenTeam":{
+    "title": "👥 Asignar Miembro a un Equipo",
+    "selectProfile":"Seleccione un Perfil",
+    "profile":"👤 Seleccionar Perfil",
+    "Team":"🏢 Seleccionar Equipo",
+    "selectTeam":"Seleccione un equipo",
+    "rol":"🎯 Rol en el Equipo",
+    "button": "Asignar Miembro",
+    "Success":"✅ ¡Miembro asignado correctamente!",
+    "error":"❌ No se pudo asignar el miembro al equipo."
+
+  },
+  "AssigmenTeamList":{
+    "title": "👥 Miembros Asignados a un Equipo",
+    "Team":"Equipo",
+    "rol":"rol",
+    "status":"Estado",
+    "Active":"Activo",
+    "Inactive":"Inactivo",
+    "delete":"Elimminar",
+    "Action":"Acciones",
+    "user":"Usuario",
+    "filtername":"Buscar por nombre",
+    "filterteam":"Buscar por equipo",
+    "edit":"Editar",
+    "editTitle":" Editar Asignacion de miembros"
+
+  } 
+
 }

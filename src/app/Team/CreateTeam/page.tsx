@@ -8,12 +8,13 @@ import { useForm } from 'react-hook-form';
 import { useAuth } from '@/app/context/useAuth';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
+import { useTranslation } from 'react-i18next';
+
 
 interface TeamForm {
   name: string;
   description: string;
   projectId: string;
-  active: boolean;
 }
 
 interface ProjectOption {
@@ -22,6 +23,7 @@ interface ProjectOption {
 }
 
 export default function CreateTeamPage() {
+  const { t } = useTranslation();
   const { token } = useAuth();
   const [projects, setProjects] = useState<ProjectOption[]>([]);
   const [successMessage, setSuccessMessage] = useState('');
@@ -58,7 +60,11 @@ export default function CreateTeamPage() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({ ...data, projectId: parseInt(data.projectId) }),
+        body: JSON.stringify({
+          ...data,
+          projectId: parseInt(data.projectId),
+          active: true // Se fuerza a true siempre
+        }),
       });
 
       if (!response.ok) throw new Error('Error al crear el equipo.');
@@ -79,7 +85,7 @@ export default function CreateTeamPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-center text-primary mb-4">🚀 Crear Nuevo Equipo</h2>
+        <h2 className="text-center text-primary mb-4">{t('Team.Teamtitle')}</h2>
 
         {successMessage && (
           <Alert variant="success" className="d-flex align-items-center gap-2">
@@ -98,7 +104,7 @@ export default function CreateTeamPage() {
               <Row className="mb-4">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>📛 Nombre del Equipo</Form.Label>
+                    <Form.Label>{t('Team.name')}</Form.Label>
                     <Form.Control
                       placeholder="Ej. Backend Squad"
                       {...register('name', { required: true })}
@@ -111,7 +117,7 @@ export default function CreateTeamPage() {
                 </Col>
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>📝 Descripción</Form.Label>
+                    <Form.Label>{t('Team.description')}</Form.Label>
                     <Form.Control
                       placeholder="Breve descripción"
                       {...register('description', { required: true })}
@@ -127,12 +133,12 @@ export default function CreateTeamPage() {
               <Row className="mb-4">
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label>📁 Proyecto</Form.Label>
+                    <Form.Label>{t('Team.proyect')}</Form.Label>
                     <Form.Select
                       {...register('projectId', { required: true })}
                       isInvalid={!!errors.projectId}
                     >
-                      <option value="">Seleccione un proyecto</option>
+                      <option value="">{t('Team.select')}</option>
                       {projects.map((proj) => (
                         <option key={proj.id} value={proj.id}>
                           {proj.name}
@@ -144,21 +150,12 @@ export default function CreateTeamPage() {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-
-                <Col md={6} className="d-flex align-items-end">
-                  <Form.Check
-                    type="switch"
-                    label="✅ Activo"
-                    {...register('active')}
-                    defaultChecked
-                  />
-                </Col>
               </Row>
 
               <div className="text-end">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button type="submit" variant="primary" size="lg">
-                    Crear Equipo
+                  {t('Team.button')}
                   </Button>
                 </motion.div>
               </div>
