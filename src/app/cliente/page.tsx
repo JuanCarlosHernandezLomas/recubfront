@@ -99,7 +99,7 @@ export default function ClientesPage() {
 
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.message || "Error al agregar cliente");
+        throw new Error(errorData.message || t("client.error"));
       }
 
       const data = await res.json();
@@ -114,10 +114,10 @@ export default function ClientesPage() {
       setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
       setValidatedAdd(false);
-      setMessage("Cliente agregado correctamente");
+      setMessage(t("client.success"));
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message || "Ocurrió un error al cargar el cliente.");
+        setError(error.message || t("client.errordata"));
       }
     }
   };

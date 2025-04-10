@@ -264,8 +264,8 @@ export default function ListAssignmentsPage() {
                     <Form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.profile')}</Form.Label>
-                            <Form.Select {...register("profileId", { required: t("AssignProfiletoProjectList.requiredProfile") })} isInvalid={!!errors.profileId}>
-                                <option value="">{t("AssignProfiletoProjectList.selectProfile")}</option>
+                            <Form.Select {...register("profileId", { required: t("AssignProfiletoProject.requiredProfile") })} isInvalid={!!errors.profileId}>
+                                <option value="">{t("AssignProfiletoProject.selectProfile")}</option>
                                 {profiles.map((p) => (
                                     <option key={p.id} value={p.id}>{p.firstName}</option>
                                 ))}
@@ -277,8 +277,8 @@ export default function ListAssignmentsPage() {
 
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.project')}</Form.Label>
-                            <Form.Select {...register("projectId", { required: t("AssignProfiletoProjectList.requiredProject") })} isInvalid={!!errors.projectId}>
-                                <option value="">{t("AssignProfiletoProjectList.selectProject")}</option>
+                            <Form.Select {...register("projectId", { required: t("AssignProfiletoProject.requiredProject") })} isInvalid={!!errors.projectId}>
+                                <option value="">{t("AssignProfiletoProject.selectProject")}</option>
                                 {projects.map((p) => (
                                     <option key={p.id} value={p.id}>{p.name}</option>
                                 ))}
@@ -291,7 +291,7 @@ export default function ListAssignmentsPage() {
                         <Form.Group className="mb-3">
                             <Form.Label>{t('AssignProfiletoProjectList.statusPro')}</Form.Label>
                             <Form.Select {...register('status', { required: t("AssignProfiletoProjectList.requiredStatus") })} isInvalid={!!errors.status}>
-                                <option value="">{t("AssignProfiletoProjectList.selectStatus")}</option>
+                                <option value="">{t("AssignProfiletoProject.selecStatus")}</option>
                                 <option value="FINISHED">FINISHED</option>
                                 <option value="IN_PROGRESS">IN_PROGRESS</option>
                             </Form.Select>

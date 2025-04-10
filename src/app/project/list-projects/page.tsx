@@ -175,7 +175,7 @@ export default function ListProjectsPage() {
                         transition={{ duration: 0.5 }}
                         className="text-center my-3"
                     >
-                        <h5 className="text-success fw-bold">✅ Cambios guardados exitosamente</h5>
+                        <h5 className="text-success fw-bold">{t('ListProject.success')}</h5>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -352,7 +352,7 @@ export default function ListProjectsPage() {
                             <Col md={6}>
                                 <Form.Group>
                                     <Form.Label>{t("Project.description")}</Form.Label>
-                                    <Form.Control {...register('description', { required: t("Project.requiredDescription") })} isInvalid={!!errors.description} />
+                                    <Form.Control {...register('description', { required: t("Project.requireddescription") })} isInvalid={!!errors.description} />
                                     <Form.Control.Feedback type="invalid">{errors.description?.message}</Form.Control.Feedback>
                                 </Form.Group>
                             </Col>

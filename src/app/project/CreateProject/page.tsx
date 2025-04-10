@@ -118,9 +118,9 @@ export default function CreateProjectPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error('Error al crear el proyecto');
+      if (!res.ok) throw new Error(t('Project.error'));
 
-      setMessage('¡Proyecto creado exitosamente!');
+      setMessage(t('Project.success'));
       setFormData({
         name: '',
         description: '',
@@ -133,7 +133,7 @@ export default function CreateProjectPage() {
       });
       setValidated(false);
     } catch (err) {
-      setError('Error al enviar los datos');
+      setError(t('Project.errordata'));
     }
   };
 
@@ -202,14 +202,14 @@ export default function CreateProjectPage() {
         <Row className="mb-3">
           <Col md={6}>
             <Form.Group>
-              <Form.Label><CalendarDays /> {t('Project.startDate')}</Form.Label>
+              <Form.Label><CalendarDays /> {t('Project.starDate')}</Form.Label>
               <div>
                 <DatePicker
                   selected={formData.startDate}
                   onChange={(date) => setFormData(prev => ({ ...prev, startDate: date }))}
                   dateFormat="yyyy-MM-dd"
                   className={`form-control ${validated && !formData.startDate ? 'is-invalid' : ''}`}
-                  placeholderText={t("Project.startDatePlaceholder")}
+                  placeholderText={t("Project.starDate")}
                 />
                 {validated && !formData.startDate && (
                   <div className="invalid-feedback">
@@ -229,7 +229,7 @@ export default function CreateProjectPage() {
                   onChange={(date) => setFormData(prev => ({ ...prev, endDate: date }))}
                   dateFormat="yyyy-MM-dd"
                   className={`form-control ${validated && !formData.endDate ? 'is-invalid' : ''}`}
-                  placeholderText={t("Project.endDatePlaceholder")}
+                  placeholderText={t("Project.EndDate")}
                   minDate={formData.startDate || undefined}
                 />
                 {validated && !formData.endDate && (

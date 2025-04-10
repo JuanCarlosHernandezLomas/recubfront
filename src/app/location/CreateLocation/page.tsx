@@ -55,15 +55,15 @@ export default function AddLocationPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al agregar la ubicación');
+        throw new Error(errorData.message || t('location.error'));
       }
 
-      setMessage("¡Ubicación agregada exitosamente!");
+      setMessage(t('location.success'));
       setFormData({ country: "", state: "", city: "", name: "" });
       setValidated(false);
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message || 'Ocurrió un error al cargar las locaciones.');
+        setError(error.message || t('location.errordata'));
 
       }
     }

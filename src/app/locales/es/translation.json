@@ -68,7 +68,9 @@
     "skills": "Agregar Skill",
     "experience": "Agregar Experiencia",
     "availability": "Agregar Disponibilidad",
-    "Button": "Agregar"
+    "Button": "Agregar",
+    "message": "¡Agregado correctamente!",
+    "error": "Error al agregar los datos"
   },
   "list": {
     "title": "Listado de Perfiles",
@@ -112,7 +114,12 @@
     "Succes": "Cliente agregado correctamente",
     "editTitle": "Editar Cliente",
     "cancel": "Cancelar",
-    "savechange": "Guardar Cambios"
+    "success": "Cliente agregado correctamente",
+    "errordata": "Ocurrió un error al cargar al Cliente",
+    "error": "Error al agregar al Cliente",
+    "savechange": "Guardar Cambios",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredLocation": "Debe seleccionar una ubicación."
   },
   "report": {
     "title": "Generar reporte de empleado",
@@ -146,7 +153,14 @@
     "state": "Estado",
     "city": "Ciudad",
     "locationName": "Nombre de la Ubicación",
-    "button": "Agregar Ubicación"
+    "button": "Agregar Ubicación",
+    "requiredCountry": "Requiere un Pais",
+    "requiredstate": "Requiere un estado",
+    "requiredcity": "Requiere una ciudad",
+    "requiredname": "Requiere un nombre",
+    "success": "¡Ubicación agregada exitosamente!",
+    "errordata": "Ocurrió un error al cargar las locaciones.",
+    "error": "Error al agregar la ubicación"
   },
   "listlocation": {
     "title": "Listado de Locaciones",
@@ -163,7 +177,11 @@
     "delete": "Elimminar",
     "editTitle": "Editar Locación",
     "cancel": "Cancelar",
-    "savechange": "Guardar Cambios"
+    "savechange": "Guardar Cambios",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredcity": "La ciudad es obligatoria",
+    "requiredstate": "El estado es obligatorio",
+    "requiredcountry": "El pais es obligatorio"
   },
 
   "Project": {
@@ -184,7 +202,15 @@
     "button": "Crear proyecto",
     "editTitle": "Editar Projecto",
     "savechange": "Guardar Cambios",
-    "descripcion": "Descripcion"
+    "descripcion": "Descripcion",
+    "success": "¡Proyecto creado exitosamente!",
+    "error": "Error al crear el proyecto",
+    "errordata": "Error al enviar los datos",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredClient": "Selecciona al menos un cliente",
+    "requireddescription": "La descripcion es obligatoria",
+    "requiredOwner": "Selecciona al menos un propietario",
+    "requiredSkill": "Selecciona al menos una habilidad"
   },
   "ListProject": {
     "title": "Listado de proyectos",
@@ -201,7 +227,8 @@
     "Active": "Activo",
     "Inactive": "Inactivo",
     "delete": "Delete",
-    "edit": "Editar"
+    "edit": "Editar",
+    "success": "✅ Cambios guardados exitosamente"
   },
   "AssignProfiletoProject": {
     "title": "Asignar Perfil a Proyecto",
@@ -215,7 +242,11 @@
     "selecDateEnd": "Seleccione la Fecha de Fin ",
     "status": "Estado",
     "selecStatus": "Seleccione el estado del proyecto",
-    "button": "Asignar Proyecto"
+    "button": "Asignar Proyecto",
+    "required": "campo requerido",
+    "success": "✅ Asignación guardada exitosamente",
+    "requiredProfile": "Selecciona al menos un perfil",
+    "requiredProject": "Selecciona al menos un proyecto"
   },
   "AssignProfiletoProjectList": {
     "title": "Asignacion de perfiles",
@@ -233,7 +264,8 @@
     "editTitle": "Editar Asignacion",
     "savechange": "Guardar Cambios",
     "filterProfile": "Buscar por perfil",
-    "filterProject": "Buscar por proyecto"
+    "filterProject": "Buscar por proyecto",
+    "requiredStatus": "Selecciona al menos un Estado del proyecto"
   },
   "AssignProyect": {
     "title": "Crea una asignacion",
@@ -258,7 +290,11 @@
     "description": "📝 Descripción del Equipo",
     "proyect": "📁 Proyecto",
     "select": "seleccione un proyecto",
-    "button": "Crear equipo"
+    "button": "Crear equipo",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredDescription": "La descripcion es obligatoria",
+    "requiredProject": "Selecciona al menos un proyecto",
+    "success": "Equipo creado exitosamente"
   },
   "TeamList": {
     "title": "🏢 Equipos Creados",
@@ -273,7 +309,10 @@
     "Action": "Acciones",
     "editTitle": "Editar Equipo",
     "cancel": "Cancelar",
-    "savechange": "Guardar Cambios"
+    "savechange": "Guardar Cambios",
+    "requiredName": "El nombre es obligatorio.",
+    "requiredDescription": "La descripcion es obligatoria",
+    "requiredProject": "Selecciona al menos un proyecto"
   },
   "AssigmenTeam": {
     "title": "👥 Asignar Miembro a un Equipo",
@@ -283,8 +322,11 @@
     "selectTeam": "Seleccione un equipo",
     "rol": "🎯 Rol en el Equipo",
     "button": "Asignar Miembro",
-    "Success": "✅ ¡Miembro asignado correctamente!",
-    "error": "❌ No se pudo asignar el miembro al equipo."
+    "Success": " ¡Miembro asignado correctamente!",
+    "error": "❌ No se pudo asignar el miembro al equipo.",
+    "requiredProfile": "Selecciona al menos un perfil",
+    "requiredTeam": "Seleciona al menos un Team",
+    "requiredRole": "El campo de Rol es obligatorio"
   },
   "AssigmenTeamList": {
     "title": "👥 Miembros Asignados a un Equipo",
@@ -299,6 +341,22 @@
     "filtername": "Buscar por nombre",
     "filterteam": "Buscar por equipo",
     "edit": "Editar",
-    "editTitle": " Editar Asignacion de miembros"
+    "editTitle": " Editar Asignacion de miembros",
+    "requiredProfile": "Selecciona al menos un perfil",
+    "requiredTeam": "Seleciona al menos un Team",
+    "requiredRol": "El campo de Rol es obligatorio",
+    "selectProfile": "Seleccione un Perfil",
+    "selectTeam": "Seleccione un equipo"
+  },
+  "sidebar": {
+    "Home": "Inicio",
+    "Skill": "Habilidades",
+    "Profile": "Perfil",
+    "report": "reportes",
+    "Location": "Locaciones",
+    "client": "Cliente",
+    "Project": "Proyecto",
+    "ProjectAssigned": "Proyectos con Asignacion",
+    "Team": "Equipo"
   }
 }

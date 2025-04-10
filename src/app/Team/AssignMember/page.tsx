@@ -116,7 +116,7 @@ export default function AssignMemberPage() {
 
       if (!res.ok) throw new Error();
 
-      setSuccess(t('AssigmenTeam.Succes'));
+      setSuccess(t('AssigmenTeam.Success'));
       reset();
     } catch {
       setError(t('AssigmenTeam.error'));

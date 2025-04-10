@@ -107,7 +107,7 @@ export default function AssignProjectPage() {
             transition={{ duration: 0.4 }}
           >
             <Alert variant="success" className="text-center fw-bold">
-              ✅ Asignación guardada exitosamente
+            {t('AssignProfiletoProject.success')}
             </Alert>
           </motion.div>
         )}
@@ -130,7 +130,7 @@ export default function AssignProjectPage() {
                       <option key={p.id} value={p.id}>{p.firstName}</option>
                     ))}
                   </Form.Select>
-                  <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{t('AssignProfiletoProject.required')}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -142,7 +142,7 @@ export default function AssignProjectPage() {
                       <option key={p.id} value={p.id}>{p.name}</option>
                     ))}
                   </Form.Select>
-                  <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{t('AssignProfiletoProject.required')}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>
@@ -159,7 +159,7 @@ export default function AssignProjectPage() {
                       <DatePicker className="form-control" selected={field.value} onChange={field.onChange} placeholderText={t('AssignProfiletoProject.selecDate')} />
                     )}
                   />
-                  {errors.startDate && <div className="text-danger">Campo requerido</div>}
+                  {errors.startDate && <div className="text-danger">{t('AssignProfiletoProject.required')}</div>}
                 </Form.Group>
               </Col>
               <Col md={6}>
@@ -186,7 +186,7 @@ export default function AssignProjectPage() {
                     )}
                   />
                   {errors.endDate && (
-                    <div className="text-danger">{errors.endDate.message || 'Campo requerido'}</div>
+                    <div className="text-danger">{errors.endDate.message ||t('AssignProfiletoProject.required')}</div>
                   )}
                 </Form.Group>
               </Col>
@@ -202,7 +202,7 @@ export default function AssignProjectPage() {
                     <option value="FINISHED">Finalizado</option>
                     <option value="PENDING">En espera</option>
                   </Form.Select>
-                  <Form.Control.Feedback type="invalid">Campo requerido</Form.Control.Feedback>
+                  <Form.Control.Feedback type="invalid">{t('AssignProfiletoProject.required')}</Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>

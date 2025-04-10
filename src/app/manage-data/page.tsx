@@ -98,10 +98,10 @@ export default function ManageDataPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al agregar los datos');
+        throw new Error(errorData.message || t("manager.error"));
       }
 
-      setMessage('¡Agregado correctamente!');
+      setMessage(t("manager.message"));
       setShowConfetti(true);
       const sound = new Audio('/sound/sonido.mp3');
       sound.play().catch((err) => console.error("Error al reproducir sonido", err));

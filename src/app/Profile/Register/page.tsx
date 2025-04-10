@@ -372,7 +372,7 @@ export default function RegisterPage() {
 
         <div className="d-grid">
           <Button type="submit" variant="primary" disabled={loading}>
-            {loading ? <Spinner size="sm" animation="border" /> : t("profile.submit")}
+            {loading ? <Spinner size="sm" animation="border" /> : t("profile.Register")}
           </Button>
         </div>
       </Form>

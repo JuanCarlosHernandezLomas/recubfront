@@ -25,7 +25,7 @@ interface TeamMember {
   perfilName: string;
   teamId: number;
   teamName: string;
-  active: boolean;
+  isActive: boolean;
 }
 
 interface Option {
@@ -217,7 +217,7 @@ export default function ListTeamMembersPage() {
                 <td>{m.rolEnEquipo}</td>
                 <td>{m.teamName}</td>
                 <td>
-                  {m.active ? (
+                  {m.isActive ? (
                     <Badge bg="success">{t("AssigmenTeamList.Active")}</Badge>
                   ) : (
                     <Badge bg="danger">{t("AssigmenTeamList.Inactive")}</Badge>

@@ -68,7 +68,9 @@
     "skills": "Add Skill",
     "experience": "Add Experience",
     "availability": "Add Availability",
-    "Button": "Add"
+    "Button": "Add",
+    "message": "Successfully added!",
+    "error": "Error adding data"
   },
   "list": {
     "title": "Profile List",
@@ -110,7 +112,12 @@
     "filterLocation": "Select a location",
     "editTitle": "Edit Customer",
     "cancel": "Cancel",
-    "savechange": "Save Changes"
+    "success": "Customer added successfully",
+    "errordata": "An error occurred while loading the Client",
+    "error": "Error while adding the Client",
+    "savechange": "Save Changes",
+    "requiredName": "Name is required.",
+    "requiredLocation": "You must select a location."
   },
 
   "report": {
@@ -146,7 +153,14 @@
     "state": "State",
     "city": "City",
     "locationName": "Location name",
-    "button": "Add location"
+    "button": "Add location",
+    "requiredCountry": "Requires a country",
+    "requiredstate": "Requires a state",
+    "requiredcity": "Requires a city",
+    "requiredname": "Requires a name",
+    "success": "Location added successfully!",
+    "errordata": "An error occurred while loading locations.",
+    "error": "Error adding location"
   },
   "listlocation": {
     "title": "List of Locations",
@@ -163,7 +177,11 @@
     "delete": "Delete",
     "editTitle": "Edit Location",
     "cancel": "Cancel",
-    "savechange": "Save Changes"
+    "savechange": "Save Changes",
+    "requiredName": "Name is required.",
+    "requiredcity": "City is required.",
+    "requiredstate": "State is required.",
+    "requiredcountry": "Country is required."
   },
   "Project": {
     "title": "Create Project",
@@ -183,7 +201,15 @@
     "button": "Create Project",
     "editTitle": "Edit Project",
     "savechange": "Save Changes",
-    "descripcion": "Description"
+    "descripcion": "Description",
+    "success": "Project created successfully!",
+    "error": "Error creating project",
+    "errordata": "Error sending data",
+    "requiredName": "Name is required.",
+    "requiredClient": "Select at least one client",
+    "requireddescription": "Description is required",
+    "requiredOwner": "Select at least one owner",
+    "requiredSkill": "Select at least one skill"
   },
   "ListProject": {
     "title": "List of Project",
@@ -200,7 +226,8 @@
     "Active": "Active",
     "Inactive": "Inactive",
     "delete": "Delete",
-    "edit": "Edit"
+    "edit": "Edit",
+    "success": "✅ Changes saved successfully"
   },
   "AssignProfiletoProject": {
     "title": "Assign Profile to Project",
@@ -214,7 +241,11 @@
     "selecDateEnd": "Select the End Date",
     "status": "Status",
     "selecStatus": "Select the project status",
-    "button": "Assign Project"
+    "button": "Assign Project",
+    "required": "required field",
+    "success": "✅ Assignment saved successfully",
+    "requiredProfile": "Select at least one profile",
+    "requiredProject": "Select at least one project"
   },
   "AssignProfiletoProjectList": {
     "title": "Profile Assignment",
@@ -232,7 +263,8 @@
     "editTitle": "Edit Assignment",
     "savechange": "Save Changes",
     "filterProfile": "Search by profile",
-    "filterProject": "Search by project"
+    "filterProject": "Search by project",
+    "requiredStatus": "Select at least one project status."
   },
 
   "AssignProyect": {
@@ -257,7 +289,11 @@
     "description": "📝 Team Description",
     "project": "📁 Project",
     "select": "select a project",
-    "button": "Create team"
+    "button": "Create team",
+    "requiredName": "Name is required.",
+    "requiredDescription": "Description is required.",
+    "requiredProject": "Select at least one project.",
+    "success": "Team successfully created"
   },
   "TeamList": {
     "title": "🏢 Created Teams",
@@ -272,7 +308,10 @@
     "Action": "Actions",
     "editTitle": "Edit Team",
     "cancel": "Cancel",
-    "savechange": "Save Changes"
+    "savechange": "Save Changes",
+    "requiredName": "Name is required.",
+    "requiredDescription": "Description is required.",
+    "requiredProject": "Select at least one project."
   },
 
   "AssigmenTeam": {
@@ -283,8 +322,11 @@
     "selectTeam": "Select a team",
     "rol": "🎯 Role in the Team",
     "button": "Assign Member",
-    "Success": "✅ Member assigned successfully!",
-    "error": "❌ The member could not be assigned to the team."
+    "Success": " Member assigned successfully!",
+    "error": "❌ The member could not be assigned to the team.",
+    "requiredProfile": "Select at least one profile",
+    "requiredTeam": "Select at least one Team",
+    "requiredRole": "The Role field is required"
   },
 
   "AssigmenTeamList": {
@@ -300,6 +342,22 @@
     "filtername": "Search by  user name",
     "filterteam": "Search by  Team",
     "edit": "Edit",
-    "editTitle": "Edit Member Assignment"
+    "editTitle": "Edit Member Assignment",
+    "requiredProfile": "Select at least one profile",
+    "requiredTeam": "Select at least one Team",
+    "requiredRol": "The Role field is required",
+    "selectProfile": "Select a Profile",
+    "selectTeam": "Select a team"
+  },
+  "sidebar": {
+    "Home": "Home",
+    "Skill": "Skills",
+    "Profile": "Profile",
+    "report": "reports",
+    "Location": "Locations",
+    "client": "Client",
+    "Project": "Project",
+    "ProjectAssigned": "Projects with Assignment",
+    "Team": "Team"
   }
 }
