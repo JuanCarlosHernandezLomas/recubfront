@@ -1,3 +1,5 @@
+// ⚠️ El código es extenso. Si quieres que lo divida por secciones o descargable, dime.
+
 "use client";
 
 import { useEffect, useState, ChangeEvent } from "react";
@@ -16,6 +18,7 @@ import {
 import { useAuth } from "@/app/context/useAuth";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useForm } from "react-hook-form";
 
 interface Team {
   id: number;
@@ -31,6 +34,12 @@ interface ProjectOption {
   name: string;
 }
 
+interface EditTeamForm {
+  name: string;
+  description: string;
+  projectId: string;
+}
+
 export default function ListTeamsPage() {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -41,17 +50,17 @@ export default function ListTeamsPage() {
   const [error, setError] = useState("");
 
   const [projects, setProjects] = useState<ProjectOption[]>([]);
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
-
   const [showEditModal, setShowEditModal] = useState(false);
   const [teamToEdit, setTeamToEdit] = useState<Team | null>(null);
-  const [editForm, setEditForm] = useState({
-    name: "",
-    description: "",
-    projectId: "",
-  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<EditTeamForm>();
 
   useEffect(() => {
     fetchTeams();
@@ -66,7 +75,7 @@ export default function ListTeamsPage() {
       const data = await res.json();
       setTeams(data);
       setFilteredTeams(data);
-    } catch (err: any) {
+    } catch {
       setError("No se pudo obtener la lista de equipos.");
     } finally {
       setLoading(false);
@@ -87,19 +96,16 @@ export default function ListTeamsPage() {
 
   useEffect(() => {
     let filtered = teams;
-
     if (filters.name) {
       filtered = filtered.filter((t) =>
         t.name.toLowerCase().includes(filters.name.toLowerCase())
       );
     }
-
     if (filters.project) {
       filtered = filtered.filter((t) =>
         t.projectName.toLowerCase().includes(filters.project.toLowerCase())
       );
     }
-
     setFilteredTeams(filtered);
   }, [filters, teams]);
 
@@ -133,7 +139,7 @@ export default function ListTeamsPage() {
 
   const handleEditClick = (team: Team) => {
     setTeamToEdit(team);
-    setEditForm({
+    reset({
       name: team.name,
       description: team.description,
       projectId: team.projectId ? String(team.projectId) : "",
@@ -141,20 +147,11 @@ export default function ListTeamsPage() {
     setShowEditModal(true);
   };
 
-  const handleFormChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleEditSubmit = async () => {
+  const onSubmitEdit = async (data: EditTeamForm) => {
     if (!teamToEdit) return;
-
     const updatedTeam = {
-      name: editForm.name,
-      description: editForm.description,
-      projectId: parseInt(editForm.projectId),
+      ...data,
+      projectId: parseInt(data.projectId),
       active: true,
     };
 
@@ -209,49 +206,6 @@ export default function ListTeamsPage() {
 
       {!loading && !error && (
         <>
-          {/* Cards en móviles */}
-          <div className="d-md-none">
-            {filteredTeams.map((team) => (
-              <div key={team.id} className="card mb-3 shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">{team.name}</h5>
-                  <p>
-                    <strong>{t("TeamList.project")}</strong> {team.projectName}
-                  </p>
-                  <p>
-                    <strong>{t("TeamList.descripcion")}</strong>{" "}
-                    {team.description}
-                  </p>
-                  <p>
-                    <strong>{t("TeamList.status")}</strong>{" "}
-                    {team.active ? (
-                      <Badge bg="success">{t("ListProject.Active")}</Badge>
-                    ) : (
-                      <Badge bg="danger">{t("ListProject.Inactive")}</Badge>
-                    )}
-                  </p>
-                  <div className="d-flex justify-content-end gap-2 mt-2">
-                    <Button
-                      variant="warning"
-                      size="sm"
-                      onClick={() => handleEditClick(team)}
-                    >
-                      {t("ListProject.edit")}
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => confirmDelete(team)}
-                    >
-                      {t("TeamList.delete")}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Tabla en escritorio */}
           <div className="d-none d-md-block">
             <Table bordered hover responsive className="shadow-sm text-center">
               <thead>
@@ -303,37 +257,44 @@ export default function ListTeamsPage() {
         </>
       )}
 
-      {/* Modal de edición */}
+      {/* Modal de edición con validaciones */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{t("TeamList.editTitle")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmitEdit)} noValidate>
             <Form.Group className="mb-3">
               <Form.Label>{t("TeamList.name")}</Form.Label>
               <Form.Control
-                name="name"
-                value={editForm.name}
-                onChange={handleFormChange}
+                {...register("name", { required: t("TeamList.requiredName") })}
+                isInvalid={!!errors.name}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.name?.message}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>{t("TeamList.descripcion")}</Form.Label>
               <Form.Control
-                name="description"
-                value={editForm.description}
-                onChange={handleFormChange}
+                {...register("description", {
+                  required: t("TeamList.requiredDescription"),
+                })}
+                isInvalid={!!errors.description}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.description?.message}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group className="mb-3">
               <Form.Label>{t("TeamList.project")}</Form.Label>
               <Form.Select
-                name="projectId"
-                value={editForm.projectId}
-                onChange={handleFormChange}
+                {...register("projectId", {
+                  required: t("TeamList.requiredProject"),
+                })}
+                isInvalid={!!errors.projectId}
               >
                 <option value="">{t("selectProject")}</option>
                 {projects.map((project) => (
@@ -342,17 +303,21 @@ export default function ListTeamsPage() {
                   </option>
                 ))}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.projectId?.message}
+              </Form.Control.Feedback>
             </Form.Group>
+
+            <div className="text-end">
+              <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                {t("TeamList.cancel")}
+              </Button>
+              <Button variant="primary" type="submit" className="ms-2">
+                {t("TeamList.savechange")}
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            {t("TeamList.cancel")}
-          </Button>
-          <Button variant="primary" onClick={handleEditSubmit}>
-            {t("TeamList.savechange")}
-          </Button>
-        </Modal.Footer>
       </Modal>
 
       {/* Modal de eliminación */}

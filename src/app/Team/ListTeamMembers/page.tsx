@@ -16,6 +16,7 @@ import {
 import { useAuth } from "@/app/context/useAuth";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
+import { useForm } from "react-hook-form";
 
 interface TeamMember {
   id: number;
@@ -32,6 +33,12 @@ interface Option {
   name: string;
 }
 
+interface EditFormValues {
+  rolEnEquipo: string;
+  perfilId: string;
+  teamId: string;
+}
+
 export default function ListTeamMembersPage() {
   const { t } = useTranslation();
   const { token } = useAuth();
@@ -46,21 +53,23 @@ export default function ListTeamMembersPage() {
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [memberToEdit, setMemberToEdit] = useState<TeamMember | null>(null);
-  const [editForm, setEditForm] = useState({
-    rolEnEquipo: "",
-    perfilId: "",
-    teamId: ""
-  });
 
   const [profiles, setProfiles] = useState<Option[]>([]);
   const [teams, setTeams] = useState<Option[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<EditFormValues>();
 
   const fetchMembers = async () => {
     try {
       const res = await fetch("http://localhost:8090/api/team-members", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) throw new Error("No se pudo obtener los miembros del equipo.");
       const data = await res.json();
       setMembers(data);
       setFilteredMembers(data);
@@ -81,10 +90,8 @@ export default function ListTeamMembersPage() {
           headers: { Authorization: `Bearer ${token}` },
         }),
       ]);
-
       const profilesData = await profilesRes.json();
       const teamsData = await teamsRes.json();
-
       setProfiles(profilesData.map((p: any) => ({
         id: p.id,
         name: `${p.firstName} ${p.lastName}`,
@@ -102,19 +109,16 @@ export default function ListTeamMembersPage() {
 
   useEffect(() => {
     let filtered = members;
-
     if (filters.profileName) {
       filtered = filtered.filter((m) =>
         m.perfilName.toLowerCase().includes(filters.profileName.toLowerCase())
       );
     }
-
     if (filters.teamName) {
       filtered = filtered.filter((m) =>
         m.teamName.toLowerCase().includes(filters.teamName.toLowerCase())
       );
     }
-
     setFilteredMembers(filtered);
   }, [filters, members]);
 
@@ -130,56 +134,41 @@ export default function ListTeamMembersPage() {
 
   const handleDelete = async () => {
     if (!memberToDelete) return;
-    try {
-      const res = await fetch(`http://localhost:8090/api/team-members/${memberToDelete.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Error al eliminar la asignación.");
-      fetchMembers();
-      setShowDeleteModal(false);
-    } catch {
-      alert("Error al eliminar.");
-    }
+    await fetch(`http://localhost:8090/api/team-members/${memberToDelete.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchMembers();
+    setShowDeleteModal(false);
   };
 
   const handleEditClick = (member: TeamMember) => {
     setMemberToEdit(member);
-    setEditForm({
+    reset({
       rolEnEquipo: member.rolEnEquipo,
       perfilId: String(member.perfilId),
-      teamId: String(member.teamId)
+      teamId: String(member.teamId),
     });
     setShowEditModal(true);
   };
 
-  const handleEditChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleEditSubmit = async () => {
+  const onSubmitEdit = async (data: EditFormValues) => {
     if (!memberToEdit) return;
-    try {
-      const res = await fetch(`http://localhost:8090/api/team-members/${memberToEdit.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          rolEnEquipo: editForm.rolEnEquipo,
-          perfilId: parseInt(editForm.perfilId),
-          teamId: parseInt(editForm.teamId),
-          active: true,
-        }),
-      });
-      if (!res.ok) throw new Error("Error al editar el miembro del equipo.");
-      setShowEditModal(false);
-      fetchMembers();
-    } catch {
-      alert("Error al editar.");
-    }
+    await fetch(`http://localhost:8090/api/team-members/${memberToEdit.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        ...data,
+        perfilId: parseInt(data.perfilId),
+        teamId: parseInt(data.teamId),
+        active: true,
+      }),
+    });
+    setShowEditModal(false);
+    fetchMembers();
   };
 
   return (
@@ -253,54 +242,69 @@ export default function ListTeamMembersPage() {
         </Table>
       )}
 
+      {/* Modal de Edición */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>{t("AssigmenTeamList.editTitle")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmitEdit)} noValidate>
             <Form.Group className="mb-3">
               <Form.Label>{t("AssigmenTeamList.rol")}</Form.Label>
               <Form.Control
-                name="rolEnEquipo"
-                value={editForm.rolEnEquipo}
-                onChange={handleEditChange}
+                {...register("rolEnEquipo", { required: t("AssigmenTeamList.requiredRol") })}
+                isInvalid={!!errors.rolEnEquipo}
               />
+              <Form.Control.Feedback type="invalid">
+                {errors.rolEnEquipo?.message}
+              </Form.Control.Feedback>
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>{t("AssigmenTeamList.user")}</Form.Label>
-              <Form.Select name="perfilId" value={editForm.perfilId} onChange={handleEditChange}>
-                <option value="">Seleccionar perfil</option>
+              <Form.Select
+                {...register("perfilId", { required: t("AssigmenTeamList.requiredProfile") })}
+                isInvalid={!!errors.perfilId}
+              >
+                <option value="">{t("AssigmenTeamList.selectProfile")}</option>
                 {profiles.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
+                  <option key={p.id} value={p.id}>{p.name}</option>
                 ))}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.perfilId?.message}
+              </Form.Control.Feedback>
             </Form.Group>
+
             <Form.Group className="mb-3">
               <Form.Label>{t("AssigmenTeamList.Team")}</Form.Label>
-              <Form.Select name="teamId" value={editForm.teamId} onChange={handleEditChange}>
-                <option value="">Seleccionar equipo</option>
+              <Form.Select
+                {...register("teamId", { required: t("AssigmenTeamList.requiredTeam") })}
+                isInvalid={!!errors.teamId}
+              >
+                <option value="">{t("AssigmenTeamList.selectTeam")}</option>
                 {teams.map((t) => (
-                  <option key={t.id} value={t.id}>
-                    {t.name}
-                  </option>
+                  <option key={t.id} value={t.id}>{t.name}</option>
                 ))}
               </Form.Select>
+              <Form.Control.Feedback type="invalid">
+                {errors.teamId?.message}
+              </Form.Control.Feedback>
             </Form.Group>
+
+            <div className="text-end">
+              <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+                {t("TeamList.cancel")}
+              </Button>
+              <Button variant="primary" type="submit" className="ms-2">
+                {t("TeamList.savechange")}
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            {t("TeamList.cancel")}
-          </Button>
-          <Button variant="primary" onClick={handleEditSubmit}>
-            {t("TeamList.savechange")}
-          </Button>
-        </Modal.Footer>
       </Modal>
 
+      {/* Modal de Eliminación */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered backdrop="static">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}

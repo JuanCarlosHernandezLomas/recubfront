@@ -10,7 +10,6 @@ import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useAuth } from '@/app/context/useAuth';
 import { useTranslation } from 'react-i18next';
 
-
 interface TeamMemberForm {
   rolEnEquipo: string;
   perfilId: string;
@@ -29,11 +28,17 @@ interface Team {
   name: string;
 }
 
+interface ExistingAssignment {
+  perfilId: number;
+  teamId: number;
+}
+
 export default function AssignMemberPage() {
   const { t } = useTranslation();
   const { token } = useAuth();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [teams, setTeams] = useState<Team[]>([]);
+  const [assignments, setAssignments] = useState<ExistingAssignment[]>([]);
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
 
@@ -41,32 +46,59 @@ export default function AssignMemberPage() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm<TeamMemberForm>();
+
+  const perfilId = watch('perfilId');
+  const teamId = watch('teamId');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profilesRes, teamsRes] = await Promise.all([
+        const [profilesRes, teamsRes, assignmentsRes] = await Promise.all([
           fetch('http://localhost:8090/api/profile', {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch('http://localhost:8090/api/teams', {
             headers: { Authorization: `Bearer ${token}` },
           }),
+          fetch('http://localhost:8090/api/team-members', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
+
         setProfiles(await profilesRes.json());
         setTeams(await teamsRes.json());
+
+        const assignmentData = await assignmentsRes.json();
+        const simplified = assignmentData.map((a: any) => ({
+          perfilId: a.perfilId,
+          teamId: a.teamId,
+        }));
+        setAssignments(simplified);
       } catch {
-        setError('Error al cargar perfiles o equipos.');
+        setError('Error al cargar perfiles, equipos o asignaciones.');
       }
     };
     fetchData();
   }, [token]);
 
+  const isDuplicate = () => {
+    return assignments.some(
+      (a) => a.perfilId === parseInt(perfilId) && a.teamId === parseInt(teamId)
+    );
+  };
+
   const onSubmit = async (data: TeamMemberForm) => {
     setSuccess('');
     setError('');
+
+    if (isDuplicate()) {
+      setError(t('AssigmenTeam.duplicate'));
+      return;
+    }
+
     try {
       const res = await fetch('http://localhost:8090/api/team-members', {
         method: 'POST',
@@ -78,11 +110,12 @@ export default function AssignMemberPage() {
           ...data,
           perfilId: parseInt(data.perfilId),
           teamId: parseInt(data.teamId),
-          active: true
+          active: true,
         }),
       });
 
       if (!res.ok) throw new Error();
+
       setSuccess(t('AssigmenTeam.Succes'));
       reset();
     } catch {
@@ -112,13 +145,15 @@ export default function AssignMemberPage() {
 
         <Card className="shadow-sm border-0">
           <Card.Body>
-            <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form onSubmit={handleSubmit(onSubmit)} noValidate>
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Group>
                     <Form.Label>{t('AssigmenTeam.profile')}</Form.Label>
                     <Form.Select
-                      {...register('perfilId', { required: true })}
+                      {...register('perfilId', {
+                        required: t('AssigmenTeam.requiredProfile'),
+                      })}
                       isInvalid={!!errors.perfilId}
                     >
                       <option value="">{t('AssigmenTeam.selectProfile')}</option>
@@ -129,7 +164,7 @@ export default function AssignMemberPage() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.perfilId?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -138,7 +173,9 @@ export default function AssignMemberPage() {
                   <Form.Group>
                     <Form.Label>{t('AssigmenTeam.Team')}</Form.Label>
                     <Form.Select
-                      {...register('teamId', { required: true })}
+                      {...register('teamId', {
+                        required: t('AssigmenTeam.requiredTeam'),
+                      })}
                       isInvalid={!!errors.teamId}
                     >
                       <option value="">{t('AssigmenTeam.selectTeam')}</option>
@@ -149,7 +186,7 @@ export default function AssignMemberPage() {
                       ))}
                     </Form.Select>
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.teamId?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -161,11 +198,17 @@ export default function AssignMemberPage() {
                     <Form.Label>{t('AssigmenTeam.rol')}</Form.Label>
                     <Form.Control
                       placeholder="Ej. Desarrollador Frontend"
-                      {...register('rolEnEquipo', { required: true })}
+                      {...register('rolEnEquipo', {
+                        required: t('AssigmenTeam.requiredRole'),
+                        minLength: {
+                          value: 3,
+                          message: t('AssigmenTeam.minLengthRole'),
+                        },
+                      })}
                       isInvalid={!!errors.rolEnEquipo}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Campo requerido
+                      {errors.rolEnEquipo?.message}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -173,7 +216,7 @@ export default function AssignMemberPage() {
 
               <div className="text-end">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button type="submit" variant="success" size="lg">
+                  <Button type="submit" variant="success" size="lg" disabled={isDuplicate()}>
                     {t('AssigmenTeam.button')}
                   </Button>
                 </motion.div>
