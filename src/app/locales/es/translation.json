@@ -358,5 +358,36 @@
     "Project": "Proyecto",
     "ProjectAssigned": "Proyectos con Asignacion",
     "Team": "Equipo"
-  }
+  },
+  "common":{
+    "back": "Regresar"
+  },
+  "reportPdf":{
+    "title":"Reporte de perfil Profesional",
+    "date":"Fecha",
+    "info": "Informacion Personal",
+    "id":"ID",
+    "name":"Nombre",
+    "Position":"Puesto",
+    "locacion":"Ubicacion",
+    "availability":"Disponibilidad",
+    "ExperienceLevel":"Nivel de Experiencia",
+    "AssigmenUser":"Usuario Asignado",
+    "skill":"Habilidades Tecnicas",
+    "AssignProyect":"Asignacion de Proyecto",
+    "Project":"Proyecto",
+    "client":"Cliente",
+    "Team":"Equipo",
+    "rol":"Rol en el Equipo",
+    "qr":"Escanea para descargar el CV",
+    "footer":"Generado automáticamente por ResourceHub",
+    "generateBench":"Generar Reporte de Banca",
+    "Bench": "Banca",
+    "BenchTitle":"Reporte de Disponibilidad",
+    "BenchDetail":"Detalle de personas en banca",
+    "desde":"Fecha"
+
+
+  
+}
 }

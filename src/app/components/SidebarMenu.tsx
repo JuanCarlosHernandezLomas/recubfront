@@ -11,12 +11,18 @@ import { useSidebarContext } from '../context/SidebarContext';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from "react-i18next";
 import { ClipboardList, FolderClosed } from "lucide-react";
+import { useAuth } from '../context/useAuth';
 
 
 export const SidebarMenu = () => {
   const { t } = useTranslation();
   const { collapsed } = useSidebarContext();
   const pathname = usePathname();
+  const { roles } = useAuth();
+
+  const hasRole = (allowedRoles: string[]) => {
+    return allowedRoles.some(role => roles.includes(role));
+  };
 
   const isActive = (path: string) => pathname === path;
   
@@ -47,6 +53,7 @@ export const SidebarMenu = () => {
         <Gear className="me-2" />
         {!collapsed && t('sidebar.Skill')}
       </Link>
+      {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/reports') ? 'active' : ''}`}
         href="/reports"
@@ -54,13 +61,18 @@ export const SidebarMenu = () => {
         <ClipboardData  className="me-2" />
         {!collapsed && t('sidebar.report')}
       </Link>
+    )}
+    {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/location') ? 'active' : ''}`}
         href="/location"
       >
+        
         <GeoAltFill  className="me-2" />
         {!collapsed && t('sidebar.Location')}
       </Link>
+       )}
+      {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/cliente') ? 'active' : ''}`}
         href="/cliente"
@@ -68,6 +80,8 @@ export const SidebarMenu = () => {
         <PersonSquare  className="me-2" />
         {!collapsed && t('sidebar.client')}
       </Link>
+       )}
+         {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/project') ? 'active' : ''}`}
         href="/project"
@@ -75,6 +89,8 @@ export const SidebarMenu = () => {
          <FolderClosed className="me-2"/>
         {!collapsed && t('sidebar.Project')}
       </Link>
+       )}
+        {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/Assignments') ? 'active' : ''}`}
         href="/Assignments"
@@ -82,6 +98,8 @@ export const SidebarMenu = () => {
         <ClipboardList className="me-2"/>
         {!collapsed && t('sidebar.ProjectAssigned')}
       </Link>
+       )}
+       {hasRole(['ROLE_ADMINS']) && (
       <Link
         className={`nav-link d-flex align-items-center ${isActive('/Team') ? 'active' : ''}`}
         href="/Team"
@@ -89,6 +107,7 @@ export const SidebarMenu = () => {
         <PersonSquare className="me-2" />
         {!collapsed && t('sidebar.Team')}
       </Link>
+      )}
     </nav>
   </aside>
 );

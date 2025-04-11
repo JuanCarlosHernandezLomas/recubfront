@@ -48,7 +48,7 @@ const Dashboard = () => {
       description: t('dashboard.reportsDesc'),
       allowedRoles: ['ROLE_ADMINS'],
       path: '/reports',
-      animation: 'animate__fadeInRight',
+      animation: 'animate__fadeInLeft',
     },
     {
       title: t('dashboard.locations'),
@@ -56,7 +56,7 @@ const Dashboard = () => {
       description: t('dashboard.locationsDesc'),
       allowedRoles: ['ROLE_ADMINS'],
       path: '/location',
-      animation: 'animate__fadeInLeft',
+      animation: 'animate__fadeInRight',
     },
     {
       title: t('dashboard.clients'),
@@ -64,7 +64,7 @@ const Dashboard = () => {
       description: t('dashboard.clientsDesc'),
       allowedRoles: ['ROLE_ADMINS'],
       path: '/cliente',
-      animation: 'animate__fadeInRight',
+      animation: 'animate__fadeInLeft',
     },
     {
       title: t('dashboard.Project'),
@@ -78,9 +78,9 @@ const Dashboard = () => {
       title: t('dashboard.ProjectAssigned'),
       icon: <ClipboardList size={45} color='#7300ff'/>,
       description: t('dashboard.ProjectAssignedDesc'),
-      allowedRoles: ['ROLE_ADMINS', 'ROLE_USERS'],
+      allowedRoles: ['ROLE_ADMINS'],
       path: '/Assignments',
-      animation: 'animate__fadeInRight',
+      animation: 'animate__fadeInLeft',
     },
     {
       title: t('dashboard.Team'),

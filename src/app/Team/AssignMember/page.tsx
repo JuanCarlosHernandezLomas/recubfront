@@ -14,7 +14,7 @@ interface TeamMemberForm {
   rolEnEquipo: string;
   perfilId: string;
   teamId: string;
-  active: number;
+  isActive: number;
 }
 
 interface Profile {
@@ -110,7 +110,7 @@ export default function AssignMemberPage() {
           ...data,
           perfilId: parseInt(data.perfilId),
           teamId: parseInt(data.teamId),
-          active: true,
+          isActive: true,
         }),
       });
 

@@ -54,7 +54,11 @@ export default function ViewProfilesPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [validated, setValidated] = useState(false);
+    const { roles } = useAuth();
 
+    const hasRole = (allowedRoles: string[]) => {
+        return allowedRoles.some(role => roles.includes(role));
+      };
     //modal
     const [showModal, setShowModal] = useState(false);
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
@@ -405,8 +409,12 @@ export default function ViewProfilesPage() {
                                         >
                                             {t("list.download")}
                                         </Button>
+                                        {hasRole(['ROLE_ADMINS']) && (
                                         <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>{t("list.EditProfile")}</Button>
-                                        <Button size="sm" variant="danger" onClick={() => confirmDelete(profile.id)}>{t("list.delete")}</Button>
+                                    )}
+                                    {hasRole(['ROLE_ADMINS']) && (
+                                        <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>{t("list.delete")}</Button>
+                                    )}
                                     </div>
                                 </div>
                             </div>
@@ -428,8 +436,12 @@ export default function ViewProfilesPage() {
                                     <th>{t("list.Skills")}</th>
                                     <th>{t("list.CV")}</th>
                                     <th>{t("list.status")}</th>
+                                    {hasRole(['ROLE_ADMINS']) && (
                                     <th>{t("list.edit")}</th>
+                                )}
+                                    {hasRole(['ROLE_ADMINS']) && (
                                     <th>{t("list.delete")}</th>
+                                )}
                                 </tr>
                             </thead>
                             <tbody>
@@ -476,14 +488,18 @@ export default function ViewProfilesPage() {
                                             )}
                                         </td>
                                         <td>
+                                        {hasRole(['ROLE_ADMINS']) && (
                                             <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
                                                 {t("list.EditProfile")}
                                             </Button>
+                                             )}
                                         </td>
                                         <td>
+                                        {hasRole(['ROLE_ADMINS']) && (
                                             <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>
                                                 {t("list.delete")}
                                             </Button>
+                                        )}
                                         </td>
                                     </tr>
                                 ))}
