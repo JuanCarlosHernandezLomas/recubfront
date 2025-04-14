@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
@@ -22,6 +22,8 @@ const Dashboard = () => {
   const mounted = useHasMounted();
   const { roles } = useAuth();
   const router = useRouter();
+
+  
 
   const hasRole = (allowedRoles: string[], userRoles: string[]) => {
     return allowedRoles.some(role => userRoles.includes(role));
@@ -93,6 +95,14 @@ const Dashboard = () => {
       animation: 'animate__fadeInRight',
     },
   ];
+  useEffect(() => {
+    modules.forEach(mod => {
+      if (hasRole(mod.allowedRoles, roles)) {
+        router.prefetch(mod.path);
+        console.log(`✅ Precargando ruta: ${mod.path}`);
+      }
+    });
+  }, [roles]);
 
   return (
     <Container className="py-5">
@@ -107,10 +117,7 @@ const Dashboard = () => {
                 <Card
                   className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
                   style={{ transition: 'transform 0.3s' }}
-                  onMouseEnter={() => {
-                    console.log(`Precargando: ${mod.path}`);
-                    router.prefetch(mod.path);
-                  }}
+
                 >
                   <Card.Body>
                     <div className="d-flex align-items-center mb-3">
