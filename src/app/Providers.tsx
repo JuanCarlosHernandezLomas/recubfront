@@ -9,6 +9,9 @@ import { AOSInit } from "./components/AOSInit";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Suspense } from "react";
+import { Container } from "react-bootstrap";
+import BackButton from "./components/BackButton";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -18,6 +21,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <SidebarProvider>
             <AOSInit />
             <AppShell>
+              <Suspense fallback={null}>
+                <Container className='pt-3 px-4'>
+                  <BackButton/>
+                  </Container>
+                  </Suspense>
               {children}
               <ToastContainer
                 position= "top-center"
