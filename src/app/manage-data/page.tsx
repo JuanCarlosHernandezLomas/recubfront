@@ -22,6 +22,8 @@ import { Fade } from 'react-awesome-reveal';
 import { useWindowSize } from 'react-use';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/useAuth';
+import {  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface ApiForm {
@@ -101,7 +103,9 @@ export default function ManageDataPage() {
         throw new Error(errorData.message || t("manager.error"));
       }
 
-      setMessage(t("manager.message"));
+      toast.success(t("manager.message"), {
+        toastId: "manage-success-toast"
+      });
       setShowConfetti(true);
       const sound = new Audio('/sound/sonido.mp3');
       sound.play().catch((err) => console.error("Error al reproducir sonido", err));
@@ -115,7 +119,9 @@ export default function ManageDataPage() {
       }
       fetchAll(); // actualizar en tiempo real
     } catch (err: any) {
-      setError(err.message || 'Hubo un problema al enviar los datos');
+      toast.error(err.message || 'Hubo un problema al enviar los datos', {
+        toastId: 'submit-error-toast'
+      });
     }
   };
 

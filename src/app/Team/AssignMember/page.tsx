@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useAuth } from '@/app/context/useAuth';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface TeamMemberForm {
   rolEnEquipo: string;
@@ -91,11 +92,10 @@ export default function AssignMemberPage() {
   };
 
   const onSubmit = async (data: TeamMemberForm) => {
-    setSuccess('');
-    setError('');
+
 
     if (isDuplicate()) {
-      setError(t('AssigmenTeam.duplicate'));
+      toast.error(t('AssigmenTeam.duplicate'), { toastId: 'duplicate-toast' });
       return;
     }
 
@@ -116,10 +116,10 @@ export default function AssignMemberPage() {
 
       if (!res.ok) throw new Error();
 
-      setSuccess(t('AssigmenTeam.Success'));
+      toast.success(t('AssigmenTeam.Success'), { toastId: 'success-toast' });
       reset();
     } catch {
-      setError(t('AssigmenTeam.error'));
+      toast.error(t('AssigmenTeam.error'), { toastId: 'error-toast' });
     }
   };
 
@@ -131,17 +131,6 @@ export default function AssignMemberPage() {
         transition={{ duration: 0.6 }}
       >
         <h2 className="text-center text-success mb-4">{t('AssigmenTeam.title')}</h2>
-
-        {success && (
-          <Alert variant="success" className="d-flex align-items-center gap-2">
-            <FaCheckCircle /> {success}
-          </Alert>
-        )}
-        {error && (
-          <Alert variant="danger" className="d-flex align-items-center gap-2">
-            <FaTimesCircle /> {error}
-          </Alert>
-        )}
 
         <Card className="shadow-sm border-0">
           <Card.Body>

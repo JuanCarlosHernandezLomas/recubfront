@@ -1,5 +1,3 @@
-// ⚠️ El código es extenso. Si quieres que lo divida por secciones o descargable, dime.
-
 "use client";
 
 import { useEffect, useState, ChangeEvent } from "react";
@@ -19,6 +17,7 @@ import { useAuth } from "@/app/context/useAuth";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 interface Team {
   id: number;
@@ -76,7 +75,7 @@ export default function ListTeamsPage() {
       setTeams(data);
       setFilteredTeams(data);
     } catch {
-      setError("No se pudo obtener la lista de equipos.");
+      toast.error("No se pudo obtener la lista de equipos.");
     } finally {
       setLoading(false);
     }
@@ -90,7 +89,7 @@ export default function ListTeamsPage() {
       const data = await res.json();
       setProjects(data);
     } catch {
-      console.error("Error al cargar los proyectos");
+      toast.error("Error al cargar los proyectos");
     }
   };
 
@@ -131,9 +130,10 @@ export default function ListTeamsPage() {
       );
       if (!res.ok) throw new Error("Error al eliminar el equipo.");
       fetchTeams();
+      toast.success(t("TeamList.deleted"));
       setShowDeleteModal(false);
     } catch {
-      alert("Error al eliminar.");
+      toast.error(t("TeamList.errorDelete"));
     }
   };
 
@@ -170,10 +170,11 @@ export default function ListTeamsPage() {
 
       if (!res.ok) throw new Error("Error al editar el equipo");
 
+      toast.success(t("TeamList.updated"));
       setShowEditModal(false);
       fetchTeams();
     } catch {
-      alert("Error al editar el equipo.");
+      toast.error(t("TeamList.errorEdit"));
     }
   };
 

@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useAuth } from "@/app/context/useAuth";
 import { User } from "lucide-react";
+import { toast } from 'react-toastify';
 
 
 interface Profile {
@@ -275,11 +276,12 @@ export default function ViewProfilesPage() {
                 const errorData = await response.json();
                 throw new Error(errorData.message || "Error al actualizar el perfil");
             }
-
+            toast.success("Perfil actualizado correctamente", { toastId: 'profile-updated' });
             setShowModal(false);
             fetchProfiles(); // recargar tabla
         } catch (error: any) {
-            alert(error.message || "Ocurrió un error al actualizar.");
+            toast.error(error.message || "Ocurrió un error al actualizar.", { toastId: 'profile-update-error' });
+
         }
     };
 
@@ -303,10 +305,12 @@ export default function ViewProfilesPage() {
 
             if (!res.ok) throw new Error("Error al eliminar");
 
+            toast.success("Perfil eliminado correctamente", { toastId: 'profile-deleted' });
             await fetchProfiles(); // Recargar estado tras eliminar
             setShowDeleteModal(false);
         } catch (err) {
-            alert("Error al eliminar el perfil");
+           toast.error("Error al eliminar el perfil", { toastId: 'profile-delete-error' });
+
         }
     };
     console.log(locationOptions)

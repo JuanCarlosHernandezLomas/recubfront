@@ -14,6 +14,7 @@ import { PersonSquare } from 'react-bootstrap-icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 
 interface Option {
@@ -68,7 +69,7 @@ export default function CreateProjectPage() {
       const data = await res.json();
       setter(data);
     } catch (err) {
-      setError('Error al cargar opciones');
+      toast.error('Error al cargar opciones', { toastId: 'fetch-options' });
     }
   };
 
@@ -120,7 +121,8 @@ export default function CreateProjectPage() {
 
       if (!res.ok) throw new Error(t('Project.error'));
 
-      setMessage(t('Project.success'));
+      
+      toast.success(t('Project.success'), { toastId: 'project-success', className: 'custom-toast' });
       setFormData({
         name: '',
         description: '',
@@ -133,7 +135,8 @@ export default function CreateProjectPage() {
       });
       setValidated(false);
     } catch (err) {
-      setError(t('Project.errordata'));
+      toast.error(t('Project.errordata'), { toastId: 'project-error', className: 'custom-toast' });
+
     }
   };
 

@@ -9,6 +9,7 @@ import { useAuth } from '@/app/context/useAuth';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface TeamForm {
   name: string;
@@ -68,12 +69,10 @@ export default function CreateTeamPage() {
 
       if (!response.ok) throw new Error('Error al crear el equipo.');
 
-      setSuccessMessage(t('Team.success'));
-      setErrorMessage('');
+      toast.success(t('Team.success'), { toastId: 'team-success' });
       reset();
     } catch (err) {
-      setSuccessMessage('');
-      setErrorMessage(t('Team.error'));
+      toast.error(t('Team.error'), { toastId: 'team-error' });
     }
   };
 
@@ -86,16 +85,7 @@ export default function CreateTeamPage() {
       >
         <h2 className="text-center text-primary mb-4">{t('Team.Teamtitle')}</h2>
 
-        {successMessage && (
-          <Alert variant="success" className="d-flex align-items-center gap-2">
-            <FaCheckCircle /> {successMessage}
-          </Alert>
-        )}
-        {errorMessage && (
-          <Alert variant="danger" className="d-flex align-items-center gap-2">
-            <FaTimesCircle /> {errorMessage}
-          </Alert>
-        )}
+
 
         <Card className="shadow-sm border-0">
           <Card.Body>

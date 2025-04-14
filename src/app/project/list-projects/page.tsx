@@ -17,6 +17,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Fade } from 'react-awesome-reveal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 
 interface Option {
@@ -124,10 +125,9 @@ export default function ListProjectsPage() {
         if (response.ok) {
             fetchData();
             setShowModal(false);
-            setShowSuccessAnimation(true);
-            setTimeout(() => setShowSuccessAnimation(false), 10000);
+            toast.success(t("ListProject.success"), { toastId: 'project-updated' });
         } else {
-            alert('Error al actualizar proyecto');
+            toast.error(t("Project.error"), { toastId: 'project-update-error' });
         }
     };
 
@@ -153,6 +153,7 @@ export default function ListProjectsPage() {
 
     const handleDelete = async () => {
         if (!projectToDelete) return;
+        try {
 
         await fetch(`http://localhost:8090/api/projects/${projectToDelete.id}`, {
             method: 'DELETE',
@@ -160,7 +161,11 @@ export default function ListProjectsPage() {
         });
 
         fetchData();
+        toast.success(t("ListProject.deletedSuccess"), { toastId: 'project-deleted' });
         setShowDeleteModal(false);
+    } catch (err) {
+        toast.error(t("ListProject.deletedError"), { toastId: 'project-delete-error' });
+      }
     };
 
     return (

@@ -15,6 +15,7 @@ import {
 } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 interface Client {
   id: number;
@@ -36,14 +37,27 @@ export default function ClientesPage() {
   const [client, setClient] = useState({ name: "", locationId: 0 });
   const [clients, setClients] = useState<Client[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [clientToDelete, setClientToDelete] = useState<Client | null>(null);
   const [editClient, setEditClient] = useState<Client | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [validatedEdit, setValidatedEdit] = useState(false);
   const [validatedAdd, setValidatedAdd] = useState(false);
+  const [filters, setFilters] = useState({
+    name: '',
+    location: ''
+  });
+
+  const handleFilterChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+  
+
+  const filteredClients = clients.filter((cli) =>
+    cli.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+    (filters.location === "" || cli.locationName?.toLowerCase().includes(filters.location.toLowerCase()))
+  );
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -63,7 +77,7 @@ export default function ClientesPage() {
         console.log("Ubicaciones:", locData); // 👈 Verifica si llega bien
         console.log("Clientes:", cliData);
       } catch (err) {
-        setError("Error al cargar datos.");
+        toast.error("Error al cargar datos", { toastId: "load-error" });
       }
     };
     fetchInitialData();
@@ -81,8 +95,6 @@ export default function ClientesPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
     setValidatedAdd(true);
 
     if (!client.name.trim() || !client.locationId) return;
@@ -114,10 +126,10 @@ export default function ClientesPage() {
       setClients((prev) => [...prev, enrichedClient]);
       setClient({ name: "", locationId: 0 });
       setValidatedAdd(false);
-      setMessage(t("client.success"));
+      toast.success(t("client.success"), { toastId: "add-success" });
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message || t("client.errordata"));
+        toast.error(error.message || t("client.errordata"), { toastId: "add-error" });
       }
     }
   };
@@ -160,8 +172,9 @@ export default function ClientesPage() {
 
       setShowDeleteModal(false);
       setClientToDelete(null);
+      toast.success("Cliente desactivado correctamente", { toastId: "delete-success" });
     } catch (err) {
-      setError("Error al desactivar cliente");
+      toast.error("Error al desactivar cliente", { toastId: "delete-error" });
     }
   };
 
@@ -221,16 +234,15 @@ export default function ClientesPage() {
 
       setShowModal(false);
       setValidatedEdit(false);
+      toast.success("Cliente actualizado correctamente", { toastId: "edit-success" });
     } catch {
-      alert("Error al actualizar");
+      toast.error("Error al actualizar cliente", { toastId: "edit-error" });
     }
   };
   return (
     <Container className="py-4">
       <h2 className="mb-4 text-primary">{t("client.title")}</h2>
 
-      {message && <Alert variant="success">{message}</Alert>}
-      {error && <Alert variant="danger">{error}</Alert>}
 
       <Form noValidate validated={validatedAdd} onSubmit={handleSubmit}>
         <Row className="mb-3">
@@ -273,10 +285,29 @@ export default function ClientesPage() {
           </Col>
         </Row>
       </Form>
+      <Row className="mb-3">
+  <Col md={6}>
+    <Form.Control
+      placeholder="🔍 Filtrar por nombre"
+      name="name"
+      value={filters.name}
+      onChange={handleFilterChange}
+    />
+  </Col>
+  <Col md={6}>
+    <Form.Control
+      placeholder="📍 Filtrar por ciudad"
+      name="location"
+      value={filters.location}
+      onChange={handleFilterChange}
+    />
+  </Col>
+</Row>
+
 
       {/* Vista en tarjetas para móviles */}
       <Row className="d-md-none">
-        {clients.map((client) => (
+        {filteredClients.map((client) => (
           <Col xs={12} key={client.id} className="mb-3">
             <Card className="shadow-sm">
               <Card.Body>
@@ -325,7 +356,7 @@ export default function ClientesPage() {
             </tr>
           </thead>
           <tbody>
-            {clients.map((cli) => (
+            {filteredClients.map((cli) => (
               <tr key={cli.id}>
                 <td>{cli.id}</td>
                 <td>{cli.name}</td>

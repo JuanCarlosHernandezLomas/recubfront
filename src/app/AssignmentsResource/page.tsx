@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface Option {
   id: number;
@@ -80,11 +81,14 @@ export default function AssignProjectPage() {
     });
 
     if (response.ok) {
-      setSuccess(true);
       reset();
-      setTimeout(() => setSuccess(false), 3000);
+      toast.success(t('AssignProfiletoProject.success'), {
+        toastId: 'assign-success'
+      });
     } else {
-      alert('Error al asignar proyecto');
+      toast.error(t('AssignProfiletoProject.error'), {
+        toastId: 'assign-error'
+      });
     }
   };
 

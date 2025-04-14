@@ -17,6 +17,7 @@ import { useAuth } from "@/app/context/useAuth";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface TeamMember {
   id: number;
@@ -74,7 +75,7 @@ export default function ListTeamMembersPage() {
       setMembers(data);
       setFilteredMembers(data);
     } catch (err: any) {
-      setError(err.message);
+      toast.error(err.message);
     } finally {
       setLoading(false);
     }
@@ -98,7 +99,7 @@ export default function ListTeamMembersPage() {
       })));
       setTeams(teamsData);
     } catch (err) {
-      console.error("Error al cargar perfiles o equipos", err);
+      toast.error("Error al cargar perfiles o equipos");
     }
   };
 
@@ -134,11 +135,16 @@ export default function ListTeamMembersPage() {
 
   const handleDelete = async () => {
     if (!memberToDelete) return;
-    await fetch(`http://localhost:8090/api/team-members/${memberToDelete.id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchMembers();
+    try {
+      await fetch(`http://localhost:8090/api/team-members/${memberToDelete.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchMembers();
+      toast.success("Miembro eliminado correctamente");
+    } catch {
+      toast.error("Error al eliminar el miembro");
+    }
     setShowDeleteModal(false);
   };
 
@@ -154,21 +160,26 @@ export default function ListTeamMembersPage() {
 
   const onSubmitEdit = async (data: EditFormValues) => {
     if (!memberToEdit) return;
-    await fetch(`http://localhost:8090/api/team-members/${memberToEdit.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        ...data,
-        perfilId: parseInt(data.perfilId),
-        teamId: parseInt(data.teamId),
-        active: true,
-      }),
-    });
-    setShowEditModal(false);
-    fetchMembers();
+    try {
+      await fetch(`http://localhost:8090/api/team-members/${memberToEdit.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...data,
+          perfilId: parseInt(data.perfilId),
+          teamId: parseInt(data.teamId),
+          active: true,
+        }),
+      });
+      setShowEditModal(false);
+      fetchMembers();
+      toast.success("Miembro actualizado correctamente");
+    } catch {
+      toast.error("Error al actualizar el miembro");
+    }
   };
 
   return (

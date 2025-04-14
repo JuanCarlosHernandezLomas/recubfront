@@ -15,11 +15,13 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/useAuth';
 import { useHasMounted } from '../hooks/useHasMounted';
 import { ClipboardList, FolderClosed } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const Dashboard = () => {
   const { t } = useTranslation();
   const mounted = useHasMounted();
   const { roles } = useAuth();
+  const router = useRouter();
 
   const hasRole = (allowedRoles: string[], userRoles: string[]) => {
     return allowedRoles.some(role => userRoles.includes(role));
@@ -105,6 +107,10 @@ const Dashboard = () => {
                 <Card
                   className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
                   style={{ transition: 'transform 0.3s' }}
+                  onMouseEnter={() => {
+                    console.log(`Precargando: ${mod.path}`);
+                    router.prefetch(mod.path);
+                  }}
                 >
                   <Card.Body>
                     <div className="d-flex align-items-center mb-3">

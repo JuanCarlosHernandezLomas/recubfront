@@ -14,6 +14,7 @@ import {
 import { Clock, Lightbulb, Pencil, Upload } from "react-bootstrap-icons";
 import { FileUser, GraduationCap, IdCard, MapPin } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from 'react-toastify';
 
 interface Option {
   id: number;
@@ -76,7 +77,7 @@ export default function RegisterPage() {
       const data = await response.json();
       setter(data);
     } catch {
-      setErrorMessage("Error loading options");
+      toast.error("Error loading options", { toastId: "load-options-error" });
     }
   };
 
@@ -109,7 +110,7 @@ export default function RegisterPage() {
       isEmptyOrWhitespace(formData.jobTitle)
     ) {
       setValidated(true);
-      setErrorMessage(t("profile.noWhitespaceError"));
+      toast.error(t("profile.noWhitespaceError"), { toastId: "no-whitespace" });
       return;
     }
 
@@ -121,8 +122,7 @@ export default function RegisterPage() {
 
     setValidated(true);
     setLoading(true);
-    setErrorMessage("");
-    setSuccessMessage("");
+
 
     const {
       employeeId,
@@ -166,7 +166,7 @@ export default function RegisterPage() {
         throw new Error(errData.message || "Error creating profile");
       }
 
-      setSuccessMessage(t("profile.success"));
+      toast.error(t("profile.noWhitespaceError"), { toastId: "no-whitespace" });
       setFormData({
         employeeId: "",
         firstName: "",
@@ -181,7 +181,7 @@ export default function RegisterPage() {
       });
       setValidated(false);
     } catch (err: any) {
-      setErrorMessage(err.message);
+      toast.error(err.message || "Error creating profile", { toastId: "register-error" });
     } finally {
       setLoading(false);
     }

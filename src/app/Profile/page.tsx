@@ -4,18 +4,16 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
-  GearFill,
   PeopleFill,
-  ClipboardData,
-  GeoAltFill,
-  PersonSquare,
 } from 'react-bootstrap-icons';
 import Link from 'next/link';
 import 'animate.css';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 
 const Profile = () => {
   const { t } = useTranslation();
+  const router = useRouter();
   const modules = [
     {
       title: t('dashboard.registerProfile'),
@@ -45,6 +43,10 @@ const Profile = () => {
               <Card
                 className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
                 style={{ transition: 'transform 0.3s' }}
+                onMouseEnter={() => {
+                  console.log(`Precargando: ${mod.path}`);
+                  router.prefetch(mod.path);
+                }}
               >
                 <Card.Body>
                   <div className="d-flex align-items-center mb-3">

@@ -10,6 +10,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useAuth } from '@/app/context/useAuth';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 interface Assignment {
     id: number;
@@ -59,8 +60,8 @@ export default function ListAssignmentsPage() {
         reset,
         watch,
         formState: { errors }
-      } = useForm<FormValues>();
-      
+    } = useForm<FormValues>();
+
 
     const fetchAssignments = async () => {
         const res = await fetch('http://localhost:8090/api/resource-assignments', {
@@ -131,6 +132,14 @@ export default function ListAssignmentsPage() {
         if (res.ok) {
             fetchAssignments();
             setShowModal(false);
+            toast.success(t("AssignProfiletoProjectList.updateSuccess"), {
+                toastId: "update-success"
+            });
+        }
+        else {
+            toast.error(t("AssignProfiletoProjectList.updateError"), {
+                toastId: "update-error"
+            });
         }
     };
     const confirmDelete = (assigment: Assignment) => {
@@ -141,14 +150,22 @@ export default function ListAssignmentsPage() {
 
     const handleDelete = async () => {
         if (!assigmentToDelete) return;
+        try {
+            await fetch(`http://localhost:8090/api/resource-assignments/${assigmentToDelete.id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` },
+            });
 
-        await fetch(`http://localhost:8090/api/resource-assignments/${assigmentToDelete.id}`, {
-            method: 'DELETE',
-            headers: { Authorization: `Bearer ${token}` },
-        });
-
-        fetchAssignments();
-        setShowDeleteModal(false);
+            fetchAssignments();
+            setShowDeleteModal(false);
+            toast.success(t("AssignProfiletoProjectList.deleteSuccess"), {
+                toastId: "delete-success"
+            });
+        } catch {
+            toast.error(t("AssignProfiletoProjectList.deleteError"), {
+                toastId: "delete-error"
+            });
+        }
     };
 
     return (

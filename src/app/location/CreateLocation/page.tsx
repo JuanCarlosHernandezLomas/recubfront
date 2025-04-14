@@ -4,6 +4,8 @@ import {  MapPinPlus } from "lucide-react";
 import { useState } from "react";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface LocationForm {
@@ -38,6 +40,9 @@ export default function AddLocationPage() {
     setValidated(true);
 
     if (!formData.country.trim() || !formData.state.trim() || !formData.city.trim() || !formData.name.trim()) {
+      toast.error(t('location.errordata'), {
+        toastId: "location-success-toast"
+      });
       return;
     }
 
@@ -58,12 +63,16 @@ export default function AddLocationPage() {
         throw new Error(errorData.message || t('location.error'));
       }
 
-      setMessage(t('location.success'));
+      toast.success(t('location.success'), {
+        toastId: "location-success-toast"
+      });
       setFormData({ country: "", state: "", city: "", name: "" });
       setValidated(false);
     } catch (error) {
       if (error instanceof Error) {
-        setError(error.message || t('location.errordata'));
+        toast.error(error.message || t('location.errordata'), {
+          toastId: "location-error-toast"
+        });
 
       }
     }

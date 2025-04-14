@@ -17,6 +17,7 @@ import { Fade } from 'react-awesome-reveal';
 import { motion, } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Building2 } from "lucide-react";
+import { toast } from 'react-toastify';
 
 interface Location {
     id: number;
@@ -37,8 +38,23 @@ export default function ViewLocationsPage() {
     const [error, setError] = useState("");
     const [locationToDelete, setLocationToDelete] = useState<Location | null>(null);
     const [validatedEdit, setValidatedEdit] = useState(false);
+    const [filters, setFilters] = useState({
+        name: '',
+        city: '',
+        state: '',
+        country: '',
+      });
 
-
+      const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
+      };
+      const filteredLocations = locations.filter(loc =>
+        loc.name.toLowerCase().includes(filters.name.toLowerCase()) &&
+        loc.city.toLowerCase().includes(filters.city.toLowerCase()) &&
+        loc.state.toLowerCase().includes(filters.state.toLowerCase()) &&
+        loc.country.toLowerCase().includes(filters.country.toLowerCase())
+      );
     const fetchLocations = async () => {
         try {
             const res = await fetch("http://localhost:8090/api/locations", {
@@ -46,8 +62,8 @@ export default function ViewLocationsPage() {
             });
             const data = await res.json();
             setLocations(data);
-        } catch (error) {
-            setError("Error al cargar locaciones");
+        } catch  {
+            toast.error("Error al cargar locaciones", { toastId: 'load-error' });
         }
     };
 
@@ -94,11 +110,12 @@ export default function ViewLocationsPage() {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Error al actualizar la ubicación');
             }
+            toast.success("Ubicación actualizada correctamente", { toastId: 'edit-success' });
             setShowModal(false);
             fetchLocations();
         } catch (error) {
             if (error instanceof Error) {
-                setError(error.message || 'Error al actualizar la ubicación.');
+                toast.error(error.message || "Error al actualizar la ubicación", { toastId: 'edit-error' });
 
             }
         }
@@ -117,6 +134,7 @@ export default function ViewLocationsPage() {
                 headers: { Authorization: `Bearer ${token}` },
             });
             if (!response.ok) throw new Error("Error al eliminar");
+            toast.success("Ubicación eliminada correctamente", { toastId: 'delete-success' });
             setShowDeleteModal(false);
             fetchLocations();
         } catch {
@@ -128,6 +146,72 @@ export default function ViewLocationsPage() {
         <Container className="py-4">
             <h2 className="mb-4"> <Building2 size={50} strokeWidth={1} />{t('listlocation.title')}</h2>
 
+            <Row className="mb-4">
+  <Col md={3}>
+    <Form.Group>
+      <Form.Control
+        placeholder="🔍 Nombre"
+        name="name"
+        value={filters.name}
+        onChange={handleFilterChange}
+        list="name-options"
+      />
+      <datalist id="name-options">
+        {[...new Set(locations.map(loc => loc.name))].map((name, index) => (
+          <option key={index} value={name} />
+        ))}
+      </datalist>
+    </Form.Group>
+  </Col>
+  <Col md={3}>
+    <Form.Group>
+      <Form.Control
+        placeholder="🏙️ Ciudad"
+        name="city"
+        value={filters.city}
+        onChange={handleFilterChange}
+        list="city-options"
+      />
+      <datalist id="city-options">
+        {[...new Set(locations.map(loc => loc.city))].map((city, index) => (
+          <option key={index} value={city} />
+        ))}
+      </datalist>
+    </Form.Group>
+  </Col>
+  <Col md={3}>
+    <Form.Group>
+      <Form.Control
+        placeholder="🌆 Estado"
+        name="state"
+        value={filters.state}
+        onChange={handleFilterChange}
+        list="state-options"
+      />
+      <datalist id="state-options">
+        {[...new Set(locations.map(loc => loc.state))].map((state, index) => (
+          <option key={index} value={state} />
+        ))}
+      </datalist>
+    </Form.Group>
+  </Col>
+  <Col md={3}>
+    <Form.Group>
+      <Form.Control
+        placeholder="🌎 País"
+        name="country"
+        value={filters.country}
+        onChange={handleFilterChange}
+        list="country-options"
+      />
+      <datalist id="country-options">
+        {[...new Set(locations.map(loc => loc.country))].map((country, index) => (
+          <option key={index} value={country} />
+        ))}
+      </datalist>
+    </Form.Group>
+  </Col>
+</Row>
             {error && <Alert variant="danger">{error}</Alert>}
             <Fade cascade>
                 <div className="d-none d-md-block">
@@ -144,7 +228,7 @@ export default function ViewLocationsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {locations.map((loc) => (
+                            {filteredLocations.map((loc) => (
                                 <tr key={loc.id}>
                                     <td>{loc.id}</td>
                                     <td>{loc.name}</td>
@@ -172,7 +256,7 @@ export default function ViewLocationsPage() {
             </Fade>
             {/* Tarjetas responsivas para pantallas pequeñas */}
             <div className="d-md-none">
-                {locations.map((loc) => (
+                {filteredLocations.map((loc) => (
                     <div key={loc.id} className="card mb-3 shadow-sm">
                         <div className="card-body">
                             <h5 className="card-title text-primary">{loc.name}</h5>
