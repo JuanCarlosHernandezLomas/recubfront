@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
@@ -22,6 +22,7 @@ const Dashboard = () => {
   const mounted = useHasMounted();
   const { roles } = useAuth();
   const router = useRouter();
+  const [clickedPath, setClickedPath] = useState<string | null>(null);
 
   
 
@@ -106,18 +107,24 @@ const Dashboard = () => {
 
   return (
     <Container className="py-5">
-      <h2 className="text-center mb-5 text-primary">{mounted ? t('dashboard.welcome') : ""}</h2>
+      <h2 className="text-center mb-5 text-primary">
+        {mounted ? t('dashboard.welcome') : ""}
+      </h2>
       <Row className="g-4">
         {modules
           .filter((mod) => hasRole(mod.allowedRoles, roles))
           .map((mod, idx) => (
             <Col key={idx} md={6}>
-
-              <Link href={mod.path} className="text-decoration-none">
+              <div
+                onClick={() => {
+                  setClickedPath(mod.path);
+                  router.push(mod.path);
+                }}
+                style={{ cursor: "pointer" }}
+              >
                 <Card
-                  className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
-                  style={{ transition: 'transform 0.3s' }}
-
+                  className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation} ${clickedPath === mod.path ? 'clicked-card' : ''}`}
+                  style={{ transition: 'transform 0.3s, box-shadow 0.3s' }}
                 >
                   <Card.Body>
                     <div className="d-flex align-items-center mb-3">
@@ -127,7 +134,7 @@ const Dashboard = () => {
                     <Card.Text className="text-muted">{mod.description}</Card.Text>
                   </Card.Body>
                 </Card>
-              </Link>
+              </div>
             </Col>
           ))}
       </Row>

@@ -257,3 +257,8 @@ body[data-bs-theme='dark'] .custom-toast {
   color: #f1f1f1 !important;
   border-left: 6px solid #6f42c1 !important;
 }
+.clicked-card {
+  transform: scale(0.97);
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.7) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
