@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
@@ -32,6 +32,12 @@ const Profile = () => {
     },
 
   ];
+        useEffect(() => {
+          modules.forEach((mod) => {
+            router.prefetch(mod.path);
+            console.log(`✅ Precargando ruta: ${mod.path}`);
+          });
+        }, []);
 
   return (
     <Container className="py-5">
@@ -43,10 +49,6 @@ const Profile = () => {
               <Card
                 className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
                 style={{ transition: 'transform 0.3s' }}
-                onMouseEnter={() => {
-                  console.log(`Precargando: ${mod.path}`);
-                  router.prefetch(mod.path);
-                }}
               >
                 <Card.Body>
                   <div className="d-flex align-items-center mb-3">

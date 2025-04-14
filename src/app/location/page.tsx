@@ -1,14 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from 'react';
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { Journal, JournalPlus } from "react-bootstrap-icons";
 import Link from "next/link";
 import "animate.css";
 import { useTranslation } from "react-i18next";
+import { useRouter } from 'next/navigation';
 
 const Profile = () => {
   const { t } = useTranslation();
+    const router = useRouter();
   const modules = [
     {
       title: t('location.titleCard'),
@@ -26,6 +28,12 @@ const Profile = () => {
       animation: "animate__fadeInRight",
     },
   ];
+          useEffect(() => {
+            modules.forEach((mod) => {
+              router.prefetch(mod.path);
+              console.log(`✅ Precargando ruta: ${mod.path}`);
+            });
+          }, []);
 
   return (
     <Container className="py-5">
