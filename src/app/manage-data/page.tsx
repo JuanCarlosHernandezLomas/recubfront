@@ -45,6 +45,7 @@ export default function ManageDataPage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const { width, height } = useWindowSize();
   const { roles } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   const hasRole = (allowedRoles: string[]) => {
     return allowedRoles.some(role => roles.includes(role));
@@ -52,19 +53,34 @@ export default function ManageDataPage() {
 
 
   const fetchAll = async () => {
+    setLoading(true);
     const token = localStorage.getItem('token');
-    const fetchList = async (url: string, setter: (d: ApiForm[]) => void) => {
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      setter(data);
-    };
-
-    await fetchList('http://localhost:8090/api/skills', setSkills);
-    await fetchList('http://localhost:8090/api/experience-level', setExperiences);
-    await fetchList('http://localhost:8090/api/availability-status', setAvailabilities);
+    const headers = { Authorization: `Bearer ${token}` };
+  
+    try {
+      const [skillsRes, expRes, availRes] = await Promise.all([
+        fetch('http://localhost:8090/api/skills', { headers }),
+        fetch('http://localhost:8090/api/experience-level', { headers }),
+        fetch('http://localhost:8090/api/availability-status', { headers }),
+      ]);
+  
+      const [skillsData, expData, availData] = await Promise.all([
+        skillsRes.json(),
+        expRes.json(),
+        availRes.json(),
+      ]);
+  
+      setSkills(skillsData);
+      setExperiences(expData);
+      setAvailabilities(availData);
+    } catch (err) {
+      console.error("Error al cargar datos:", err);
+      toast.error("Error al cargar datos");
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   useEffect(() => {
     fetchAll();
