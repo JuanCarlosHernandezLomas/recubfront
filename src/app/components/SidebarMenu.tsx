@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useSidebarContext } from '../context/SidebarContext';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from "react-i18next";
-import { ClipboardList, FolderClosed } from "lucide-react";
+import { ClipboardList, FolderClosed, Handshake } from "lucide-react";
 import { useAuth } from '../context/useAuth';
 
 
@@ -40,7 +40,7 @@ export const SidebarMenu = () => {
         {!collapsed && t('sidebar.Home')}
       </Link>
       <Link
-        className={`nav-link d-flex align-items-center ${isActive('/Register') ? 'active' : ''}`}
+        className={`nav-link d-flex align-items-center ${isActive('/Profile') ? 'active' : ''}`}
         href="/Profile"
       >
         <People className="me-2" />
@@ -104,7 +104,7 @@ export const SidebarMenu = () => {
         className={`nav-link d-flex align-items-center ${isActive('/Team') ? 'active' : ''}`}
         href="/Team"
       >
-        <PersonSquare className="me-2" />
+        <Handshake  className="me-2" />
         {!collapsed && t('sidebar.Team')}
       </Link>
       )}

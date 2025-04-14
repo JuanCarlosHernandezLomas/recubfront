@@ -14,7 +14,7 @@ import 'animate.css';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/useAuth';
 import { useHasMounted } from '../hooks/useHasMounted';
-import { ClipboardList, FolderClosed } from 'lucide-react';
+import { ClipboardList, FolderClosed, Handshake } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const Dashboard = () => {
@@ -89,7 +89,7 @@ const Dashboard = () => {
     },
     {
       title: t('dashboard.Team'),
-      icon: <PersonSquare size={32} className="text-info" />,
+      icon: <Handshake size={45} color='#d6d6d6'/>,
       description: t('dashboard.TeamDesc'),
       allowedRoles: ['ROLE_ADMINS'],
       path: '/Team',

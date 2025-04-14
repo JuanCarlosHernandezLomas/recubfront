@@ -43,6 +43,8 @@ export default function ClientesPage() {
   const [showModal, setShowModal] = useState(false);
   const [validatedEdit, setValidatedEdit] = useState(false);
   const [validatedAdd, setValidatedAdd] = useState(false);
+        const [currentPage, setCurrentPage] = useState(1);
+        const itemsPerPage = 4;
   const [filters, setFilters] = useState({
     name: '',
     location: ''
@@ -239,6 +241,28 @@ export default function ClientesPage() {
       toast.error("Error al actualizar cliente", { toastId: "edit-error" });
     }
   };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredClients.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const handleNextPage = () => {
+      if (currentPage * itemsPerPage < filteredClients.length) {
+        setCurrentPage((prev) => prev + 1);
+      }
+    };
+  
+    const handlePrevPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      }
+    };
+  
+
+
   return (
     <Container className="py-4">
       <h2 className="mb-4 text-primary">{t("client.title")}</h2>
@@ -307,7 +331,7 @@ export default function ClientesPage() {
 
       {/* Vista en tarjetas para móviles */}
       <Row className="d-md-none">
-        {filteredClients.map((client) => (
+        {currentItems.map((client) => (
           <Col xs={12} key={client.id} className="mb-3">
             <Card className="shadow-sm">
               <Card.Body>
@@ -356,7 +380,7 @@ export default function ClientesPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredClients.map((cli) => (
+            {currentItems.map((cli) => (
               <tr key={cli.id}>
                 <td>{cli.id}</td>
                 <td>{cli.name}</td>
@@ -388,6 +412,19 @@ export default function ClientesPage() {
           </tbody>
         </Table>
       </div>
+                          <div className="d-flex justify-content-center my-4">
+                <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+                  Anterior
+                </Button>
+                <span className="mx-2">{`Página ${currentPage}`}</span>
+                <Button
+                  onClick={handleNextPage}
+                  disabled={currentPage * itemsPerPage >= filteredClients.length}
+                >
+                  Siguiente
+                </Button>
+              </div>
+      
 
       {/* Modal edición */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

@@ -77,6 +77,9 @@ export default function ViewProfilesPage() {
     const [locationOptions, setLocationOptions] = useState<Option[]>([]);
     const [skillOptions, setSkillOptions] = useState<Option[]>([]);
 
+      const [currentPage, setCurrentPage] = useState(1);
+      const itemsPerPage = 6;
+    
 
     const [filters, setFilters] = useState({
         availability: "",
@@ -314,6 +317,25 @@ export default function ViewProfilesPage() {
         }
     };
     console.log(locationOptions)
+
+    const totalPages=Math.ceil(filteredProfiles.length/itemsPerPage);
+    const startIndex = (currentPage -1)*itemsPerPage;
+    const endIndex = startIndex+itemsPerPage;
+    const currentProfiles= filteredProfiles.slice(startIndex, endIndex)
+
+    const handleNextPage = () => {
+        if (currentPage * itemsPerPage < filteredProfiles.length) {
+          setCurrentPage((prev) => prev + 1);
+        }
+      };
+    
+      const handlePrevPage = () => {
+        if (currentPage > 1) {
+          setCurrentPage((prev) => prev - 1);
+        }
+      };
+    
+  
     return (
         <Container className="py-4">
             <h2 className="text-primary mb-4"> <User size={40} />{t('list.title')}</h2>
@@ -368,7 +390,7 @@ export default function ViewProfilesPage() {
                 <>
                     {/* Tarjetas para pantallas pequeñas */}
                     <div className="d-md-none">
-                        {filteredProfiles.map((profile, index) => (
+                        {currentProfiles.map((profile, index) => (
                             <div key={index} className="card mb-3 shadow-sm">
                                 <div className="card-body">
                                     <h5 className="card-title">
@@ -449,7 +471,7 @@ export default function ViewProfilesPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredProfiles.map((profile, index) => (
+                                {currentProfiles.map((profile, index) => (
                                     <tr key={index}>
                                         <td>{profile.employeeId}</td>
                                         <td>{profile.firstName} {profile.lastName}</td>
@@ -512,6 +534,19 @@ export default function ViewProfilesPage() {
                     </div>
                 </>
             )}
+                    <div className="d-flex justify-content-center my-4">
+          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+            Anterior
+          </Button>
+          <span className="mx-2">{`Página ${currentPage}`}</span>
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage * itemsPerPage >= filteredProfiles.length}
+          >
+            Siguiente
+          </Button>
+        </div>
+
             <Modal show={showModal} onHide={handleCloseModal} centered  >
                 <Modal.Header closeButton><Modal.Title>{t("list.EditProfile")}</Modal.Title></Modal.Header>
                 <Modal.Body >

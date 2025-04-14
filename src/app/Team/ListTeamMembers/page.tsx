@@ -57,6 +57,9 @@ export default function ListTeamMembersPage() {
 
   const [profiles, setProfiles] = useState<Option[]>([]);
   const [teams, setTeams] = useState<Option[]>([]);
+        const [currentPage, setCurrentPage] = useState(1);
+        const itemsPerPage = 6;
+  
 
   const {
     register,
@@ -182,6 +185,24 @@ export default function ListTeamMembersPage() {
     }
   };
 
+  const totalPages=Math.ceil(filteredMembers.length/itemsPerPage);
+  const startIndex = (currentPage -1)*itemsPerPage;
+  const endIndex = startIndex+itemsPerPage;
+  const currentTeamMember= filteredMembers.slice(startIndex, endIndex)
+
+  const handleNextPage = () => {
+      if (currentPage * itemsPerPage < filteredMembers.length) {
+        setCurrentPage((prev) => prev + 1);
+      }
+    };
+  
+    const handlePrevPage = () => {
+      if (currentPage > 1) {
+        setCurrentPage((prev) => prev - 1);
+      }
+    };
+
+
   return (
     <Container className="py-4">
       <h2 className="text-primary mb-4">{t("AssigmenTeamList.title")}</h2>
@@ -221,7 +242,7 @@ export default function ListTeamMembersPage() {
             </tr>
           </thead>
           <tbody>
-            {filteredMembers.map((m) => (
+            {currentTeamMember.map((m) => (
               <tr key={m.id}>
                 <td>{m.id}</td>
                 <td>{m.perfilName}</td>
@@ -252,6 +273,19 @@ export default function ListTeamMembersPage() {
           </tbody>
         </Table>
       )}
+
+                    <div className="d-flex justify-content-center my-4">
+          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+            Anterior
+          </Button>
+          <span className="mx-2">{`Página ${currentPage}`}</span>
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage * itemsPerPage >= filteredMembers.length}
+          >
+            Siguiente
+          </Button>
+        </div>
 
       {/* Modal de Edición */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>

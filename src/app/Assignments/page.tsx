@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import {
   PersonPlusFill,
@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 const Profile = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const [clickedPath, setClickedPath] = useState<string | null>(null);
   const modules = [
     {
       title: t('AssignProyect.title'),
@@ -46,9 +47,15 @@ const Profile = () => {
       <Row className="g-4">
         {modules.map((mod, idx) => (
           <Col key={idx} md={6}>
-            <Link href={mod.path} className="text-decoration-none">
+                          <div
+                onClick={() => {
+                  setClickedPath(mod.path);
+                  router.push(mod.path);
+                }}
+                style={{ cursor: "pointer" }}
+              >
               <Card
-                className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation}`}
+                className={`shadow-lg p-4 border-0 h-100 animate__animated ${mod.animation} ${clickedPath === mod.path ? 'clicked-card' : ''}`}
                 style={{ transition: 'transform 0.3s' }}
               >
                 <Card.Body>
@@ -59,7 +66,7 @@ const Profile = () => {
                   <Card.Text className="text-muted">{mod.description}</Card.Text>
                 </Card.Body>
               </Card>
-            </Link>
+            </div>
           </Col>
         ))}
       </Row>

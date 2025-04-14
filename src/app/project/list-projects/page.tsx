@@ -68,7 +68,9 @@ export default function ListProjectsPage() {
     const [filterStartDate, setFilterStartDate] = useState<Date | null>(null);
     const [filterEndDate, setFilterEndDate] = useState<Date | null>(null);
     const [filterSkill, setFilterSkill] = useState('');
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+  
     const {
         register,
         handleSubmit,
@@ -94,6 +96,15 @@ export default function ListProjectsPage() {
         setOwners(ownersRes);
         setProjects(projectsRes);
     };
+
+    const filteredProjects = projects.filter(p =>
+        (!filterName || p.name.toLowerCase().includes(filterName.toLowerCase())) &&
+        (!filterClient || p.clienteName === filterClient) &&
+        (!filterOwner || p.wonerName === filterOwner) &&
+        (!filterSkill || p.skillName.includes(filterSkill)) &&
+        (!filterStartDate || new Date(p.startDate) >= filterStartDate) &&
+        (!filterEndDate || new Date(p.endDate) <= filterEndDate)
+      );
 
     useEffect(() => {
         fetchData();
@@ -167,6 +178,23 @@ export default function ListProjectsPage() {
         toast.error(t("ListProject.deletedError"), { toastId: 'project-delete-error' });
       }
     };
+
+ const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProjects.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Funciones para manejar el cambio de página
+  const handleNextPage = () => {
+    if (currentPage * itemsPerPage < filteredProjects.length) {
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(prev => prev - 1);
+    }
+  };
 
     return (
         <Container className="py-4">
@@ -244,46 +272,37 @@ export default function ListProjectsPage() {
             </Row>
             {/* Vista en tarjetas */}
             <Row className="d-md-none">
-                {projects
-                    .filter(p =>
-                        (!filterName || p.name.toLowerCase().includes(filterName.toLowerCase())) &&
-                        (!filterClient || p.clienteName === filterClient) &&
-                        (!filterOwner || p.wonerName === filterOwner) &&
-                        (!filterSkill || p.skillName.includes(filterSkill)) &&
-                        (!filterStartDate || new Date(p.startDate) >= filterStartDate) &&
-                        (!filterEndDate || new Date(p.endDate) <= filterEndDate)
-                    )
-                    .map(proj => (
-                        <Col key={proj.id} md={4}>
-                            <motion.div
-                                whileHover={{ scale: 1.02 }}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                                className="shadow-sm border rounded p-3 h-100"
-                            >
-                                <h5 className="text-primary">{proj.name}</h5>
-                                <p className="mb-1"><strong>{t('ListProject.client')}</strong> {proj.clienteName}</p>
-                                <p className="mb-1"><strong>{t('ListProject.owner')}</strong> {proj.wonerName}</p>
-                                <p className="mb-1"><strong>{t('ListProject.starDate')}</strong> {proj.startDate}</p>
-                                <p className="mb-1"><strong>{t('ListProject.EndDate')}</strong> {proj.endDate}</p>
-                                <p className="mb-1"><strong>{t('ListProject.status')}</strong>{' '}
-                                    <Badge bg={proj.active ? 'success' : 'danger'}>
-                                        {proj.active ? t('ListProject.Active') : t('ListProject.Inactive')}
-                                    </Badge>
-                                </p>
-                                <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
-                                <div className="d-flex justify-content-end">
-                                    <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                        {t('ListProject.edit')}
-                                    </Button>
-                                    <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                        {t('ListProject.delete')}
-                                    </Button>
-                                </div>
-                            </motion.div>
-                        </Col>
-                    ))}
+            {currentItems.map(proj => (
+          <Col key={proj.id} md={4}>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="shadow-sm border rounded p-3 h-100"
+            >
+              <h5 className="text-primary">{proj.name}</h5>
+              <p className="mb-1"><strong>{t('ListProject.client')}</strong> {proj.clienteName}</p>
+              <p className="mb-1"><strong>{t('ListProject.owner')}</strong> {proj.wonerName}</p>
+              <p className="mb-1"><strong>{t('ListProject.starDate')}</strong> {proj.startDate}</p>
+              <p className="mb-1"><strong>{t('ListProject.EndDate')}</strong> {proj.endDate}</p>
+              <p className="mb-1"><strong>{t('ListProject.status')}</strong>{' '}
+                <Badge bg={proj.active ? 'success' : 'danger'}>
+                  {proj.active ? t('ListProject.Active') : t('ListProject.Inactive')}
+                </Badge>
+              </p>
+              <p className="mb-2"><strong>{t('ListProject.skill')}:</strong> {proj.skillName.join(', ')}</p>
+              <div className="d-flex justify-content-end">
+                <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
+                  {t('ListProject.edit')}
+                </Button>
+                <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
+                  {t('ListProject.delete')}
+                </Button>
+              </div>
+            </motion.div>
+          </Col>
+        ))}
             </Row>
 
             <Fade cascade>
@@ -302,42 +321,46 @@ export default function ListProjectsPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {projects
-                                .filter(p =>
-                                    (!filterName || p.name.toLowerCase().includes(filterName.toLowerCase())) &&
-                                    (!filterClient || p.clienteName === filterClient) &&
-                                    (!filterOwner || p.wonerName === filterOwner) &&
-                                    (!filterSkill || p.skillName.includes(filterSkill)) &&
-                                    (!filterStartDate || new Date(p.startDate) >= filterStartDate) &&
-                                    (!filterEndDate || new Date(p.endDate) <= filterEndDate)
-                                )
-                                .map((proj) => (
-                                    <tr key={proj.id}>
-                                        <td>{proj.name}</td>
-                                        <td>{proj.clienteName}</td>
-                                        <td>{proj.wonerName}</td>
-                                        <td>{proj.startDate}</td>
-                                        <td>{proj.endDate}</td>
-                                        <td>
-                                            <Badge bg={proj.active ? 'success' : 'danger'}>
-                                                {proj.active ? t("ListProject.Active") : t("ListProject.Inactive")}
-                                            </Badge>
-                                        </td>
-                                        <td>{proj.skillName.join(', ')}</td>
-                                        <td>
-                                            <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
-                                                {t("ListProject.edit")}
-                                            </Button>
-                                            <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
-                                                {t("ListProject.delete")}
-                                            </Button>
-                                        </td>
-                                    </tr>
-                                ))}
+                        {currentItems.map(proj => (
+            <tr key={proj.id}>
+              <td>{proj.name}</td>
+              <td>{proj.clienteName}</td>
+              <td>{proj.wonerName}</td>
+              <td>{proj.startDate}</td>
+              <td>{proj.endDate}</td>
+              <td>
+                <Badge bg={proj.active ? 'success' : 'danger'}>
+                  {proj.active ? t("ListProject.Active") : t("ListProject.Inactive")}
+                </Badge>
+              </td>
+              <td>{proj.skillName.join(', ')}</td>
+              <td>
+                <Button size="sm" variant="warning" className="me-2" onClick={() => openModal(proj)}>
+                  {t("ListProject.edit")}
+                </Button>
+                <Button size="sm" variant="danger" onClick={() => confirmDelete(proj)}>
+                  {t("ListProject.delete")}
+                </Button>
+              </td>
+            </tr>
+          ))}
                         </tbody>
                     </Table>
                 </div>
             </Fade>
+            <div className="d-flex justify-content-center my-4">
+          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+            Anterior
+          </Button>
+          <span className="mx-2">{`Página ${currentPage}`}</span>
+          <Button
+            onClick={handleNextPage}
+            disabled={currentPage * itemsPerPage >= filteredProjects.length}
+          >
+            Siguiente
+          </Button>
+        </div>
+
 
             {/* MODAL */}
             <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered backdrop="static">
