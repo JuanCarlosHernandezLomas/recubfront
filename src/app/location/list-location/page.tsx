@@ -178,7 +178,7 @@ export default function ViewLocationsPage() {
       setCurrentPage((prev) => prev - 1);
     }
   };
-
+  const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
   return (
     <Container className="py-4">
       <h2 className="mb-4">
@@ -191,7 +191,7 @@ export default function ViewLocationsPage() {
         <Col md={3}>
           <Form.Group>
             <Form.Control
-              placeholder="🔍 Nombre"
+              placeholder={t("listlocation.filterName")}
               name="name"
               value={filters.name}
               onChange={handleFilterChange}
@@ -209,7 +209,7 @@ export default function ViewLocationsPage() {
         <Col md={3}>
           <Form.Group>
             <Form.Control
-              placeholder="🏙️ Ciudad"
+              placeholder={t("listlocation.filtercity")}
               name="city"
               value={filters.city}
               onChange={handleFilterChange}
@@ -227,7 +227,7 @@ export default function ViewLocationsPage() {
         <Col md={3}>
           <Form.Group>
             <Form.Control
-              placeholder="🌆 Estado"
+              placeholder={t("listlocation.filterstate")}
               name="state"
               value={filters.state}
               onChange={handleFilterChange}
@@ -245,7 +245,7 @@ export default function ViewLocationsPage() {
         <Col md={3}>
           <Form.Group>
             <Form.Control
-              placeholder="🌎 País"
+              placeholder={t("listlocation.filtercountry")}
               name="country"
               value={filters.country}
               onChange={handleFilterChange}
@@ -312,17 +312,35 @@ export default function ViewLocationsPage() {
             </tbody>
           </Table>
         </div>
-        <div className="d-flex justify-content-center my-4">
-          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-            Anterior
-          </Button>
-          <span className="mx-2">{`Página ${currentPage}`}</span>
+        <div className="d-flex justify-content-center align-items-center my-4 gap-2">
           <Button
-            onClick={handleNextPage}
-            disabled={currentPage * itemsPerPage >= filteredLocations.length}
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            variant="outline-secondary"
           >
-            Siguiente
+            ⏮ {t("pagination.first")}
           </Button>
+
+          <Button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            variant="secondary"
+          >
+            ⬅ {t("pagination.prev")}
+          </Button>
+
+          <span className="fw-bold text-primary">
+            {t("pagination.page")} {currentPage}
+          </span>
+
+          {currentPage < totalPages && (
+            <Button
+              onClick={handleNextPage}
+              variant="secondary"
+            >
+              {t("pagination.next")} ➡
+            </Button>
+          )}
         </div>
       </Fade>
       {/* Tarjetas responsivas para pantallas pequeñas */}

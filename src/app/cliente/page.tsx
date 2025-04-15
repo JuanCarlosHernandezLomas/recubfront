@@ -43,8 +43,8 @@ export default function ClientesPage() {
   const [showModal, setShowModal] = useState(false);
   const [validatedEdit, setValidatedEdit] = useState(false);
   const [validatedAdd, setValidatedAdd] = useState(false);
-        const [currentPage, setCurrentPage] = useState(1);
-        const itemsPerPage = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4;
   const [filters, setFilters] = useState({
     name: '',
     location: ''
@@ -54,7 +54,7 @@ export default function ClientesPage() {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
-  
+
 
   const filteredClients = clients.filter((cli) =>
     cli.name.toLowerCase().includes(filters.name.toLowerCase()) &&
@@ -250,18 +250,18 @@ export default function ClientesPage() {
   );
 
   const handleNextPage = () => {
-      if (currentPage * itemsPerPage < filteredClients.length) {
-        setCurrentPage((prev) => prev + 1);
-      }
-    };
-  
-    const handlePrevPage = () => {
-      if (currentPage > 1) {
-        setCurrentPage((prev) => prev - 1);
-      }
-    };
-  
+    if (currentPage * itemsPerPage < filteredClients.length) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(filteredClients.length / itemsPerPage);
 
   return (
     <Container className="py-4">
@@ -310,23 +310,23 @@ export default function ClientesPage() {
         </Row>
       </Form>
       <Row className="mb-3">
-  <Col md={6}>
-    <Form.Control
-      placeholder="🔍 Filtrar por nombre"
-      name="name"
-      value={filters.name}
-      onChange={handleFilterChange}
-    />
-  </Col>
-  <Col md={6}>
-    <Form.Control
-      placeholder="📍 Filtrar por ciudad"
-      name="location"
-      value={filters.location}
-      onChange={handleFilterChange}
-    />
-  </Col>
-</Row>
+        <Col md={6}>
+          <Form.Control
+            placeholder={t("client.filterrCustomer")}
+            name="name"
+            value={filters.name}
+            onChange={handleFilterChange}
+          />
+        </Col>
+        <Col md={6}>
+          <Form.Control
+            placeholder={t("client.filterrLocation")}
+            name="location"
+            value={filters.location}
+            onChange={handleFilterChange}
+          />
+        </Col>
+      </Row>
 
 
       {/* Vista en tarjetas para móviles */}
@@ -412,19 +412,38 @@ export default function ClientesPage() {
           </tbody>
         </Table>
       </div>
-                          <div className="d-flex justify-content-center my-4">
-                <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-                  Anterior
-                </Button>
-                <span className="mx-2">{`Página ${currentPage}`}</span>
-                <Button
-                  onClick={handleNextPage}
-                  disabled={currentPage * itemsPerPage >= filteredClients.length}
-                >
-                  Siguiente
-                </Button>
-              </div>
-      
+      <div className="d-flex justify-content-center align-items-center my-4 gap-2">
+        <Button
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+          variant="outline-secondary"
+        >
+          ⏮ {t("pagination.first")}
+        </Button>
+
+        <Button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          variant="secondary"
+        >
+          ⬅ {t("pagination.prev")}
+        </Button>
+
+        <span className="fw-bold text-primary">
+          {t("pagination.page")} {currentPage}
+        </span>
+
+        {currentPage < totalPages && (
+          <Button
+            onClick={handleNextPage}
+            variant="secondary"
+          >
+            {t("pagination.next")} ➡
+          </Button>
+        )}
+      </div>
+
+
 
       {/* Modal edición */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

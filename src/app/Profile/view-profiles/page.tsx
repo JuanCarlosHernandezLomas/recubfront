@@ -59,7 +59,7 @@ export default function ViewProfilesPage() {
 
     const hasRole = (allowedRoles: string[]) => {
         return allowedRoles.some(role => roles.includes(role));
-      };
+    };
     //modal
     const [showModal, setShowModal] = useState(false);
     const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
@@ -77,9 +77,9 @@ export default function ViewProfilesPage() {
     const [locationOptions, setLocationOptions] = useState<Option[]>([]);
     const [skillOptions, setSkillOptions] = useState<Option[]>([]);
 
-      const [currentPage, setCurrentPage] = useState(1);
-      const itemsPerPage = 6;
-    
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 6;
+
 
     const [filters, setFilters] = useState({
         availability: "",
@@ -312,30 +312,30 @@ export default function ViewProfilesPage() {
             await fetchProfiles(); // Recargar estado tras eliminar
             setShowDeleteModal(false);
         } catch (err) {
-           toast.error("Error al eliminar el perfil", { toastId: 'profile-delete-error' });
+            toast.error("Error al eliminar el perfil", { toastId: 'profile-delete-error' });
 
         }
     };
     console.log(locationOptions)
 
-    const totalPages=Math.ceil(filteredProfiles.length/itemsPerPage);
-    const startIndex = (currentPage -1)*itemsPerPage;
-    const endIndex = startIndex+itemsPerPage;
-    const currentProfiles= filteredProfiles.slice(startIndex, endIndex)
+    const totalPages = Math.ceil(filteredProfiles.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentProfiles = filteredProfiles.slice(startIndex, endIndex)
 
     const handleNextPage = () => {
         if (currentPage * itemsPerPage < filteredProfiles.length) {
-          setCurrentPage((prev) => prev + 1);
+            setCurrentPage((prev) => prev + 1);
         }
-      };
-    
-      const handlePrevPage = () => {
+    };
+
+    const handlePrevPage = () => {
         if (currentPage > 1) {
-          setCurrentPage((prev) => prev - 1);
+            setCurrentPage((prev) => prev - 1);
         }
-      };
-    
-  
+    };
+
+
     return (
         <Container className="py-4">
             <h2 className="text-primary mb-4"> <User size={40} />{t('list.title')}</h2>
@@ -401,7 +401,7 @@ export default function ViewProfilesPage() {
                                     <p className="mb-1"><strong>{t("list.location")}</strong> {profile.locationName}</p>
                                     <p className="mb-1"><strong>{t("list.ExperienceLevel")}</strong> {profile.experience}</p>
                                     <p className="mb-1"><strong>{t("list.availability")}</strong> {profile.statusName}</p>
-                                    <p className="mb-1"><strong>{t("list.UserId")}</strong> {profile.userName}</p>
+
                                     <p className="mb-1"><strong>{t("list.Skills")}</strong>{" "}
                                         {profile.skillName.map((skill, i) => (
                                             <Badge key={i} bg="info" className="me-1">{skill}</Badge>
@@ -436,11 +436,11 @@ export default function ViewProfilesPage() {
                                             {t("list.download")}
                                         </Button>
                                         {hasRole(['ROLE_ADMINS']) && (
-                                        <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>{t("list.EditProfile")}</Button>
-                                    )}
-                                    {hasRole(['ROLE_ADMINS']) && (
-                                        <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>{t("list.delete")}</Button>
-                                    )}
+                                            <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>{t("list.EditProfile")}</Button>
+                                        )}
+                                        {hasRole(['ROLE_ADMINS']) && (
+                                            <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>{t("list.delete")}</Button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -458,16 +458,16 @@ export default function ViewProfilesPage() {
                                     <th>{t("list.location")}</th>
                                     <th>{t("list.ExperienceLevel")}</th>
                                     <th>{t("list.availability")}</th>
-                                    <th>{t("list.UserId")}</th>
+
                                     <th>{t("list.Skills")}</th>
                                     <th>{t("list.CV")}</th>
                                     <th>{t("list.status")}</th>
                                     {hasRole(['ROLE_ADMINS']) && (
-                                    <th>{t("list.edit")}</th>
-                                )}
+                                        <th>{t("list.edit")}</th>
+                                    )}
                                     {hasRole(['ROLE_ADMINS']) && (
-                                    <th>{t("list.delete")}</th>
-                                )}
+                                        <th>{t("list.delete")}</th>
+                                    )}
                                 </tr>
                             </thead>
                             <tbody>
@@ -479,7 +479,7 @@ export default function ViewProfilesPage() {
                                         <td>{profile.locationName}</td>
                                         <td>{profile.experience}</td>
                                         <td>{profile.statusName}</td>
-                                        <td>{profile.userName}</td>
+
                                         <td>
                                             {profile.skillName.map((skill, i) => (
                                                 <Badge key={i} bg="info" className="me-1">{skill}</Badge>
@@ -514,18 +514,18 @@ export default function ViewProfilesPage() {
                                             )}
                                         </td>
                                         <td>
-                                        {hasRole(['ROLE_ADMINS']) && (
-                                            <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
-                                                {t("list.EditProfile")}
-                                            </Button>
-                                             )}
+                                            {hasRole(['ROLE_ADMINS']) && (
+                                                <Button size="sm" variant="warning" onClick={() => handleEditClick(profile)}>
+                                                    {t("list.EditProfile")}
+                                                </Button>
+                                            )}
                                         </td>
                                         <td>
-                                        {hasRole(['ROLE_ADMINS']) && (
-                                            <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>
-                                                {t("list.delete")}
-                                            </Button>
-                                        )}
+                                            {hasRole(['ROLE_ADMINS']) && (
+                                                <Button size="sm" variant="danger" onClick={() => confirmDelete(profile)}>
+                                                    {t("list.delete")}
+                                                </Button>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
@@ -534,18 +534,37 @@ export default function ViewProfilesPage() {
                     </div>
                 </>
             )}
-                    <div className="d-flex justify-content-center my-4">
-          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-            Anterior
-          </Button>
-          <span className="mx-2">{`Página ${currentPage}`}</span>
-          <Button
-            onClick={handleNextPage}
-            disabled={currentPage * itemsPerPage >= filteredProfiles.length}
-          >
-            Siguiente
-          </Button>
-        </div>
+            <div className="d-flex justify-content-center align-items-center my-4 gap-2">
+                <Button
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                    variant="outline-secondary"
+                >
+                    ⏮ {t("pagination.first")}
+                </Button>
+
+                <Button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    variant="secondary"
+                >
+                    ⬅ {t("pagination.prev")}
+                </Button>
+
+                <span className="fw-bold text-primary">
+                    {t("pagination.page")} {currentPage}
+                </span>
+
+                {currentPage < totalPages && (
+                    <Button
+                        onClick={handleNextPage}
+                        variant="secondary"
+                    >
+                        {t("pagination.next")} ➡
+                    </Button>
+                )}
+            </div>
+
 
             <Modal show={showModal} onHide={handleCloseModal} centered  >
                 <Modal.Header closeButton><Modal.Title>{t("list.EditProfile")}</Modal.Title></Modal.Header>

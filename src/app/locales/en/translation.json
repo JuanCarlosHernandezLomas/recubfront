@@ -117,7 +117,9 @@
     "error": "Error while adding the Client",
     "savechange": "Save Changes",
     "requiredName": "Name is required.",
-    "requiredLocation": "You must select a location."
+    "requiredLocation": "You must select a location.",
+    "filterrCustomer": "🔍 Filter by name",
+    "filterrLocation": "📍 Filter by city"
   },
 
   "report": {
@@ -125,7 +127,9 @@
     "employee": "Employee ID",
     "name": "Name",
     "action": "Action",
-    "button": "Generate PDF"
+    "button": "Generate PDF",
+    "filterById":"Filter by ID",
+    "filterByName":"Filter by name"
   },
 
   "warningmessage": {
@@ -134,6 +138,7 @@
     "cancel": "Cancel",
     "accept": "Yes, Delete",
     "user": "Are you sure you want to delete the user",
+    "confirmDelete":"Are you sure you want to delete ",
     "location": "Are you sure you want to delete the location",
     "customer": "Are you sure you want to delete the customer",
     "Project": "Are you sure you want to delete the Project",
@@ -181,7 +186,12 @@
     "requiredName": "Name is required.",
     "requiredcity": "City is required.",
     "requiredstate": "State is required.",
-    "requiredcountry": "Country is required."
+    "requiredcountry": "Country is required.",
+    "filterName": "🔍 Name",
+    "filtercity": "🏙️ City",
+    "filterstate":"🌆 State",
+    "filtercountry": "🌍 Country"
+
   },
   "Project": {
     "title": "Create Project",
@@ -387,5 +397,12 @@
 "BenchTitle": "Availability Report",
 "BenchDetail": "Bench Persons Details",
 "desde": "Date"
+},
+"pagination":{
+"first": "First",
+"prev": "Previous",
+"next": "Next",
+"page": "page"
+
 }
 }

@@ -85,7 +85,7 @@
     "CV": "CV",
     "status": "Estado",
     "edit": "Editar",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "Active": "Activo",
     "Inactive": "Inactivo",
     "download": "Descargar",
@@ -107,7 +107,7 @@
     "status": "Estado",
     "action": "Acciones",
     "edit": "Editar",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "add": "Agregar",
     "filterCustomer": "Nombre del cliente",
     "filterLocation": "Seleccione una ubicación",
@@ -119,14 +119,18 @@
     "error": "Error al agregar al Cliente",
     "savechange": "Guardar Cambios",
     "requiredName": "El nombre es obligatorio.",
-    "requiredLocation": "Debe seleccionar una ubicación."
+    "requiredLocation": "Debe seleccionar una ubicación.",
+    "filterrCustomer": "🔍 Filtrar por nombre",
+    "filterrLocation": "📍 Filtrar por ciudad"
   },
   "report": {
     "title": "Generar reporte de empleado",
     "employee": "Empleado ID",
     "name": "Nombre",
     "action": "Acción",
-    "button": "Generar PDF"
+    "button": "Generar PDF",
+    "filterById":"Filtrar por ID",
+    "filterByName":"Filtrar por nombre"
   },
 
   "warningmessage": {
@@ -135,6 +139,7 @@
     "cancel": "Cancelar",
     "accept": "Sí, Eliminar",
     "user": "¿Estás seguro de que deseas eliminar al usuario",
+    "confirmDelete":"¿Estás seguro de que deseas eliminar ",
     "location": "¿Estás seguro de que deseas eliminar la locacion",
     "customer": "¿Estás seguro de que deseas eliminar al cliente",
     "Project": "¿Estás seguro de que deseas eliminar el Projecto",
@@ -174,14 +179,18 @@
     "Active": "Activo",
     "Inactive": "Inactivo",
     "edit": "Editar",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "editTitle": "Editar Locación",
     "cancel": "Cancelar",
     "savechange": "Guardar Cambios",
     "requiredName": "El nombre es obligatorio.",
     "requiredcity": "La ciudad es obligatoria",
     "requiredstate": "El estado es obligatorio",
-    "requiredcountry": "El pais es obligatorio"
+    "requiredcountry": "El pais es obligatorio",
+    "filterName": "🔍 Nombre",
+    "filtercity": "🏙️ Ciudad",
+    "filterstate":"🌆 Estado",
+    "filtercountry": "🌍 País"
   },
 
   "Project": {
@@ -260,7 +269,7 @@
     "Active": "Activo",
     "Inactive": "Inactivo",
     "edit": "Editar",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "editTitle": "Editar Asignacion",
     "savechange": "Guardar Cambios",
     "filterProfile": "Buscar por perfil",
@@ -303,7 +312,7 @@
     "project": "Proyecto",
     "descripcion": "Descripcion",
     "status": "Estado",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "edit": "Editar",
     "name": "Nombre",
     "Action": "Acciones",
@@ -335,7 +344,7 @@
     "status": "Estado",
     "Active": "Activo",
     "Inactive": "Inactivo",
-    "delete": "Elimminar",
+    "delete": "Eliminar",
     "Action": "Acciones",
     "user": "Usuario",
     "filtername": "Buscar por nombre",
@@ -389,5 +398,13 @@
 
 
   
+},
+
+"pagination":{
+  "first": "Primero",
+  "prev": "Anterior",
+  "next": "Siguiente",
+  "page": "pagina"
+
 }
 }

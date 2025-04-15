@@ -53,8 +53,8 @@ export default function ListTeamsPage() {
   const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [teamToEdit, setTeamToEdit] = useState<Team | null>(null);
-      const [currentPage, setCurrentPage] = useState(1);
-      const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const {
     register,
@@ -180,23 +180,23 @@ export default function ListTeamsPage() {
     }
   };
 
-  const totalPages=Math.ceil(filteredTeams.length/itemsPerPage);
-  const startIndex = (currentPage -1)*itemsPerPage;
-  const endIndex = startIndex+itemsPerPage;
-  const currentTeam= filteredTeams.slice(startIndex, endIndex)
+  const totalPages = Math.ceil(filteredTeams.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentTeam = filteredTeams.slice(startIndex, endIndex)
 
   const handleNextPage = () => {
-      if (currentPage * itemsPerPage < filteredTeams.length) {
-        setCurrentPage((prev) => prev + 1);
-      }
-    };
-  
-    const handlePrevPage = () => {
-      if (currentPage > 1) {
-        setCurrentPage((prev) => prev - 1);
-      }
-    };
+    if (currentPage * itemsPerPage < filteredTeams.length) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
 
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+ 
   return (
     <Container className="py-4">
       <h2 className="text-primary mb-4">{t("TeamList.title")}</h2>
@@ -276,18 +276,36 @@ export default function ListTeamsPage() {
           </div>
         </>
       )}
-                    <div className="d-flex justify-content-center my-4">
-          <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-            Anterior
-          </Button>
-          <span className="mx-2">{`Página ${currentPage}`}</span>
+      <div className="d-flex justify-content-center align-items-center my-4 gap-2">
+        <Button
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+          variant="outline-secondary"
+        >
+          ⏮ {t("pagination.first")}
+        </Button>
+
+        <Button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          variant="secondary"
+        >
+          ⬅ {t("pagination.prev")}
+        </Button>
+
+        <span className="fw-bold text-primary">
+          {t("pagination.page")} {currentPage}
+        </span>
+
+        {currentPage < totalPages && (
           <Button
             onClick={handleNextPage}
-            disabled={currentPage * itemsPerPage >= filteredTeams.length}
+            variant="secondary"
           >
-            Siguiente
+            {t("pagination.next")} ➡
           </Button>
-        </div>
+        )}
+      </div>
 
       {/* Modal de edición con validaciones */}
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>

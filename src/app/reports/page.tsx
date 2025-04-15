@@ -26,6 +26,10 @@ export default function GenerateReportPage() {
   const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filters, setFilters] = useState({ id: "", name: "" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -276,6 +280,32 @@ export default function GenerateReportPage() {
       alert("Hubo un error al generar el reporte");
     }
   };
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+    setCurrentPage(1); // Reiniciar a la primera página al filtrar
+  };
+  const filteredProfiles = profiles.filter((p) =>
+    p.employeeId.toLowerCase().includes(filters.id.toLowerCase()) &&
+    `${p.firstName} ${p.lastName}`.toLowerCase().includes(filters.name.toLowerCase())
+  );
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredProfiles.slice(indexOfFirstItem, indexOfLastItem);
+  const handleNextPage = () => {
+    if (currentPage * itemsPerPage < filteredProfiles.length) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  const totalPages = Math.ceil(filteredProfiles.length / itemsPerPage);
 
   return (
     <Container className="py-4">
@@ -291,6 +321,25 @@ export default function GenerateReportPage() {
       >
         📊 {t("reportPdf.generateBench")}
       </Button>
+      <div className="d-flex gap-3 mb-3">
+        <input
+          type="text"
+          name="id"
+          placeholder={t("report.filterById")}
+          className="form-control"
+          value={filters.id}
+          onChange={handleFilterChange}
+        />
+        <input
+          type="text"
+          name="name"
+          placeholder={t("report.filterByName")}
+          className="form-control"
+          value={filters.name}
+          onChange={handleFilterChange}
+        />
+      </div>
+
       {loading && <Spinner animation="border" />}
       {error && <Alert variant="danger">{error}</Alert>}
       {!loading && !error && (
@@ -303,7 +352,7 @@ export default function GenerateReportPage() {
             </tr>
           </thead>
           <tbody>
-            {profiles.map((p) => (
+            {currentItems.map((p) => (
               <tr key={p.id}>
                 <td>{p.employeeId}</td>
                 <td>
@@ -323,6 +372,37 @@ export default function GenerateReportPage() {
           </tbody>
         </Table>
       )}
+      <div className="d-flex justify-content-center align-items-center my-4 gap-2">
+        <Button
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+          variant="outline-secondary"
+        >
+          ⏮ {t("pagination.first")}
+        </Button>
+
+        <Button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          variant="secondary"
+        >
+          ⬅ {t("pagination.prev")}
+        </Button>
+
+        <span className="fw-bold text-primary">
+          {t("pagination.page")} {currentPage}
+        </span>
+
+        {currentPage < totalPages && (
+          <Button
+            onClick={handleNextPage}
+            variant="secondary"
+          >
+            {t("pagination.next")} ➡
+          </Button>
+        )}
+      </div>
+
     </Container>
   );
 }

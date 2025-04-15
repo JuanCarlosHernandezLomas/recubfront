@@ -74,11 +74,7 @@ body {
   display: inline-block;
 }
 /* Header para que esté encima del sidebar */
-.navbar {
-  z-index: 1101 !important;
-  position: sticky;
-  top: 0;
-}
+
 
 /* Cuando sidebar está expandido, empuja el contenido */
 .main-expanded {
@@ -261,4 +257,52 @@ body[data-bs-theme='dark'] .custom-toast {
   transform: scale(0.97);
   box-shadow: 0 0 25px rgba(0, 123, 255, 0.7) !important;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.app-shell {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  transition: width 0.3s ease;
+  z-index: 1000;
+}
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* Wrapper general del contenido */
+.main-wrapper {
+  padding-top: 56px; 
+  flex-grow: 1;
+  transition: margin-left 0.3s ease;
+  margin-left: 80px; /* por defecto colapsado */
+}
+
+.main-wrapper.expanded {
+  margin-left: 250px;
+}
+
+/* Header ocupa siempre todo el ancho visible */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+}
+
+/* Contenido principal desplazable */
+.main-content {
+  padding: 1rem;
+  overflow-y: auto;
+  height: calc(100vh - 56px); /* Ajustar si header cambia */
 }

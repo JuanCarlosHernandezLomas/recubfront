@@ -208,7 +208,7 @@ export default function ListAssignmentsPage() {
       setCurrentPage((prev) => prev - 1);
     }
   };
-
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
   return (
     <Container className="py-4">
       <h2 className="text-primary text-center mb-4">
@@ -355,18 +355,37 @@ export default function ListAssignmentsPage() {
         </Table>
       </div>
 
-      <div className="d-flex justify-content-center my-4">
-        <Button onClick={handlePrevPage} disabled={currentPage === 1}>
-          Anterior
-        </Button>
-        <span className="mx-2">{`Página ${currentPage}`}</span>
+      <div className="d-flex justify-content-center align-items-center my-4 gap-2">
         <Button
-          onClick={handleNextPage}
-          disabled={currentPage * itemsPerPage >= filtered.length}
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+          variant="outline-secondary"
         >
-          Siguiente
+          ⏮ {t("pagination.first")}
         </Button>
+
+        <Button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          variant="secondary"
+        >
+          ⬅ {t("pagination.prev")}
+        </Button>
+
+        <span className="fw-bold text-primary">
+          {t("pagination.page")} {currentPage}
+        </span>
+
+        {currentPage < totalPages && (
+          <Button
+            onClick={handleNextPage}
+            variant="secondary"
+          >
+            {t("pagination.next")} ➡
+          </Button>
+        )}
       </div>
+
 
       {/* Modal de edición */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>

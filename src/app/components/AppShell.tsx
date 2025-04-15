@@ -15,9 +15,9 @@ export const AppShell = ({ children }: { children: React.ReactNode }) => {
   if (hideLayout) return <>{children}</>;
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="app-shell">
       <SidebarMenu />
-      <div className={`flex-grow-1 ${collapsed ? "" : "main-expanded"}`}>
+      <div className={`main-wrapper ${collapsed ? "" : "expanded"}`}>
         <Header />
         <main className="main-content">{children}</main>
       </div>
