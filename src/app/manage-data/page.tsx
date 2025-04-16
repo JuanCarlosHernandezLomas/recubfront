@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, JSX } from 'react';
 import {
   Container, Form, Button, Row, Col, Card, ListGroup, Modal, Spinner
 } from 'react-bootstrap';

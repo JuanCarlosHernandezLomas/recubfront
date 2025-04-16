@@ -70,7 +70,15 @@
     "availability": "Add Availability",
     "Button": "Add",
     "message": "Successfully added!",
-    "error": "Error adding data"
+    "error": "Error adding data",
+    "placeholder.skill": "Example: React, Java",
+    "placeholder.experience": "Example: Junior, senior",
+    "placeholder.availability": "Example: Bench, Project",
+    "filter":"filter",
+    "editTitle":"Edit Form",
+    "editField":"data to edit",
+    "updated": "Data updated successfully",
+    "deleted": "Data deleted successfully"
   },
   "list": {
     "title": "Profile List",

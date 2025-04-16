@@ -70,7 +70,18 @@
     "availability": "Agregar Disponibilidad",
     "Button": "Agregar",
     "message": "¡Agregado correctamente!",
-    "error": "Error al agregar los datos"
+    "error": "Error al agregar los datos",
+    "placeholder.skill": "Ejemplo: React, Java",
+    "placeholdere.xperience": "Ejemplo: Junior, senior",
+    "placeholder.availability": "Ejemplo: Bench, Project",
+    "filter":"filtro",
+    "editTitle":"Formulario de Edicion",
+    "editField":"dato a editar",
+    "updated": "Dato actualizado correctamente",
+    "deleted":"Dato eliminado correctamente"
+
+
+
   },
   "list": {
     "title": "Listado de Perfiles",

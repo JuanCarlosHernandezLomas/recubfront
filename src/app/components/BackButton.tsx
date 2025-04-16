@@ -24,7 +24,7 @@ export default function BackButton() {
       <Button
         onClick={() => router.back()}
         variant="outline-primary"
-        className="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill shadow-sm fw-semibold"
+        className="d-inline-flex align-items-center gap-2 px-4 py-2 -pill shadow-sm fw-semibold"
         style={{
           fontSize: '0.95rem',
         }}
